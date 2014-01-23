@@ -10,12 +10,18 @@
         <servlet-name>Faces Servlet</servlet-name>
         <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
+        <multipart-config>
+            <max-file-size>20848820000</max-file-size>
+            <max-request-size>41801884100</max-request-size>
+            <file-size-threshold>1048576</file-size-threshold>
+            <!--<location>/tmp</location>-->
+        </multipart-config>
     </servlet>
     <servlet-mapping>
         <servlet-name>Faces Servlet</servlet-name>
-        <url-pattern>/faces/*</url-pattern>
+        <url-pattern>*.xhtml</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
-        <welcome-file>/faces/index.xhtml</welcome-file>
+        <welcome-file>index.xhtml</welcome-file>
     </welcome-file-list>
 </web-app>
