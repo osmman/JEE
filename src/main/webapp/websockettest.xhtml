@@ -5,11 +5,13 @@
     <h:head>
         <title>Facelet Title</title>
         <script type="text/javascript">
+            //<![CDATA[
             var url = "ws://localhost:8080/semestralka/chat";
             var websocket = new WebSocket(url);
-            function send(){
-                websocket.send("AHOJKY");
+            function send() {
+                websocket.send("AHOJ");
             }
+            //]]>  
         </script>
     </h:head>
     <h:body>
