@@ -8,6 +8,7 @@ package cz.cvut.fel.jee.endpoints;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.inject.Inject;
 import javax.websocket.OnMessage;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
@@ -19,15 +20,17 @@ import javax.websocket.server.ServerEndpoint;
 @ServerEndpoint("/chat")
 public class ChatWSEndpoint {
 
+    @Inject
+    private Logger logger;
 
     @OnMessage
     public void onMessage(String message, Session peer) {
-        System.out.println(message);
+        logger.info(message);
         for (Session client : peer.getOpenSessions()) {
             try {
                 client.getBasicRemote().sendText(message);
             } catch (IOException ex) {
-                Logger.getLogger(ChatWSEndpoint.class.getName()).log(Level.SEVERE, null, ex);
+                logger.severe(ex.toString());
             }
         }
     }
