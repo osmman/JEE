@@ -1,15 +1,16 @@
 package cz.cvut.fel.jee.security;
 
 import cz.cvut.fel.jee.annotations.CurrentLoggedUser;
+import cz.cvut.fel.jee.ejb.UserService;
 import cz.cvut.fel.jee.model.User;
 
+import javax.ejb.EJBTransactionRolledbackException;
 import javax.ejb.Stateful;
 import javax.enterprise.context.SessionScoped;
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
+import javax.persistence.NoResultException;
 import java.io.Serializable;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -23,10 +24,11 @@ public class Authenticator implements Serializable
 {
 
     @Inject
-    private transient EntityManager em;
-
-    @Inject
     private transient Logger logger;
+
+    @SuppressWarnings("CdiUnproxyableBeanTypesInspection")
+    @Inject
+    private transient UserService userService;
 
     private String password;
 
@@ -56,9 +58,9 @@ public class Authenticator implements Serializable
 
     public void login()
     {
-        TypedQuery<User> query = em.createNamedQuery("User.findByEmail", User.class).setParameter("email", email);
-        User user = query.getSingleResult();
         try {
+        User user = userService.findByEmail(email);
+
             MessageDigest md = MessageDigest.getInstance("SHA-256");
             String newPassword = password + email;
             md.update(newPassword.getBytes());
@@ -78,6 +80,9 @@ public class Authenticator implements Serializable
             }
         } catch (NoSuchAlgorithmException e) {
             logger.log(Level.SEVERE, "an exception was thrown", e);
+        } catch (EJBTransactionRolledbackException e) {
+            logger.info(e.toString());
+            //@todo uzivatel nenalezen
         }
     }
 

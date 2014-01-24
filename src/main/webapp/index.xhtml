@@ -23,13 +23,13 @@
     <h:outputLabel for="email">
         Email:
     </h:outputLabel>
-    <h:inputText id="email" value="#{authenticator.email}" 
+    <h:inputText id="email" value="#{authenticator.email}"
                  required="true" />
     <br />
     <h:outputLabel for="passwordInput">
         Password:
     </h:outputLabel>
-    <h:inputSecret id="passwordInput" value="#{authenticator.password}" 
+    <h:inputSecret id="passwordInput" value="#{authenticator.password}"
                    required="true" />
     <br />
     <h:commandButton value="Zalogovat se" 
@@ -37,6 +37,8 @@
    <h:commandButton value="Vytvorit uzivatele" 
                      action="#{populator.populate}" />
 </h:form>
+
+<h:outputText value="#{authenticator.currentUser.email}" rendered="#{not empty authenticator.currentUser}" />
 
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="https://code.jquery.com/jquery.min.js" type="application/javascript"></script>
