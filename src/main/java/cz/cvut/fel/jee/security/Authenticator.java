@@ -43,7 +43,7 @@ public class Authenticator {
 	}
 	
 	public void login(){
-		TypedQuery<User> query = em.createNamedQuery("User.User.findByEmail",User.class).setParameter("email",email);
+		TypedQuery<User> query = em.createNamedQuery("User.findByEmail",User.class).setParameter("email",email);
         User user = query.getSingleResult();
         try {
         	MessageDigest md = MessageDigest.getInstance("SHA-256");

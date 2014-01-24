@@ -51,7 +51,6 @@ public class User extends EntityObject
         this.email = email;
     }
 
-    @Size(min = 6, max = 30)
     @NotNull
     public String getPassword()
     {
