@@ -9,7 +9,9 @@ import java.io.Serializable;
 @MappedSuperclass
 public class EntityObject implements Serializable
 {
-    @Id
+
+	private static final long serialVersionUID = 5980313330840959274L;
+	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name= "id", updatable = false, nullable = false)
     protected Long id;

@@ -19,6 +19,25 @@
 <body>
 <h1>Hello, world!</h1>
 
+<h:form>
+    <h:outputLabel for="email">
+        Email:
+    </h:outputLabel>
+    <h:inputText id="email" value="#{authenticator.email}" 
+                 required="true" />
+    <br />
+    <h:outputLabel for="passwordInput">
+        Password:
+    </h:outputLabel>
+    <h:inputSecret id="passwordInput" value="#{authenticator.password}" 
+                   required="true" />
+    <br />
+    <h:commandButton value="Zalogovat se" 
+                     action="#{authenticator.login}" />
+   <h:commandButton value="Zalogovat se" 
+                     action="#{populator.populate}" />
+</h:form>
+
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="https://code.jquery.com/jquery.min.js" type="application/javascript"></script>
 
