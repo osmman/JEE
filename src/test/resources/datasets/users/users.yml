@@ -1,0 +1,7 @@
+users:
+  - id: 1
+    email: test@email.cz
+    password: 123456
+  - id: 2
+    email: test2@email.cz
+    password: 123456

@@ -10,6 +10,9 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.persistence.UniqueConstraint;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlValue;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -24,6 +27,7 @@ import java.util.Set;
 @Table(name = "users", uniqueConstraints = {
         @UniqueConstraint(columnNames = "email") })
 @Entity
+@XmlRootElement
 public class User extends EntityObject
 {
 

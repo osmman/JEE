@@ -1,5 +1,6 @@
 package cz.cvut.fel.jee.ejb;
 
+import cz.cvut.fel.jee.model.EntityObject;
 import cz.cvut.fel.jee.utils.QueryBuilder;
 
 import javax.inject.Inject;
@@ -14,7 +15,7 @@ import java.util.List;
 /**
  * Created by Tomáš on 24.1.14.
  */
-public abstract class AbstractFacade<T>
+public abstract class AbstractFacade<T extends EntityObject>
 {
 
     private Class<T> entityClass;
@@ -44,6 +45,13 @@ public abstract class AbstractFacade<T>
     public T find(Object id)
     {
         return getEntityManager().find(entityClass, id);
+    }
+
+    public List<T> findAll(){
+        QueryBuilder<T> builder = new QueryBuilder<T>(entityClass,
+                getEntityManager());
+        Query q = builder.build();
+        return q.getResultList();
     }
 
     public List<T> findAll(Integer base, Integer offset)
