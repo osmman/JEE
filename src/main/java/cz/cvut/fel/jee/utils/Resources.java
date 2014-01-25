@@ -8,13 +8,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import java.util.logging.Logger;
-import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
-import javax.enterprise.context.ApplicationScoped;
 import org.infinispan.Cache;
 import org.infinispan.io.GridFile;
 import org.infinispan.io.GridFilesystem;
-import org.infinispan.manager.CacheContainer;
 
 /**
  * Created by Tomáš on 10.1.14.
