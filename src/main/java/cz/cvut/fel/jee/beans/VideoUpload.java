@@ -67,7 +67,7 @@ public class VideoUpload implements Serializable {
                     logger.info("Creating dirs");
                 }
                 InputStream is = video.getInputStream();
-                OutputStream os = fileSystem.getOutput("/video/uploaded/" + id + ".avi");
+                OutputStream os = fileSystem.getOutput("/video/uploaded/" + getFilename(video));
                 byte[] buffer = new byte[20000];
                 int len;
                 while ((len = is.read(buffer, 0, buffer.length)) != -1) {
@@ -75,7 +75,7 @@ public class VideoUpload implements Serializable {
                 }
                 is.close();
                 os.close();
-                logger.info("File is writed");
+                logger.info("File " +getFilename(video) +" is writed!");
             }
         } catch (IOException e) {
             logger.warning(e.toString());

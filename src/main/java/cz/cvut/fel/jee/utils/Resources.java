@@ -10,6 +10,7 @@ import javax.persistence.PersistenceContext;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
+import javax.enterprise.context.ApplicationScoped;
 import org.infinispan.Cache;
 import org.infinispan.io.GridFile;
 import org.infinispan.io.GridFilesystem;
@@ -23,9 +24,14 @@ public class Resources {
     @PersistenceContext(unitName = "primary")
     private EntityManager em;
 
-    @Resource(lookup = "java:jboss/infinispan/container/video")
-    private CacheContainer container;
-
+//    @Resource(lookup = "java:jboss/infinispan/container/video")
+//    private CacheContainer container;
+    
+    @Resource(lookup="java:jboss/infinispan/cache/video/data")
+    Cache<String, byte[]> data;
+    @Resource(lookup="java:jboss/infinispan/cache/video/metadata")
+    Cache<String, GridFile.Metadata> metadata;
+    
     @Produces
     public EntityManager getEm() {
         return em;
@@ -45,8 +51,6 @@ public class Resources {
 
     @Produces
     public GridFilesystem getVideoCache() {
-        Cache<String, byte[]> data = container.getCache("distributed");
-        Cache<String, GridFile.Metadata> metadata = container.getCache("replicated");
         GridFilesystem fs = new GridFilesystem(data, metadata);
         return fs;
     }
