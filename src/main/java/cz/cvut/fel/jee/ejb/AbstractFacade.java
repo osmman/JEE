@@ -46,6 +46,13 @@ public abstract class AbstractFacade<T>
         return getEntityManager().find(entityClass, id);
     }
 
+    public List<T> findAll(){
+        QueryBuilder<T> builder = new QueryBuilder<T>(entityClass,
+                getEntityManager());
+        Query q = builder.build();
+        return q.getResultList();
+    }
+
     public List<T> findAll(Integer base, Integer offset)
     {
         QueryBuilder<T> builder = new QueryBuilder<T>(entityClass,
