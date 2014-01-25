@@ -25,11 +25,7 @@ public abstract class AbstractResource<T extends EntityObject>
                            @HeaderParam("X-Offset") Integer offset)
     {
         Collection<T> collection = getFacade().findAll(base, offset);
-
-        GenericEntity<Collection<T>> entity = new GenericEntity<Collection<T>>(collection)
-        {
-        };
-        return Response.ok().entity(entity).build();
+        return Response.ok().entity(collection).build();
     }
 
     @GET
