@@ -23,9 +23,6 @@ public class Resources {
 
     @PersistenceContext(unitName = "primary")
     private EntityManager em;
-
-//    @Resource(lookup = "java:jboss/infinispan/container/video")
-//    private CacheContainer container;
     
     @Resource(lookup="java:jboss/infinispan/cache/video/data")
     Cache<String, byte[]> data;
