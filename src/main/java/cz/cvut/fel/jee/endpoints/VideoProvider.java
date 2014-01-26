@@ -5,16 +5,14 @@
  */
 package cz.cvut.fel.jee.endpoints;
 
-import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.PrintWriter;
+import java.nio.file.Files;
 import java.util.logging.Logger;
 import javax.inject.Inject;
 import javax.servlet.ServletException;
-import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -45,12 +43,13 @@ public class VideoProvider extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        File file = fs.getFile("/video/uploaded/1.mp4");
-        if (!file.exists()) {
+        String videoID = request.getParameter("videoid");
+        File file = fs.getFile("/video/uploaded/" + videoID + ".mp4");
+        if (file == null || !file.exists()) {
             log.warning("File not found");
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
         } else {
-        response.reset();
+            response.reset();
             response.setContentType("video/mp4");
             response.setContentLength((int) file.length());
             OutputStream out = response.getOutputStream();

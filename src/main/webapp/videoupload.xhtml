@@ -11,8 +11,15 @@
             <h:messages style="color:red;margin:8px;" />
             <br/>
             <h:inputFile id="video" value="#{videoUploadBean.video}" validator="#{videoUploadBean.validateFile}" />
-            <h:commandButton id="button" action="#{videoUploadBean.upload()}" value="Upload"/>
+            <h:commandButton id="button" action="#{videoUploadBean.upload()}" value="Upload">
+                <f:ajax execute="video" render="@all"/>
+            </h:commandButton>
         </h:form>
+
+        <h:link value="Uploaded video" outcome="video" rendered="#{videoUploadBean.videoid != null}">
+            <f:param name="videoid" value="#{videoUploadBean.videoid}" />
+        </h:link>
+
     </h:body>
 </html>
 

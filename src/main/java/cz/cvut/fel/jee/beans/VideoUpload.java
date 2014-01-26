@@ -33,7 +33,10 @@ import org.infinispan.io.GridFilesystem;
 public class VideoUpload implements Serializable {
 
     private static final String videoMimeTypes[] = {"video/avi", "video/msvideo", "video/x-msvideo", "video/mp4", "video/mpeg", "video/x-matroska", "video/webm"};
+
     Part video;
+
+    Long videoid;
 
     @Inject
     GridFilesystem fileSystem;
@@ -55,12 +58,20 @@ public class VideoUpload implements Serializable {
         this.video = video;
     }
 
+    public Long getVideoid() {
+        return videoid;
+    }
+
+    public void setVideoid(Long videoid) {
+        this.videoid = videoid;
+    }
+
     public String upload() {
         try {
             if (video != null) {
 
                 //TODO create new video entity
-                Long id = 8L;
+                Long id = 1L;
                 File dir = fileSystem.getFile("/video/uploaded");
                 if (!dir.exists()) {
                     dir.mkdirs();
@@ -68,7 +79,7 @@ public class VideoUpload implements Serializable {
                 }
                 InputStream is = video.getInputStream();
 //                OutputStream os = fileSystem.getOutput("/video/uploaded/" + getFilename(video));
-                OutputStream os = fileSystem.getOutput("/video/uploaded/1.mp4");
+                OutputStream os = fileSystem.getOutput("/video/uploaded/" + id + ".mp4");
                 byte[] buffer = new byte[20000];
                 int len;
                 while ((len = is.read(buffer, 0, buffer.length)) != -1) {
@@ -76,12 +87,13 @@ public class VideoUpload implements Serializable {
                 }
                 is.close();
                 os.close();
-                logger.info("File " +getFilename(video) +" is writed!");
+                logger.info("File " + getFilename(video) + " is writed!");
+                setVideoid(id);
             }
         } catch (IOException e) {
             logger.warning(e.toString());
         }
-        
+
         return "";
     }
 
