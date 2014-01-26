@@ -18,6 +18,8 @@ public class Video extends EntityObject
     @NotNull
     private String name;
 
+    private String path;
+
     @NotNull
     @ManyToOne
     private User author;
@@ -27,6 +29,26 @@ public class Video extends EntityObject
 
     @ManyToMany
     private Set<Tag> tags;
+
+    public String getName()
+    {
+        return name;
+    }
+
+    public void setName(String name)
+    {
+        this.name = name;
+    }
+
+    public String getPath()
+    {
+        return path;
+    }
+
+    public void setPath(String path)
+    {
+        this.path = path;
+    }
 
     public User getAuthor()
     {
