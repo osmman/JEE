@@ -17,6 +17,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import cz.cvut.fel.jee.annotations.VideoFilesystem;
 import org.infinispan.io.GridFilesystem;
 
 /**
@@ -27,6 +29,7 @@ import org.infinispan.io.GridFilesystem;
 public class VideoProvider extends HttpServlet {
 
     @Inject
+    @VideoFilesystem
     GridFilesystem fs;
 
     @Inject

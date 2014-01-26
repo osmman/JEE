@@ -7,7 +7,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.Collection;
+import java.util.List;
 
 /**
  * Created by Tomáš on 25.1.14.
@@ -21,11 +21,12 @@ public abstract class AbstractResource<T extends EntityObject>
 
     @GET
     @Path("/")
-    public Response getAll(@HeaderParam("X-Base") Integer base,
+    public List<T> getAll(@HeaderParam("X-Base") Integer base,
                            @HeaderParam("X-Offset") Integer offset)
     {
-        Collection<T> collection = getFacade().findAll(base, offset);
-        return Response.ok().entity(collection).build();
+
+        List<T> collection = getFacade().findAll(base, offset);
+        return collection;
     }
 
     @GET

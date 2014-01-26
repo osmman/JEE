@@ -32,10 +32,10 @@ public class UserServiceTest
         return ShrinkWrap.create(WebArchive.class)
                 .addPackage(Resources.class.getPackage())
                 .addPackage(User.class.getPackage())
-                .addPackage(UserService.class.getPackage())
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
                 .addAsResource("test-persistence.xml", "META-INF/persistence.xml")
-                .addAsWebInfResource("test-ds.xml");
+                .addAsWebInfResource("test-ds.xml")
+                .addPackage(UserService.class.getPackage());
     }
 
     @Inject

@@ -9,6 +9,8 @@ import javax.persistence.PersistenceContext;
 
 import java.util.logging.Logger;
 import javax.annotation.Resource;
+
+import cz.cvut.fel.jee.annotations.VideoFilesystem;
 import org.infinispan.Cache;
 import org.infinispan.io.GridFile;
 import org.infinispan.io.GridFilesystem;
@@ -20,11 +22,6 @@ public class Resources {
 
     @PersistenceContext(unitName = "primary")
     private EntityManager em;
-    
-    @Resource(lookup="java:jboss/infinispan/cache/video/data")
-    Cache<String, byte[]> data;
-    @Resource(lookup="java:jboss/infinispan/cache/video/metadata")
-    Cache<String, GridFile.Metadata> metadata;
     
     @Produces
     public EntityManager getEm() {
@@ -41,11 +38,5 @@ public class Resources {
     @RequestScoped
     public FacesContext getFacesContext() {
         return FacesContext.getCurrentInstance();
-    }
-
-    @Produces
-    public GridFilesystem getVideoCache() {
-        GridFilesystem fs = new GridFilesystem(data, metadata);
-        return fs;
     }
 }
