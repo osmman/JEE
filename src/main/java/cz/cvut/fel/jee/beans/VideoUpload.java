@@ -5,7 +5,6 @@
  */
 package cz.cvut.fel.jee.beans;
 
-
 import cz.cvut.fel.jee.annotations.CurrentLoggedUser;
 import cz.cvut.fel.jee.annotations.VideoFilesystem;
 import cz.cvut.fel.jee.ejb.VideoService;
@@ -31,10 +30,9 @@ import java.util.logging.Logger;
  */
 @Named(value = "videoUploadBean")
 @RequestScoped
-public class VideoUpload implements Serializable
-{
+public class VideoUpload implements Serializable {
 
-    private static final String videoMimeTypes[] = {"video/avi", "video/msvideo", "video/x-msvideo", "video/mp4", "video/mpeg", "video/x-matroska", "video/webm"};
+    private static final String videoMimeTypes[] = {"video/avi", "video/msvideo", "video/x-msvideo", "video/mp4", "video/mpeg", "video/x-matroska", "video/webm", "video/ogg"};
 
     Part video;
 
@@ -57,32 +55,26 @@ public class VideoUpload implements Serializable
     /**
      * Creates a new instance of VideoUpload
      */
-    public VideoUpload()
-    {
+    public VideoUpload() {
     }
 
-    public Part getVideo()
-    {
+    public Part getVideo() {
         return video;
     }
 
-    public void setVideo(Part video)
-    {
+    public void setVideo(Part video) {
         this.video = video;
     }
 
-    public Long getVideoid()
-    {
+    public Long getVideoid() {
         return videoid;
     }
 
-    public void setVideoid(Long videoid)
-    {
+    public void setVideoid(Long videoid) {
         this.videoid = videoid;
     }
 
-    public String upload()
-    {
+    public String upload() {
 
         if (video != null) {
             //TODO create new video entity
@@ -92,16 +84,15 @@ public class VideoUpload implements Serializable
             entity.setName(getFilename(video));
             videoService.create(entity);
             try {
+                log.warning("Video submited name: " + video.getSubmittedFileName());
+                entity.setPath("/video/uploaded/" + entity.getId() + getExtension(entity.getName()));
+                entity.setMimetype(video.getContentType());
+                log.warning(entity.getMimetype());
 
-                File dir = fileSystem.getFile("/video/uploaded");
-                if (!dir.exists()) {
-                    dir.mkdirs();
-                    log.info("Creating dirs");
-                }
+                createDirectory();
                 InputStream is = video.getInputStream();
-                log.warning("/video/uploaded/" + entity.getId() + ".mp4");
-                OutputStream os = fileSystem.getOutput("/video/uploaded/" + entity.getId() + ".mp4");
-                byte[] buffer = new byte[20000];
+                OutputStream os = fileSystem.getOutput(entity.getPath());
+                byte[] buffer = new byte[20480];
                 int len;
                 while ((len = is.read(buffer, 0, buffer.length)) != -1) {
                     os.write(buffer, 0, len);
@@ -109,6 +100,7 @@ public class VideoUpload implements Serializable
                 is.close();
                 os.close();
                 setVideoid(entity.getId());
+                videoService.edit(entity);
                 log.info("File id:" + entity.getId() + " name: " + entity.getName() + " is writed!");
             } catch (IOException e) {
                 log.warning(e.toString());
@@ -119,8 +111,7 @@ public class VideoUpload implements Serializable
         return "";
     }
 
-    public void validateFile(FacesContext ctx, UIComponent comp, Object value)
-    {
+    public void validateFile(FacesContext ctx, UIComponent comp, Object value) {
         List<FacesMessage> msgs = new ArrayList<FacesMessage>();
         Part file = (Part) value;
         if (file.getSize() > 1024 * 1024 * 1024) {
@@ -144,8 +135,7 @@ public class VideoUpload implements Serializable
         }
     }
 
-    private static String getFilename(Part part)
-    {
+    private static String getFilename(Part part) {
         for (String cd : part.getHeader("content-disposition").split(";")) {
             if (cd.trim().startsWith("filename")) {
                 String filename = cd.substring(cd.indexOf('=') + 1).trim().replace("\"", "");
@@ -153,6 +143,22 @@ public class VideoUpload implements Serializable
             }
         }
         return null;
+    }
+
+    private static String getExtension(String filename) {
+        int dot = filename.lastIndexOf(".");
+        if (dot == -1) {
+            return "";
+        }
+        return filename.substring(dot + 1);
+    }
+
+    private void createDirectory() {
+        File dir = fileSystem.getFile("/video/uploaded");
+        if (!dir.exists()) {
+            dir.mkdirs();
+            log.info("Creating dirs");
+        }
     }
 
 }

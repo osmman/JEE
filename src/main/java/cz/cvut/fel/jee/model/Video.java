@@ -19,6 +19,8 @@ public class Video extends EntityObject
     private String name;
 
     private String path;
+    
+    private String mimetype;
 
     @NotNull
     @ManyToOne
@@ -78,6 +80,14 @@ public class Video extends EntityObject
     public void setTags(Set<Tag> tags)
     {
         this.tags = tags;
+    }
+
+    public String getMimetype() {
+        return mimetype;
+    }
+
+    public void setMimetype(String mimetype) {
+        this.mimetype = mimetype;
     }
 
 }

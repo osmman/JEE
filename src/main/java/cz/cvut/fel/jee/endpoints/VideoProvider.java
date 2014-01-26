@@ -19,6 +19,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import cz.cvut.fel.jee.annotations.VideoFilesystem;
+import cz.cvut.fel.jee.ejb.VideoService;
+import cz.cvut.fel.jee.model.Video;
 import org.infinispan.io.GridFilesystem;
 
 /**
@@ -31,6 +33,9 @@ public class VideoProvider extends HttpServlet {
     @Inject
     @VideoFilesystem
     GridFilesystem fs;
+
+    @Inject
+    VideoService videoService;
 
     @Inject
     Logger log;
@@ -46,14 +51,25 @@ public class VideoProvider extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String videoID = request.getParameter("videoid");
-        File file = fs.getFile("/video/uploaded/" + videoID + ".mp4");
-        if (file == null || !file.exists()) {
+        Long videoID;
+        Video entity = null;
+        File file = null;
+
+        try {
+            videoID = Long.valueOf(request.getParameter("videoid"));
+            entity = videoService.find(videoID);
+            if (entity != null) {
+                file = fs.getFile(entity.getPath());
+            }
+        } catch (NumberFormatException ex) {
+
+        }
+        if (file == null || !file.exists() || entity == null) {
             log.warning("File not found");
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
         } else {
             response.reset();
-            response.setContentType("video/mp4");
+            response.setContentType(entity.getMimetype());
             response.setContentLength((int) file.length());
             OutputStream out = response.getOutputStream();
             InputStream in = fs.getInput(file);
