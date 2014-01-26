@@ -5,14 +5,14 @@
  */
 package cz.cvut.fel.jee.beans;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Logger;
+
+import cz.cvut.fel.jee.annotations.CurrentLoggedUser;
+import cz.cvut.fel.jee.annotations.VideoFilesystem;
+import cz.cvut.fel.jee.ejb.VideoService;
+import cz.cvut.fel.jee.model.User;
+import cz.cvut.fel.jee.model.Video;
+import org.infinispan.io.GridFilesystem;
+
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
@@ -20,17 +20,19 @@ import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
 import javax.inject.Inject;
 import javax.inject.Named;
-
 import javax.servlet.http.Part;
-import org.infinispan.io.GridFilesystem;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Logger;
 
 /**
- *
  * @author saljack
  */
 @Named(value = "videoUploadBean")
 @RequestScoped
-public class VideoUpload implements Serializable {
+public class VideoUpload implements Serializable
+{
 
     private static final String videoMimeTypes[] = {"video/avi", "video/msvideo", "video/x-msvideo", "video/mp4", "video/mpeg", "video/x-matroska", "video/webm"};
 
@@ -39,47 +41,66 @@ public class VideoUpload implements Serializable {
     Long videoid;
 
     @Inject
+    @VideoFilesystem
     GridFilesystem fileSystem;
 
     @Inject
-    private transient Logger logger;
+    private transient Logger log;
+
+    @Inject
+    private VideoService videoService;
+
+    @Inject
+    @CurrentLoggedUser
+    User logedUser;
 
     /**
      * Creates a new instance of VideoUpload
      */
-    public VideoUpload() {
+    public VideoUpload()
+    {
     }
 
-    public Part getVideo() {
+    public Part getVideo()
+    {
         return video;
     }
 
-    public void setVideo(Part video) {
+    public void setVideo(Part video)
+    {
         this.video = video;
     }
 
-    public Long getVideoid() {
+    public Long getVideoid()
+    {
         return videoid;
     }
 
-    public void setVideoid(Long videoid) {
+    public void setVideoid(Long videoid)
+    {
         this.videoid = videoid;
     }
 
-    public String upload() {
-        try {
-            if (video != null) {
+    public String upload()
+    {
 
-                //TODO create new video entity
-                Long id = 1L;
+        if (video != null) {
+            //TODO create new video entity
+            log.warning(logedUser.toString());
+            Video entity = new Video();
+            entity.setAuthor(logedUser);
+            entity.setName(getFilename(video));
+            videoService.create(entity);
+            try {
+
                 File dir = fileSystem.getFile("/video/uploaded");
                 if (!dir.exists()) {
                     dir.mkdirs();
-                    logger.info("Creating dirs");
+                    log.info("Creating dirs");
                 }
                 InputStream is = video.getInputStream();
-//                OutputStream os = fileSystem.getOutput("/video/uploaded/" + getFilename(video));
-                OutputStream os = fileSystem.getOutput("/video/uploaded/" + id + ".mp4");
+                log.warning("/video/uploaded/" + entity.getId() + ".mp4");
+                OutputStream os = fileSystem.getOutput("/video/uploaded/" + entity.getId() + ".mp4");
                 byte[] buffer = new byte[20000];
                 int len;
                 while ((len = is.read(buffer, 0, buffer.length)) != -1) {
@@ -87,17 +108,19 @@ public class VideoUpload implements Serializable {
                 }
                 is.close();
                 os.close();
-                logger.info("File " + getFilename(video) + " is writed!");
-                setVideoid(id);
+                setVideoid(entity.getId());
+                log.info("File id:" + entity.getId() + " name: " + entity.getName() + " is writed!");
+            } catch (IOException e) {
+                log.warning(e.toString());
+                videoService.remove(entity);
             }
-        } catch (IOException e) {
-            logger.warning(e.toString());
         }
 
         return "";
     }
 
-    public void validateFile(FacesContext ctx, UIComponent comp, Object value) {
+    public void validateFile(FacesContext ctx, UIComponent comp, Object value)
+    {
         List<FacesMessage> msgs = new ArrayList<FacesMessage>();
         Part file = (Part) value;
         if (file.getSize() > 1024 * 1024 * 1024) {
@@ -121,11 +144,12 @@ public class VideoUpload implements Serializable {
         }
     }
 
-    private static String getFilename(Part part) {
+    private static String getFilename(Part part)
+    {
         for (String cd : part.getHeader("content-disposition").split(";")) {
             if (cd.trim().startsWith("filename")) {
                 String filename = cd.substring(cd.indexOf('=') + 1).trim().replace("\"", "");
-                return filename.substring(filename.lastIndexOf('/') + 1).substring(filename.lastIndexOf('\\') + 1); // MSIE fix.  
+                return filename.substring(filename.lastIndexOf('/') + 1).substring(filename.lastIndexOf('\\') + 1); // MSIE fix.
             }
         }
         return null;

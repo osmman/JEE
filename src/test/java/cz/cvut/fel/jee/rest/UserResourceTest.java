@@ -20,15 +20,13 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.Response;
+import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
-import java.util.Collection;
-import java.util.List;
+import java.security.NoSuchAlgorithmException;
 
 /**
  * Created by Tomáš on 25.1.14.
@@ -37,7 +35,9 @@ import java.util.List;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class UserResourceTest
 {
-    private static WebTarget target;
+    public static final String WEBAPP_SRC = "src/main/webapp";
+
+    private WebTarget target;
 
     @ArquillianResource
     URL base;
@@ -45,14 +45,17 @@ public class UserResourceTest
     @Deployment(testable = false)
     public static WebArchive createDeployment()
     {
-        return ShrinkWrap.create(WebArchive.class)
+        WebArchive webArchive = ShrinkWrap.create(WebArchive.class)
                 .addPackage(Resources.class.getPackage())
                 .addPackage(User.class.getPackage())
                 .addPackage(UserService.class.getPackage())
-                .addPackage(UserResource.class.getPackage())
+                .addPackages(true, UserResource.class.getPackage())
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
+                .addAsWebInfResource(new File(WEBAPP_SRC, "WEB-INF/ejb-jar.xml"), "ejb-jar.xml")
                 .addAsResource("test-persistence.xml", "META-INF/persistence.xml")
                 .addAsWebInfResource("test-ds.xml");
+        return webArchive;
+
     }
 
     @Before
@@ -63,38 +66,31 @@ public class UserResourceTest
     }
 
     @Test
-    public void test1Post()
+    public void test1Post() throws NoSuchAlgorithmException
     {
-        MultivaluedHashMap<String, String> map = new MultivaluedHashMap<>();
-        map.add("email", "test3@email.cz");
-        map.add("password", "123456");
-        Response response = target.request()
-                .accept(MediaType.APPLICATION_JSON)
-                .post(Entity.json(map));
-        Assert.assertEquals(Response.Status.CREATED, response.getStatus());
+        User user = new User();
+        user.setEmail("test3@email.cz");
+        user.setPassword("123456");
 
-        map = new MultivaluedHashMap<>();
-        map.add("email", "test4@email.cz");
-        map.add("password", "123456");
-        response = target.request()
-                .accept(MediaType.APPLICATION_JSON)
-                .post(Entity.json(map));
-        Assert.assertEquals(Response.Status.CREATED, response.getStatus());
+        Response response = target.request()
+                .post(Entity.xml(user));
+        Assert.assertEquals(Response.Status.CREATED.getStatusCode(), response.getStatus());
     }
 
-    @Test
-    public void test2Put()
-    {
-        MultivaluedHashMap<String, String> map = new MultivaluedHashMap<>();
-        map.add("email", "test5@email.cz");
-        map.add("id", "2");
-        Response response = target.path("{id}")
-                .resolveTemplate("id", "2")
-                .request()
-                .accept(MediaType.APPLICATION_JSON)
-                .put(Entity.json(map));
 
-        Assert.assertEquals(Response.Status.NO_CONTENT, response.getStatus());
+    @Test
+    public void test2Put() throws NoSuchAlgorithmException
+    {
+        User user = new User();
+        user.setId(1L);
+        user.setEmail("test3@email.cz");
+        user.setPassword("654321");
+        Response response = target.path("{id}")
+                .resolveTemplate("id", "1")
+                .request()
+                .put(Entity.xml(user));
+
+        Assert.assertEquals(Response.Status.NO_CONTENT.getStatusCode(), response.getStatus());
 
     }
 
@@ -104,7 +100,7 @@ public class UserResourceTest
         User user = target.path("{id}")
                 .resolveTemplate("id", "1")
                 .request()
-                .accept(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_XML)
                 .get(User.class);
         Assert.assertNotNull(user);
         Assert.assertEquals("test3@email.cz", user.getEmail());
@@ -113,16 +109,43 @@ public class UserResourceTest
     @Test
     public void test4GetAll()
     {
-        GenericType<Collection<User>> listm = new GenericType<Collection<User>>() {};
-        Collection<User> list = target.request()
-                .accept(MediaType.APPLICATION_JSON)
-                .get(listm);
-        Assert.assertEquals(2, list.size());
+        User[] list = target.request()
+                .accept(MediaType.APPLICATION_XML)
+                .get(User[].class);
+        Assert.assertEquals(1, list.length);
     }
 
     @Test
     public void test5Delete()
     {
+        Response response = target.path("{id}")
+                .resolveTemplate("id", "1")
+                .request()
+                .delete();
 
+        Assert.assertEquals(Response.Status.NO_CONTENT.getStatusCode(), response.getStatus());
+
+        User[] list = target.request()
+                .accept(MediaType.APPLICATION_XML)
+                .get(User[].class);
+        Assert.assertEquals(0, list.length);
+    }
+
+    @Test
+    public void test6Invalid()
+    {
+        User user = new User();
+        user.setEmail("test");
+
+        Response response = target.request()
+                .accept(MediaType.APPLICATION_XML)
+                .post(Entity.xml(user));
+        Assert.assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), response.getStatus());
+        response.close();
+
+        User[] list = target.request()
+                .accept(MediaType.APPLICATION_XML)
+                .get(User[].class);
+        Assert.assertEquals(0, list.length);
     }
 }
