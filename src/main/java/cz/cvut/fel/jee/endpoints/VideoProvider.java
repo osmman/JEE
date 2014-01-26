@@ -54,16 +54,26 @@ public class VideoProvider extends HttpServlet {
             response.setContentLength((int) file.length());
             OutputStream out = response.getOutputStream();
             InputStream in = fs.getInput(file);
-            byte[] buffer = new byte[4096];
-            int length;
-            while ((length = in.read(buffer)) > 0) {
-                out.write(buffer, 0, length);
+            try {
+                byte[] buffer = new byte[4096];
+                int length;
+                while ((length = in.read(buffer)) > 0) {
+                    out.write(buffer, 0, length);
+                }
+                log.warning("File is downloaded with size: " + file.length());
+            } catch (IOException ioe) {
+                log.warning(ioe.getMessage());
+            } finally {
+                try {
+                    in.close();
+                    out.flush();
+                    out.close();
+                } catch (IOException ioe) {
+                    log.warning(ioe.getMessage());
+                }
             }
-            in.close();
-            out.flush();
-            log.warning("File is downloaded with size: " + file.length());
-        }
 
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

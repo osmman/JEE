@@ -5,6 +5,10 @@
  */
 package cz.cvut.fel.jee.beans;
 
+import cz.cvut.fel.jee.annotations.CurrentLoggedUser;
+import cz.cvut.fel.jee.ejb.VideoService;
+import cz.cvut.fel.jee.model.User;
+import cz.cvut.fel.jee.model.Video;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -42,7 +46,14 @@ public class VideoUpload implements Serializable {
     GridFilesystem fileSystem;
 
     @Inject
-    private transient Logger logger;
+    private transient Logger log;
+
+    @Inject
+    private VideoService videoService;
+
+    @Inject
+    @CurrentLoggedUser
+    User logedUser;
 
     /**
      * Creates a new instance of VideoUpload
@@ -67,19 +78,24 @@ public class VideoUpload implements Serializable {
     }
 
     public String upload() {
-        try {
-            if (video != null) {
 
-                //TODO create new video entity
-                Long id = 1L;
+        if (video != null) {
+            //TODO create new video entity
+            log.warning(logedUser.toString());
+            Video entity = new Video();
+            entity.setAuthor(logedUser);
+            entity.setName(getFilename(video));
+            videoService.create(entity);
+            try {
+
                 File dir = fileSystem.getFile("/video/uploaded");
                 if (!dir.exists()) {
                     dir.mkdirs();
-                    logger.info("Creating dirs");
+                    log.info("Creating dirs");
                 }
                 InputStream is = video.getInputStream();
-//                OutputStream os = fileSystem.getOutput("/video/uploaded/" + getFilename(video));
-                OutputStream os = fileSystem.getOutput("/video/uploaded/" + id + ".mp4");
+                log.warning("/video/uploaded/" + entity.getId() + ".mp4");
+                OutputStream os = fileSystem.getOutput("/video/uploaded/" + entity.getId() + ".mp4");
                 byte[] buffer = new byte[20000];
                 int len;
                 while ((len = is.read(buffer, 0, buffer.length)) != -1) {
@@ -87,11 +103,12 @@ public class VideoUpload implements Serializable {
                 }
                 is.close();
                 os.close();
-                logger.info("File " + getFilename(video) + " is writed!");
-                setVideoid(id);
+                setVideoid(entity.getId());
+                log.info("File id:" + entity.getId() + " name: " + entity.getName() + " is writed!");
+            } catch (IOException e) {
+                log.warning(e.toString());
+                videoService.remove(entity);
             }
-        } catch (IOException e) {
-            logger.warning(e.toString());
         }
 
         return "";

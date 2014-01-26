@@ -57,4 +57,14 @@ public class Video extends EntityObject
     {
         this.tags = tags;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+    
+    
 }
