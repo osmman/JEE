@@ -5,6 +5,7 @@
  */
 package cz.cvut.fel.jee.beans;
 
+import cz.cvut.fel.jee.annotations.VideoFilesystem;
 import cz.cvut.fel.jee.ejb.VideoService;
 import cz.cvut.fel.jee.model.Video;
 import java.io.File;
@@ -30,6 +31,7 @@ public class VideoBean {
     private Logger log;
 
     @Inject
+    @VideoFilesystem
     private GridFilesystem fs;
 
     @Inject
