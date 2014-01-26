@@ -8,12 +8,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import java.util.logging.Logger;
-import javax.annotation.Resource;
-
-import cz.cvut.fel.jee.annotations.VideoFilesystem;
-import org.infinispan.Cache;
-import org.infinispan.io.GridFile;
-import org.infinispan.io.GridFilesystem;
 
 /**
  * Created by Tomáš on 10.1.14.

@@ -64,6 +64,9 @@ public class VideoBean {
                     videoName = videoid + "";
                     autohorName = "";
                 }
+            }else{
+                videoName = "";
+                autohorName = "";
             }
         }catch(NumberFormatException ex){
             log.warning(ex.toString());
