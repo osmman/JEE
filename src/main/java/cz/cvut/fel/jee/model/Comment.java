@@ -1,33 +1,33 @@
 package cz.cvut.fel.jee.model;
 
-import java.sql.Timestamp;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.PrePersist;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
+import java.util.Date;
 
 /**
  * Created by Tomáš on 21.1.14.
  */
 @Entity
-public class Comment extends EntityObject
-{
+public class Comment extends EntityObject {
     @NotNull
     private String text;
 
     @NotNull
     @ManyToOne
     private User author;
-    
-    Timestamp datetime;
 
-    public User getAuthor()
-    {
+    @NotNull
+    @Past
+    private Date datetime;
+
+    public User getAuthor() {
         return author;
     }
 
-    public void setAuthor(User author)
-    {
+    public void setAuthor(User author) {
         this.author = author;
     }
 
@@ -39,11 +39,16 @@ public class Comment extends EntityObject
         this.text = text;
     }
 
-    public Timestamp getDatetime() {
+    public Date getDatetime() {
         return datetime;
     }
 
-    public void setDatetime(Timestamp datetime) {
+    public void setDatetime(Date datetime) {
         this.datetime = datetime;
-    }    
+    }
+
+    @PrePersist
+    private void prePersist() {
+        datetime = new Date();
+    }
 }
