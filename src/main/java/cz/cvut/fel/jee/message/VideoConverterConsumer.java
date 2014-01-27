@@ -37,6 +37,9 @@ public class VideoConverterConsumer implements MessageListener{
 
                 VideoConverter converter = new VideoConverter();
                 converter.convertVideo(input, output);
+                System.out.println("DONEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+
+                System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 
                 // TODO: public results and add to Batch as new vdeo
             }
