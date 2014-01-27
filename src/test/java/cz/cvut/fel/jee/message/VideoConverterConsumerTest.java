@@ -1,10 +1,16 @@
 package cz.cvut.fel.jee.message;
 
+import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import javax.annotation.Resource;
+import javax.ejb.MessageDriven;
 import javax.inject.Inject;
 import javax.jms.Destination;
 import javax.jms.JMSContext;
@@ -18,7 +24,17 @@ import java.util.Queue;
  * Time: 21:27
  * To change this template use File | Settings | File Templates.
  */
+@RunWith(Arquillian.class)
 public class VideoConverterConsumerTest {
+
+    @Deployment
+    public static WebArchive deploy() {
+        return ShrinkWrap.create(WebArchive.class)
+                .addClass(JMSContext.class)
+                .addClass(Resource.class)
+                .addClass(VideoMessageWraper.class)
+                .addClass(MessageDriven.class);
+    }
 
     @Inject
     private JMSContext context;
@@ -58,6 +74,8 @@ public class VideoConverterConsumerTest {
 
         vm3.setInput(input);
         vm3.setOutput(output3);
+
+        Assert.assertNotNull(context);
 
         context.createProducer().send((Destination) queue, vm1);
         context.createProducer().send((Destination) queue, vm2);
