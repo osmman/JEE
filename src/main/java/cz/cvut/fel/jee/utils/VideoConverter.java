@@ -21,14 +21,14 @@ public class VideoConverter {
      */
      public void convertVideo(File input, File output) throws EncoderException {
         AudioAttributes audio = new AudioAttributes();
-        audio.setCodec("libvorbis");
+        audio.setCodec("libfaac");
         VideoAttributes video = new VideoAttributes();
         video.setCodec("mpeg4");
-        video.setTag("DIVX");
+        video.setTag("h264");
         video.setBitRate(new Integer(160000));
         video.setFrameRate(new Integer(30));
         EncodingAttributes attrs = new EncodingAttributes();
-        attrs.setFormat("mpegvideo");
+        attrs.setFormat("mp4");
         attrs.setAudioAttributes(audio);
         attrs.setVideoAttributes(video);
         Encoder encoder = new Encoder();
