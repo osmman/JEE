@@ -92,16 +92,11 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.jboss.spec.javax.jms</groupId>
-            <artifactId>jboss-jms-api_2.0_spec</artifactId>
-            <version>1.0.0.Alpha1</version>
-        </dependency>
-        <dependency>
             <groupId>it.sauronsoftware.jave</groupId>
             <artifactId>jave</artifactId>
             <scope>system</scope>
             <version>1.0.2</version>
-            <systemPath>${basedir}\src\main\webapp\WEB-INF\lib\jave-1.0.2.jar</systemPath>
+            <systemPath>${basedir}\lib\jave-1.0.2.jar</systemPath>
         </dependency>
         <!--Indfinispan-->
         <dependency>
