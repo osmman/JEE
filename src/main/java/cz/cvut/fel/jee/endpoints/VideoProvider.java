@@ -58,9 +58,7 @@ public class VideoProvider extends HttpServlet {
         try {
             videoID = Long.valueOf(request.getParameter("videoid"));
             entity = videoService.find(videoID);
-            if (entity != null) {
-                file = fs.getFile(entity.getPath());
-            }
+            file = videoService.getVideoFile(videoID);
         } catch (NumberFormatException ex) {
 
         }

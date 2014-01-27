@@ -39,10 +39,6 @@ public class VideoUpload implements Serializable {
     Long videoid;
 
     @Inject
-    @VideoFilesystem
-    GridFilesystem fileSystem;
-
-    @Inject
     private transient Logger log;
 
     @Inject
@@ -77,35 +73,11 @@ public class VideoUpload implements Serializable {
     public String upload() {
 
         if (video != null) {
-            //TODO create new video entity
-            log.warning(logedUser.toString());
             Video entity = new Video();
             entity.setAuthor(logedUser);
             entity.setName(getFilename(video));
-            videoService.create(entity);
-            try {
-                log.warning("Video submited name: " + video.getSubmittedFileName());
-                entity.setPath("/video/uploaded/" + entity.getId() + getExtension(entity.getName()));
-                entity.setMimetype(video.getContentType());
-                log.warning(entity.getMimetype());
-
-                createDirectory();
-                InputStream is = video.getInputStream();
-                OutputStream os = fileSystem.getOutput(entity.getPath());
-                byte[] buffer = new byte[20480];
-                int len;
-                while ((len = is.read(buffer, 0, buffer.length)) != -1) {
-                    os.write(buffer, 0, len);
-                }
-                is.close();
-                os.close();
-                setVideoid(entity.getId());
-                videoService.edit(entity);
-                log.info("File id:" + entity.getId() + " name: " + entity.getName() + " is writed!");
-            } catch (IOException e) {
-                log.warning(e.toString());
-                videoService.remove(entity);
-            }
+            videoService.create(entity,video);
+            setVideoid(entity.getId());
         }
 
         return "";
@@ -143,22 +115,6 @@ public class VideoUpload implements Serializable {
             }
         }
         return null;
-    }
-
-    private static String getExtension(String filename) {
-        int dot = filename.lastIndexOf(".");
-        if (dot == -1) {
-            return "";
-        }
-        return filename.substring(dot + 1);
-    }
-
-    private void createDirectory() {
-        File dir = fileSystem.getFile("/video/uploaded");
-        if (!dir.exists()) {
-            dir.mkdirs();
-            log.info("Creating dirs");
-        }
     }
 
 }
