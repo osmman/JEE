@@ -6,7 +6,6 @@ import org.junit.Test;
 
 import javax.annotation.Resource;
 import javax.inject.Inject;
-import javax.jms.ConnectionFactory;
 import javax.jms.Destination;
 import javax.jms.JMSContext;
 import java.io.File;
@@ -21,13 +20,10 @@ import java.util.Queue;
  */
 public class VideoConverterConsumerTest {
 
-    @Resource(mappedName = "java:/ConnectionFactory")
-    private ConnectionFactory connectionFactory;
-
     @Inject
     private JMSContext context;
 
-    @Resource(mappedName = "java:jboss/queue/")
+    @Resource(mappedName = "java:jboss/queue/VideoConvertesionQueue")
     private Queue queue;
 
     public static final String RESOURCES = "src/test/resources";

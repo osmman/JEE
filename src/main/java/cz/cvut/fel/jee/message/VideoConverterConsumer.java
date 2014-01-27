@@ -18,7 +18,7 @@ import java.io.File;
  * Time: 18:50
  * To change this template use File | Settings | File Templates.
  */
-@MessageDriven(name = "VideoConversionQueue", activationConfig = {
+@MessageDriven(name = "VideoConvertesionQueue", activationConfig = {
         @ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Queue"),
         @ActivationConfigProperty(propertyName = "destination", propertyValue = "/queue/VideoConvertesionQueue"),
         @ActivationConfigProperty(propertyName = "acknowledgeMode", propertyValue = "Auto-acknowledge")
