@@ -2,9 +2,12 @@ package cz.cvut.fel.jee.ejb;
 
 import cz.cvut.fel.jee.endpoints.websocket.CommentMessage;
 import cz.cvut.fel.jee.model.Comment;
+import cz.cvut.fel.jee.model.Video;
+
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import java.util.List;
 
 /**
  * Created by Tomáš on 26.1.14.
@@ -17,7 +20,7 @@ public class CommentService extends AbstractFacade<Comment> {
 
     @Inject
     private UserService userService;
-    
+
     @Inject
     private VideoService videoService;
 
@@ -28,6 +31,10 @@ public class CommentService extends AbstractFacade<Comment> {
     @Override
     protected EntityManager getEntityManager() {
         return em;
+    }
+
+    public List<Comment> findByVideo(Video video) {
+        return em.createNamedQuery("Comment.findByVideo").setParameter("video", video).getResultList();
     }
 
     public Comment addCommentMessage(CommentMessage comment) {

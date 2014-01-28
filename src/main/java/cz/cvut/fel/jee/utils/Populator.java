@@ -2,6 +2,9 @@ package cz.cvut.fel.jee.utils;
 
 import java.security.NoSuchAlgorithmException;
 
+import javax.annotation.PostConstruct;
+import javax.ejb.Singleton;
+import javax.ejb.Startup;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -10,14 +13,15 @@ import javax.transaction.Transactional;
 import cz.cvut.fel.jee.ejb.UserService;
 import cz.cvut.fel.jee.model.User;
 
-@Stateless
+@Singleton
 @Transactional
-@Named(value = "populator")
+@Startup
 public class Populator {
 	
     @Inject
     private UserService userService;
-	
+
+    @PostConstruct
 	public void populate() throws NoSuchAlgorithmException{
 		User user = new User();
 		user.setEmail("trnkamich@gmail.com");

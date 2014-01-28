@@ -6,9 +6,13 @@
 package cz.cvut.fel.jee.beans;
 
 import cz.cvut.fel.jee.annotations.VideoFilesystem;
+import cz.cvut.fel.jee.ejb.CommentService;
 import cz.cvut.fel.jee.ejb.VideoService;
+import cz.cvut.fel.jee.exceptions.NotFoundException;
+import cz.cvut.fel.jee.model.Comment;
 import cz.cvut.fel.jee.model.Video;
 import java.io.File;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -39,6 +43,9 @@ public class VideoBean {
     @Inject
     private VideoService videoService;
 
+    @Inject
+    private CommentService commentService;
+
     private Long videoid;
 
     private String videoName;
@@ -61,8 +68,7 @@ public class VideoBean {
                     videoName = entity.getName();
                     autohorName = entity.getAuthor().getEmail();
                 } else {
-                    videoName = videoid + "";
-                    autohorName = "";
+                    throw new NotFoundException();
                 }
             }else{
                 videoName = "";
@@ -109,6 +115,10 @@ public class VideoBean {
 
     public void setAutohorName(String autohorName) {
         this.autohorName = autohorName;
+    }
+
+    public List<Comment> getComments(){
+        return commentService.findByVideo(entity);
     }
 
 }

@@ -1,6 +1,7 @@
 package cz.cvut.fel.jee.ejb;
 
 import cz.cvut.fel.jee.annotations.VideoFilesystem;
+import cz.cvut.fel.jee.model.User;
 import cz.cvut.fel.jee.model.Video;
 import org.infinispan.io.GridFilesystem;
 
@@ -15,6 +16,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.List;
 import java.util.logging.Logger;
 
 /**
@@ -93,5 +95,9 @@ public class VideoService extends AbstractFacade<Video> {
     @Override
     protected EntityManager getEntityManager() {
         return em;
+    }
+
+    public List<Video> findByAuthor(User author) {
+        return em.createNamedQuery("Video.findByAuthor").setParameter("author",author).getResultList();
     }
 }

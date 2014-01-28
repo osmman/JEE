@@ -86,6 +86,7 @@ public class Authenticator implements Serializable
     }
 
     @Produces
+    @Named("currentUser")
     @CurrentLoggedUser
     public User getCurrentUser()
     {

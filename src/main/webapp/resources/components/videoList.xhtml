@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:composite="http://xmlns.jcp.org/jsf/composite"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+        >
+
+<composite:interface>
+    <composite:attribute name="value" required="true" />
+    <composite:attribute name="rendered" default="true" />
+</composite:interface>
+
+<composite:implementation>
+    <h:dataTable styleClass="table" value="#{cc.attrs.value}" var="video" rendered="#{cc.attrs.rendered}">
+        <h:column>
+            <f:facet name="header">Name</f:facet>
+            <h:link value="#{video.name}" outcome="video">
+                <f:param name="videoid" value="#{video.id}"/>
+            </h:link>
+        </h:column>
+        <h:column>
+            <f:facet name="header">Uploaded</f:facet>
+            <h:outputText value="#{video.createdAt}">
+                <f:convertDateTime dateStyle="short" type="date" />
+            </h:outputText>
+        </h:column>
+        <h:column>
+            <h:form>
+                <h:commandButton rendered="#{currentUser.email eq video.author.email}" action="#{videos.delete(video)}" onclick="if(! confirm('Do you really want delete video?')) return false" value="Delete" styleClass="btn btn-primary btn-sm" />
+            </h:form>
+        </h:column>
+    </h:dataTable>
+</composite:implementation>
+
+</html>
