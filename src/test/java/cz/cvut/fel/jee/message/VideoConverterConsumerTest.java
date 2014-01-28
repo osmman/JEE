@@ -1,5 +1,8 @@
 package cz.cvut.fel.jee.message;
 
+import cz.cvut.fel.jee.ejb.AbstractFacade;
+import cz.cvut.fel.jee.ejb.UserService;
+import cz.cvut.fel.jee.model.User;
 import cz.cvut.fel.jee.utils.Resources;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -12,7 +15,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import javax.annotation.Resource;
-import javax.ejb.MessageDriven;
 import javax.inject.Inject;
 import javax.jms.Destination;
 import javax.jms.JMSContext;
@@ -34,16 +36,13 @@ public class VideoConverterConsumerTest {
     @Deployment
     public static WebArchive deploy() {
         return ShrinkWrap.create(WebArchive.class)
-                .addClass(JMSContext.class)
-                .addClass(Resources.class)
-                .addClass(Resource.class)
+                .addPackage(Resources.class.getPackage())
+                .addPackage(User.class.getPackage())
                 .addClass(VideoMessageWraper.class)
-                .addClass(MessageDriven.class)
-                .addAsResource(new File(RESOURCES + "/video/animace.wmv"), RESOURCES + "/video/animace.wmv")
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
-                .addAsWebInfResource(new File(WEBAPP_SRC, "WEB-INF/ejb-jar.xml"), "ejb-jar.xml")
                 .addAsResource("test-persistence.xml", "META-INF/persistence.xml")
-                .addAsWebInfResource("test-ds.xml");
+                .addAsWebInfResource("test-ds.xml")
+                .addClasses(UserService.class, AbstractFacade.class);
     }
 
     @Inject

@@ -96,7 +96,7 @@
             <artifactId>jave</artifactId>
             <scope>system</scope>
             <version>1.0.2</version>
-            <systemPath>${basedir}\lib\jave-1.0.2.jar</systemPath>
+            <systemPath>${basedir}\src\main\webapp\WEB-INF\lib\jave-1.0.2.jar</systemPath>
         </dependency>
         <!--Indfinispan-->
         <dependency>

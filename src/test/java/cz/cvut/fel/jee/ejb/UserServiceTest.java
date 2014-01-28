@@ -35,7 +35,7 @@ public class UserServiceTest
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
                 .addAsResource("test-persistence.xml", "META-INF/persistence.xml")
                 .addAsWebInfResource("test-ds.xml")
-                .addPackage(UserService.class.getPackage());
+                .addClasses(UserService.class,AbstractFacade.class);
     }
 
     @Inject
