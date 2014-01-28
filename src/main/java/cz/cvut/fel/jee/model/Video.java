@@ -23,6 +23,8 @@ public class Video extends EntityObject
     
     private String mimetype;
 
+    private Boolean published;
+
     @NotNull
     @ManyToOne
     private User author;
@@ -99,6 +101,14 @@ public class Video extends EntityObject
         return createdAt;
     }
 
+    public Boolean getPublished() {
+        return published;
+    }
+
+    public void setPublished(Boolean published) {
+        this.published = published;
+    }
+
     public void setCreatedAt(Date datetime) {
         this.createdAt = datetime;
     }
@@ -107,4 +117,5 @@ public class Video extends EntityObject
     private void prePersist(){
         this.createdAt = new Date();
     }
+    
 }
