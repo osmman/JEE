@@ -1,5 +1,6 @@
 package cz.cvut.fel.jee.rest;
 
+import cz.cvut.fel.jee.ejb.AbstractFacade;
 import cz.cvut.fel.jee.ejb.UserService;
 import cz.cvut.fel.jee.model.User;
 import cz.cvut.fel.jee.utils.Resources;
@@ -48,7 +49,7 @@ public class UserResourceTest
         WebArchive webArchive = ShrinkWrap.create(WebArchive.class)
                 .addPackage(Resources.class.getPackage())
                 .addPackage(User.class.getPackage())
-                .addPackage(UserService.class.getPackage())
+                .addClasses(UserService.class, AbstractFacade.class)
                 .addPackages(true, UserResource.class.getPackage())
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
                 .addAsWebInfResource(new File(WEBAPP_SRC, "WEB-INF/ejb-jar.xml"), "ejb-jar.xml")
