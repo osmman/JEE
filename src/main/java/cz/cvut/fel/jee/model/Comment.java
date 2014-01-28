@@ -4,7 +4,6 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Past;
 import java.util.Date;
 
 /**
@@ -20,8 +19,11 @@ public class Comment extends EntityObject {
     private User author;
 
     @NotNull
-    @Past
     private Date datetime;
+    
+    @NotNull
+    @ManyToOne
+    private Video video;
 
     public User getAuthor() {
         return author;
@@ -45,6 +47,14 @@ public class Comment extends EntityObject {
 
     public void setDatetime(Date datetime) {
         this.datetime = datetime;
+    }
+
+    public Video getVideo() {
+        return video;
+    }
+
+    public void setVideo(Video video) {
+        this.video = video;
     }
 
     @PrePersist
