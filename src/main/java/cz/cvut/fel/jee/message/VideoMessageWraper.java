@@ -16,12 +16,15 @@ public class VideoMessageWraper implements Serializable {
 
     private File output;
 
+    private IMessageCallback callback;
+
     public VideoMessageWraper() {
     }
 
-    public VideoMessageWraper(File input, File output) {
+    public VideoMessageWraper(File input, File output, IMessageCallback callback) {
         this.input = input;
         this.output = output;
+        this.callback = callback;
     }
 
     public File getInput() {
@@ -38,5 +41,13 @@ public class VideoMessageWraper implements Serializable {
 
     public void setOutput(File output) {
         this.output = output;
+    }
+
+    public IMessageCallback getCallback() {
+        return callback;
+    }
+
+    public void setCallback(IMessageCallback callback) {
+        this.callback = callback;
     }
 }
