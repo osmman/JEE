@@ -14,7 +14,6 @@ import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
-import javax.faces.bean.ManagedProperty;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import org.infinispan.io.GridFilesystem;
@@ -45,6 +44,8 @@ public class VideoBean {
     private String videoName;
 
     private String autohorName;
+    
+    private Video entity;
 
     @PostConstruct
     protected void init() {
@@ -55,7 +56,7 @@ public class VideoBean {
             }
 
             if (videoid != null) {
-                Video entity = videoService.find(videoid);
+                entity = videoService.find(videoid);
                 if (entity != null) {
                     videoName = entity.getName();
                     autohorName = entity.getAuthor().getEmail();
@@ -63,6 +64,9 @@ public class VideoBean {
                     videoName = videoid + "";
                     autohorName = "";
                 }
+            }else{
+                videoName = "";
+                autohorName = "";
             }
         }catch(NumberFormatException ex){
             log.warning(ex.toString());
@@ -76,9 +80,8 @@ public class VideoBean {
     }
 
     public boolean isExistsVideo() {
-        log.warning(videoid + " id");
-        if (videoid != null) {
-            File file = fs.getFile("/video/uploaded/" + videoid + ".mp4");
+        if (entity != null) {
+            File file = fs.getFile(entity.getPath());
             return file.exists();
         }
         return false;

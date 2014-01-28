@@ -1,11 +1,13 @@
 package cz.cvut.fel.jee.model;
 
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 import java.util.Set;
+import javax.persistence.OrderBy;
 
 /**
  * Created by Tomáš on 21.1.14.
@@ -19,13 +21,16 @@ public class Video extends EntityObject
     private String name;
 
     private String path;
+    
+    private String mimetype;
 
     @NotNull
     @ManyToOne
     private User author;
 
     @OneToMany
-    private Set<Comment> comments;
+    @OrderBy("datetime")
+    private List<Comment> comments;
 
     @ManyToMany
     private Set<Tag> tags;
@@ -60,12 +65,12 @@ public class Video extends EntityObject
         this.author = author;
     }
 
-    public Set<Comment> getComments()
+    public List<Comment> getComments()
     {
         return comments;
     }
 
-    public void setComments(Set<Comment> comments)
+    public void setComments(List<Comment> comments)
     {
         this.comments = comments;
     }
@@ -78,6 +83,14 @@ public class Video extends EntityObject
     public void setTags(Set<Tag> tags)
     {
         this.tags = tags;
+    }
+
+    public String getMimetype() {
+        return mimetype;
+    }
+
+    public void setMimetype(String mimetype) {
+        this.mimetype = mimetype;
     }
 
 }

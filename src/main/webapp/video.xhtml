@@ -5,10 +5,18 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <h:head>
-        <title>Facelet Title</title>
+        <c:choose>
+            <c:when test="#{videoBean.existsVideo}">
+                <title>Video - #{videoBean.videoName}</title>
+            </c:when>
+            <c:otherwise>
+                <title>Video not found </title>
+            </c:otherwise>
+        </c:choose>
     </h:head>
     <h:body>
-
+        <script src="https://code.jquery.com/jquery.min.js" type="application/javascript"></script>
+        <script src="resources/js/chatwebsocket.js"></script>
         <c:choose>
             <c:when test="#{videoBean.existsVideo}">
                 <h:outputText value="Video name: #{videoBean.videoName}" />
@@ -33,6 +41,17 @@
         <h:link value="Next video " outcome="video" >
             <f:param name="videoid" value="#{ param['videoid'] + 1}" />
         </h:link>
+
+        <h:panelGroup id="chat">
+            <h:form id="formmessage" rendered="#{not empty authenticator.currentUser}" >
+                <h:inputTextarea id="message" rows="4"/> 
+                <br/>
+                <h:commandButton value="Send" onclick="send()" >
+                    <f:ajax render="formmessage" />
+                </h:commandButton>
+            </h:form>
+        </h:panelGroup>
+
     </h:body>
 </html>
 

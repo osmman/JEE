@@ -39,6 +39,7 @@
 </h:form>
 
 <h:outputText value="#{authenticator.currentUser.email}" rendered="#{not empty authenticator.currentUser}" />
+<h:link value="Uploaded video" outcome="videoupload" rendered="#{not empty authenticator.currentUser}"/>
 
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="https://code.jquery.com/jquery.min.js" type="application/javascript"></script>
