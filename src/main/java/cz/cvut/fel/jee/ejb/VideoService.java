@@ -53,7 +53,7 @@ public class VideoService extends AbstractFacade<Video> {
         try {
             log.warning("Video submited name: " + video.getSubmittedFileName());
             entity.setPath(BASE_PATH + "/" + entity.getId() + "_" + video.getSubmittedFileName());
-            entity.setMimetype(video.getContentType());
+            entity.setMimetype("video/ogv");
             log.warning(entity.getMimetype());
 
             InputStream is = video.getInputStream();
@@ -67,7 +67,7 @@ public class VideoService extends AbstractFacade<Video> {
             os.close();
             log.info("File id:" + entity.getId() + " name: " + entity.getName() + " is writed!");
 
-            String output = BASE_PATH + "/"+ entity.getId() + entity.getName()+".mp4";
+            String output = BASE_PATH + "/"+ entity.getId() + entity.getName()+".ogv ";
 
             vcs.sendMessage(entity, entity.getPath(), output);
             entity.setPath(output);
