@@ -25,7 +25,7 @@ public class Video extends EntityObject
 
     private Boolean published;
 
-    //@NotNull
+    @NotNull
     @ManyToOne
     private User author;
 

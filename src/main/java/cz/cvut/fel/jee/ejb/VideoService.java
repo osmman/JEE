@@ -65,12 +65,14 @@ public class VideoService extends AbstractFacade<Video> {
             }
             is.close();
             os.close();
-            super.edit(entity);
             log.info("File id:" + entity.getId() + " name: " + entity.getName() + " is writed!");
 
             String output = BASE_PATH + "/"+ entity.getId() + entity.getName()+".mp4";
 
             vcs.sendMessage(entity, entity.getPath(), output);
+            entity.setPath(output);
+
+            super.edit(entity);
 
 
         } catch (IOException e) {
