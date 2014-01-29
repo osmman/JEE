@@ -23,12 +23,22 @@ public class CommentDecoder implements Decoder.Text<CommentMessage> {
         CommentMessage comment = new CommentMessage();
         JsonObject json = Json.createReader(new StringReader(arg0)).readObject();
         comment.setText(json.getString("text"));
+        comment.setAuthorId(Long.valueOf(json.getString("authorID")));
         return comment;
     }
 
     @Override
     public boolean willDecode(String arg0) {
-        return true;
+        try {
+            CommentMessage comment = new CommentMessage();
+            JsonObject json = Json.createReader(new StringReader(arg0)).readObject();
+            comment.setText(json.getString("text"));
+            comment.setAuthorId(Long.valueOf(json.getString("authorID")));
+            return true;
+        } catch (NumberFormatException | NullPointerException ex) {
+            //BAD message
+        }
+        return false;
     }
 
     @Override
