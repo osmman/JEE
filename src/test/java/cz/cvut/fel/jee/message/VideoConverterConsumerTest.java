@@ -1,18 +1,8 @@
 package cz.cvut.fel.jee.message;
 
-import cz.cvut.fel.jee.ejb.AbstractFacade;
-import cz.cvut.fel.jee.ejb.UserService;
-import cz.cvut.fel.jee.model.User;
-import cz.cvut.fel.jee.utils.Resources;
-import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.asset.EmptyAsset;
-import org.jboss.shrinkwrap.api.spec.WebArchive;
+import cz.cvut.fel.jee.annotations.VideoFilesystem;
+import org.infinispan.io.GridFilesystem;
 import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import javax.annotation.Resource;
 import javax.inject.Inject;
@@ -20,7 +10,6 @@ import javax.jms.Destination;
 import javax.jms.JMSContext;
 import javax.jms.Queue;
 import java.io.File;
-import java.net.URL;
 
 /**
  * Created with IntelliJ IDEA.
@@ -29,26 +18,30 @@ import java.net.URL;
  * Time: 21:27
  * To change this template use File | Settings | File Templates.
  */
-@RunWith(Arquillian.class)
+//@RunWith(Arquillian.class)
 public class VideoConverterConsumerTest {
 
     public static final String WEBAPP_SRC = "src/main/webapp";
 
+    @Inject
+    @VideoFilesystem
+    private GridFilesystem fileSystem;
+
     public VideoConverterConsumerTest() {
     }
 
-    @Deployment
-    public static WebArchive deploy() {
-        return ShrinkWrap.create(WebArchive.class)
-                .addPackage(Resources.class.getPackage())
-                .addPackage(User.class.getPackage())
-                .addClasses(VideoMessageWraper.class, IMessageCallback.class)
-                .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
-                .addAsResource("video/animace.wmv", "video/animace.wmv")
-                .addAsResource("test-persistence.xml", "META-INF/persistence.xml")
-                .addAsWebInfResource("test-ds.xml")
-                .addClasses(UserService.class, AbstractFacade.class);
-    }
+//    @Deployment
+//    public static WebArchive deploy() {
+//        return ShrinkWrap.create(WebArchive.class)
+//                .addPackage(Resources.class.getPackage())
+//                .addPackage(User.class.getPackage())
+//                .addClasses(VideoMessageWraper.class, GridFilesystem.class, VideoFilesystem.class)
+//                .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
+//                .addAsResource("video/animace.wmv", "video/animace.wmv")
+//                .addAsResource("test-persistence.xml", "META-INF/persistence.xml")
+//                .addAsWebInfResource("test-ds.xml")
+//                .addClasses(UserService.class, AbstractFacade.class);
+//    }
 
     @Inject
     private JMSContext context;
@@ -56,14 +49,12 @@ public class VideoConverterConsumerTest {
     @Resource(mappedName = "java:jboss/jms/queue/VideoConvertesionQueue")
     private Queue queue;
 
-    public static String RESOURCES;
+    public static String RESOURCES = "";
 
 
-    @Before
+//    @Before
     public void beforeTest(){
-        URL baseUrl;
-        baseUrl = VideoConverterConsumerTest.class.getResource(".");
-        RESOURCES = baseUrl.getPath()+"../../../../../META-INF/";
+        System.out.println(RESOURCES);
         File output1 = new File(RESOURCES + "video/output1.mp4");
         output1.delete();
         File output2 = new File(RESOURCES + "video/output2.mp4");
@@ -73,8 +64,9 @@ public class VideoConverterConsumerTest {
 
     }
 
-    @Test
+    //@Test
     public void consumeTest() {
+
         VideoMessageWraper vm1 = new VideoMessageWraper();
         VideoMessageWraper vm2 = new VideoMessageWraper();
         VideoMessageWraper vm3 = new VideoMessageWraper();
@@ -85,9 +77,11 @@ public class VideoConverterConsumerTest {
         String output3 = RESOURCES + "video/output3.mp4";
 
 
-        Assert.assertTrue(output1.length() == 0);
-        Assert.assertTrue(output2.length() == 0);
-        Assert.assertTrue(output3.length() == 0);
+
+
+        Assert.assertTrue(new File(output1).length() == 0);
+        Assert.assertTrue(new File(output2).length() == 0);
+        Assert.assertTrue(new File(output3).length() == 0);
 
         vm1.setInput(input);
         vm1.setOutput(output1);
