@@ -3,6 +3,7 @@ package cz.cvut.fel.jee.model;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
+import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  * Created by Tomáš on 21.1.14.
@@ -13,6 +14,7 @@ import java.util.Date;
 @Entity
 public class Comment extends EntityObject {
     @NotNull
+    @NotEmpty
     private String text;
 
     @NotNull

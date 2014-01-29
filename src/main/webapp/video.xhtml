@@ -51,7 +51,7 @@
                     <c:forEach items="#{videoBean.comments}" var="comment">
                         <div class="media">
                             <div class="media-body">
-                                <h4 class="media-heading">#{comment.author.email}</h4>
+                                <h4 class="media-heading">#{comment.author.email} #{comment.datetime}</h4>
                                 #{comment.text}
                             </div>
                         </div>

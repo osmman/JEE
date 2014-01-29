@@ -10,7 +10,8 @@ import java.util.Set;
  * Created by Tomáš on 21.1.14.
  */
 @NamedQueries({
-        @NamedQuery(name = "Video.findByAuthor", query = "SELECT v FROM Video v WHERE v.author = :author")
+        @NamedQuery(name = "Video.findByAuthor", query = "SELECT v FROM Video v WHERE v.author = :author"),
+        @NamedQuery(name="Video.count", query="SELECT COUNT(v) from Video v")  
 })
 @Entity
 public class Video extends EntityObject
