@@ -80,14 +80,10 @@ public class VideoConverterConsumer implements MessageListener{
                 working_input.deleteOnExit();
                 working_output.deleteOnExit();
 
-//                log.info("Deleting input files.");
-//                File input = fileSystem.getFile(inputPath);
-//                input.deleteOnExit();
+                log.info("Deleting input files.");
+                File input = fileSystem.getFile(inputPath);
+                input.delete();
 
-                if (object.getCallback() != null) {
-                    log.info("Calling callback.");
-                    object.getCallback().call();
-                }
             }
         } catch (JMSException e) {
             log.warning("Cant convert message!");

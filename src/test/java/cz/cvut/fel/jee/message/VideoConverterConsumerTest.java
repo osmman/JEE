@@ -56,9 +56,6 @@ public class VideoConverterConsumerTest {
     @Resource(mappedName = "java:jboss/jms/queue/VideoConvertesionQueue")
     private Queue queue;
 
-
-
-//    public static final String RESOURCES = "src/test/resources";
     public static String RESOURCES;
 
 

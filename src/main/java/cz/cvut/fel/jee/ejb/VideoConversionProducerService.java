@@ -1,11 +1,7 @@
 package cz.cvut.fel.jee.ejb;
 
-import cz.cvut.fel.jee.annotations.VideoFilesystem;
-import cz.cvut.fel.jee.message.IMessageCallback;
-import cz.cvut.fel.jee.message.VideoMessageCallback;
 import cz.cvut.fel.jee.message.VideoMessageWraper;
 import cz.cvut.fel.jee.model.Video;
-import org.infinispan.io.GridFilesystem;
 
 import javax.annotation.Resource;
 import javax.faces.bean.RequestScoped;
@@ -28,9 +24,7 @@ public class VideoConversionProducerService {
     @Inject
     private Logger log;
 
-    @Inject
-    @VideoFilesystem
-    private GridFilesystem fileSystem;
+
 
     @Inject
     private EntityManager em;
@@ -45,12 +39,8 @@ public class VideoConversionProducerService {
         log.info(String.format("Creating message for input: %s, a output %s", input, output));
         VideoMessageWraper message_wrapper = new VideoMessageWraper();
 
-        IMessageCallback callback = new VideoMessageCallback(input, output, video);
-
-        callback = null;
         message_wrapper.setInput(input);
         message_wrapper.setOutput(output);
-        message_wrapper.setCallback(callback);
 
 
         context.createProducer().send(queue, message_wrapper);
