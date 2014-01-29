@@ -46,6 +46,11 @@ public class VideoService extends AbstractFacade<Video> {
         createDirectory();
     }
 
+    /**
+     *
+     * @param entity Entity (will be set path, mimetype(from Part video))
+     * @param video Part for uploaded file
+     */
     public void create(Video entity, Part video) {
         super.create(entity);
         try {
@@ -71,9 +76,31 @@ public class VideoService extends AbstractFacade<Video> {
         }
     }
 
-    public File getVideoFile(Long id){
+    public void create(Video entity, InputStream is, String mimetype) {
+        super.create(entity);
+        try {
+            entity.setPath(BASE_PATH + entity.getId() + getExtension(entity.getName()));
+            entity.setMimetype(mimetype);
+            OutputStream os = fileSystem.getOutput(entity.getPath());
+            byte[] buffer = new byte[20480];
+            int len;
+            while ((len = is.read(buffer, 0, buffer.length)) != -1) {
+                os.write(buffer, 0, len);
+            }
+            is.close();
+            os.close();
+            super.edit(entity);
+        } catch (IOException e) {
+            log.warning(e.toString());
+            throw new EJBException(e);
+        }
+    }
+
+    public File getVideoFile(Long id) {
         Video video = find(id);
-        if(video == null) return null;
+        if (video == null) {
+            return null;
+        }
         return fileSystem.getFile(video.getPath());
     }
 
@@ -98,6 +125,10 @@ public class VideoService extends AbstractFacade<Video> {
     }
 
     public List<Video> findByAuthor(User author) {
-        return em.createNamedQuery("Video.findByAuthor").setParameter("author",author).getResultList();
+        return em.createNamedQuery("Video.findByAuthor").setParameter("author", author).getResultList();
+    }
+    
+    public int numberOfVideos() {
+        return ((Number) em.createNamedQuery("Video.count").getSingleResult()).intValue();
     }
 }

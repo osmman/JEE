@@ -5,10 +5,13 @@
  */
 package cz.cvut.fel.jee.endpoints.websocket;
 
+import cz.cvut.fel.jee.annotations.CurrentLoggedUser;
 import cz.cvut.fel.jee.ejb.CommentService;
 import cz.cvut.fel.jee.ejb.VideoService;
 import cz.cvut.fel.jee.model.Comment;
+import cz.cvut.fel.jee.model.User;
 import cz.cvut.fel.jee.model.Video;
+import cz.cvut.fel.jee.security.Authenticator;
 import java.io.IOException;
 import java.util.List;
 import java.util.logging.Logger;
@@ -26,12 +29,11 @@ import javax.websocket.server.ServerEndpoint;
  *
  * @author saljack
  */
-//@ServerEndpoint(value = "/chat/{videoid}", encoders = CommentEncoder.class)
 @ServerEndpoint(value = "/chat/{videoid}", encoders = CommentEncoder.class, decoders = CommentDecoder.class)
 public class ChatWSEndpoint {
 
     @Inject
-    private transient Logger logger;
+    private transient Logger log;
 
     @Inject
     private CommentService commentService;
@@ -42,42 +44,28 @@ public class ChatWSEndpoint {
     @OnOpen
     public void open(@PathParam("videoid") Long videoid, Session client) {
         client.getUserProperties().put("videoid", videoid);
-//        Video video = videoService.find(videoid);
-//        List<Comment> comments = video.getComments();
-//        for (Comment comment : comments) {
-//            try {
-//                if (client.isOpen() && videoid.equals(client.getUserProperties().get("videoid"))) {
-//                    client.getBasicRemote().sendObject(comment);
-//                }
-//            } catch (IOException | EncodeException ex) {
-//                logger.warning(ex.toString());
-//            }
-//        }
     }
 
     @OnMessage
     public void onMessage(@PathParam("videoid") Long videoid, CommentMessage message, Session peer) {
-        //FIXME set author
-        message.setAuthorId(4L);
         message.setVideoId(videoid);
         Comment comment = commentService.addCommentMessage(message);
-        logger.info(comment.getText());
-        for (Session client : peer.getOpenSessions()) {
-            try {
-                if (client.isOpen() && videoid.equals(client.getUserProperties().get("videoid"))) {
-                    client.getBasicRemote().sendObject(comment);
+        if (comment != null) {
+            for (Session client : peer.getOpenSessions()) {
+                try {
+                    if (client.isOpen() && videoid.equals(client.getUserProperties().get("videoid"))) {
+                        client.getBasicRemote().sendObject(comment);
+                    }
+                } catch (IOException | EncodeException ex) {
+                    log.warning(ex.toString());
                 }
-            } catch (IOException | EncodeException ex) {
-                logger.warning(ex.toString());
             }
         }
     }
 
     @OnError
     public void onError(Session session, Throwable thr) {
-        logger.warning(thr.getMessage());
-        thr.printStackTrace();
-
+        log.warning(thr.getMessage());
     }
 
 }

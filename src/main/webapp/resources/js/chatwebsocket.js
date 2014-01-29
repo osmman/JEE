@@ -18,7 +18,7 @@ websocket.onerror = function (evt) {
 };
 
 function send() {
-    var message = {"text": $("#formmessage\\:message").val()};
+    var message = {"authorID" : $("#loggedUserID").text(), "text": $("#formmessage\\:message").val()};
     var jsonString = JSON.stringify(message);
     console.log(jsonString);
     websocket.send(jsonString);
@@ -31,9 +31,9 @@ function onMessage(evt) {
     var newMessage = $('<div class="media">'
         + '<div class="media-body">'
         + '<h4 class="media-heading">' + json.author
+        + " " + json.date
         + '</h4>'
-        + json.text + '</br>'
-        + json.date);
+        + json.text + '</br>');
 
     $("#chat-body").append(newMessage);
 }
