@@ -33,6 +33,9 @@ public class Video extends EntityObject
     @OrderBy("datetime")
     private List<Comment> comments;
 
+    @ElementCollection
+    private List<String> thumbs;
+
     @ManyToMany
     private Set<Tag> tags;
 
@@ -111,6 +114,14 @@ public class Video extends EntityObject
 
     public void setCreatedAt(Date datetime) {
         this.createdAt = datetime;
+    }
+
+    public List<String> getThumbs() {
+        return thumbs;
+    }
+
+    public void setThumbs(List<String> thumbs) {
+        this.thumbs = thumbs;
     }
 
     @PrePersist
