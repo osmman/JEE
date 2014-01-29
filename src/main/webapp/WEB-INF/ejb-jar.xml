@@ -8,5 +8,9 @@
             <exception-class>javax.validation.ConstraintViolationException</exception-class>
             <rollback>true</rollback>
         </application-exception>
+        <application-exception>
+            <exception-class>org.hibernate.exception.ConstraintViolationException</exception-class>
+            <rollback>true</rollback>
+        </application-exception>
     </assembly-descriptor>
 </ejb-jar>
