@@ -3,7 +3,7 @@
     <hornetq-server>
         <jms-destinations>
             <jms-queue name="VideoConvertesionQueue">
-                <entry name="/queue/VideoConvertesionQueue"/>
+                <entry name="java:jboss/jms/queue/VideoConvertesionQueue"/>
             </jms-queue>
         </jms-destinations>
     </hornetq-server>

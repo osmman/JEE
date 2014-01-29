@@ -7,7 +7,6 @@ import org.infinispan.io.GridFilesystem;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJBException;
-import javax.ejb.EJBTransactionRolledbackException;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -46,11 +45,14 @@ public class VideoService extends AbstractFacade<Video> {
         createDirectory();
     }
 
+    @Inject
+    private VideoConversionProducerService vcs;
+
     public void create(Video entity, Part video) {
         super.create(entity);
         try {
             log.warning("Video submited name: " + video.getSubmittedFileName());
-            entity.setPath(BASE_PATH + entity.getId() + getExtension(entity.getName()));
+            entity.setPath(BASE_PATH + "/" + entity.getId() + "_" + video.getSubmittedFileName());
             entity.setMimetype(video.getContentType());
             log.warning(entity.getMimetype());
 
@@ -65,6 +67,12 @@ public class VideoService extends AbstractFacade<Video> {
             os.close();
             super.edit(entity);
             log.info("File id:" + entity.getId() + " name: " + entity.getName() + " is writed!");
+
+            String output = BASE_PATH + "/"+ entity.getId() + entity.getName()+".mp4";
+
+            vcs.sendMessage(entity, entity.getPath(), output);
+
+
         } catch (IOException e) {
             log.warning(e.toString());
             throw new EJBException(e);

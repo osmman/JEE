@@ -2,8 +2,6 @@ package cz.cvut.fel.jee.message;
 
 import cz.cvut.fel.jee.model.Video;
 
-import java.io.File;
-
 /**
  * Created with IntelliJ IDEA.
  * User: usul
@@ -13,40 +11,38 @@ import java.io.File;
  */
 public class VideoMessageCallback implements IMessageCallback {
 
-    private File input;
+    private String input;
 
-    private File output;
+    private String output;
 
     private Video video;
 
     @Override
     public void call() {
-        input.delete();
-        video.setPath(output.getPath());
+        video.setPath(output);
         video.setPublished(true);
 
-        // TODO: Add to batch
     }
 
-    public VideoMessageCallback(File input, File output, Video video){
+    public VideoMessageCallback(String input, String output, Video video){
         this.input = input;
         this.output = output;
         this.video = video;
     }
 
-    public File getInput() {
+    public String getInput() {
         return input;
     }
 
-    public void setInput(File input) {
+    public void setInput(String input) {
         this.input = input;
     }
 
-    public File getOutput() {
+    public String getOutput() {
         return output;
     }
 
-    public void setOutput(File output) {
+    public void setOutput(String output) {
         this.output = output;
     }
 

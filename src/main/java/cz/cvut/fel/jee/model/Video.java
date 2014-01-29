@@ -1,9 +1,9 @@
 package cz.cvut.fel.jee.model;
 
-import java.util.Date;
-import java.util.List;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -25,7 +25,7 @@ public class Video extends EntityObject
 
     private Boolean published;
 
-    @NotNull
+    //@NotNull
     @ManyToOne
     private User author;
 

@@ -1,5 +1,7 @@
 package cz.cvut.fel.jee.message;
 
+import java.io.Serializable;
+
 /**
  * Created with IntelliJ IDEA.
  * User: usul
@@ -7,7 +9,7 @@ package cz.cvut.fel.jee.message;
  * Time: 20:58
  * To change this template use File | Settings | File Templates.
  */
-public interface IMessageCallback {
+public interface IMessageCallback extends Serializable {
 
     public void call();
 

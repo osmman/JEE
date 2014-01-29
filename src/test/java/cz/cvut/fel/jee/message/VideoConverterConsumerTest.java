@@ -20,6 +20,7 @@ import javax.jms.Destination;
 import javax.jms.JMSContext;
 import javax.jms.Queue;
 import java.io.File;
+import java.net.URL;
 
 /**
  * Created with IntelliJ IDEA.
@@ -33,13 +34,17 @@ public class VideoConverterConsumerTest {
 
     public static final String WEBAPP_SRC = "src/main/webapp";
 
+    public VideoConverterConsumerTest() {
+    }
+
     @Deployment
     public static WebArchive deploy() {
         return ShrinkWrap.create(WebArchive.class)
                 .addPackage(Resources.class.getPackage())
                 .addPackage(User.class.getPackage())
-                .addClass(VideoMessageWraper.class)
+                .addClasses(VideoMessageWraper.class, IMessageCallback.class)
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
+                .addAsResource("video/animace.wmv", "video/animace.wmv")
                 .addAsResource("test-persistence.xml", "META-INF/persistence.xml")
                 .addAsWebInfResource("test-ds.xml")
                 .addClasses(UserService.class, AbstractFacade.class);
@@ -48,18 +53,25 @@ public class VideoConverterConsumerTest {
     @Inject
     private JMSContext context;
 
-    @Resource(mappedName = "/queue/VideoConvertesionQueue")
+    @Resource(mappedName = "java:jboss/jms/queue/VideoConvertesionQueue")
     private Queue queue;
 
-    public static final String RESOURCES = "src/test/resources";
+
+
+//    public static final String RESOURCES = "src/test/resources";
+    public static String RESOURCES;
+
 
     @Before
     public void beforeTest(){
-        File output1 = new File(RESOURCES + "/video/output1.mp4");
+        URL baseUrl;
+        baseUrl = VideoConverterConsumerTest.class.getResource(".");
+        RESOURCES = baseUrl.getPath()+"../../../../../META-INF/";
+        File output1 = new File(RESOURCES + "video/output1.mp4");
         output1.delete();
-        File output2 = new File(RESOURCES + "/video/output2.mp4");
+        File output2 = new File(RESOURCES + "video/output2.mp4");
         output2.delete();
-        File output3 = new File(RESOURCES + "/video/output3.mp4");
+        File output3 = new File(RESOURCES + "video/output3.mp4");
         output3.delete();
 
     }
@@ -70,10 +82,15 @@ public class VideoConverterConsumerTest {
         VideoMessageWraper vm2 = new VideoMessageWraper();
         VideoMessageWraper vm3 = new VideoMessageWraper();
 
-        File input = new File(RESOURCES + "/video/animace.wmv");
-        File output1 = new File(RESOURCES + "/video/output1.mp4");
-        File output2 = new File(RESOURCES + "/video/output2.mp4");
-        File output3 = new File(RESOURCES + "/video/output3.mp4");
+        String input =RESOURCES + "video/animace.wmv";
+        String output1 = RESOURCES + "video/output1.mp4";
+        String output2 = RESOURCES + "video/output2.mp4";
+        String output3 = RESOURCES + "video/output3.mp4";
+
+
+        Assert.assertTrue(output1.length() == 0);
+        Assert.assertTrue(output2.length() == 0);
+        Assert.assertTrue(output3.length() == 0);
 
         vm1.setInput(input);
         vm1.setOutput(output1);
