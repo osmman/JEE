@@ -1,6 +1,5 @@
 package cz.cvut.fel.jee.message;
 
-import java.io.File;
 import java.io.Serializable;
 
 /**
@@ -12,42 +11,32 @@ import java.io.Serializable;
  */
 public class VideoMessageWraper implements Serializable {
 
-    private File input;
+    private String input;
 
-    private File output;
-
-    private IMessageCallback callback;
+    private String output;
 
     public VideoMessageWraper() {
     }
 
-    public VideoMessageWraper(File input, File output, IMessageCallback callback) {
+    public VideoMessageWraper(String input, String output) {
         this.input = input;
         this.output = output;
-        this.callback = callback;
     }
 
-    public File getInput() {
+    public String getInput() {
         return input;
     }
 
-    public void setInput(File input) {
+    public void setInput(String input) {
         this.input = input;
     }
 
-    public File getOutput() {
+    public String getOutput() {
         return output;
     }
 
-    public void setOutput(File output) {
+    public void setOutput(String output) {
         this.output = output;
     }
 
-    public IMessageCallback getCallback() {
-        return callback;
-    }
-
-    public void setCallback(IMessageCallback callback) {
-        this.callback = callback;
-    }
 }

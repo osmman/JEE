@@ -1,9 +1,9 @@
 package cz.cvut.fel.jee.model;
 
-import java.util.Date;
-import java.util.List;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -33,6 +33,9 @@ public class Video extends EntityObject
     @OneToMany
     @OrderBy("datetime")
     private List<Comment> comments;
+
+    @ElementCollection
+    private List<String> thumbs;
 
     @ManyToMany
     private Set<Tag> tags;
@@ -112,6 +115,14 @@ public class Video extends EntityObject
 
     public void setCreatedAt(Date datetime) {
         this.createdAt = datetime;
+    }
+
+    public List<String> getThumbs() {
+        return thumbs;
+    }
+
+    public void setThumbs(List<String> thumbs) {
+        this.thumbs = thumbs;
     }
 
     @PrePersist
