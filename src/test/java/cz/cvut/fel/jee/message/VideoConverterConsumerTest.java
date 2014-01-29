@@ -38,7 +38,7 @@ public class VideoConverterConsumerTest {
         return ShrinkWrap.create(WebArchive.class)
                 .addPackage(Resources.class.getPackage())
                 .addPackage(User.class.getPackage())
-                .addClass(VideoMessageWraper.class)
+                .addClasses(VideoMessageWraper.class,IMessageCallback.class)
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
                 .addAsResource("test-persistence.xml", "META-INF/persistence.xml")
                 .addAsWebInfResource("test-ds.xml")
