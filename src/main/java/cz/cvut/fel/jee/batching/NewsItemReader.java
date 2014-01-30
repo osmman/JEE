@@ -1,12 +1,17 @@
 package cz.cvut.fel.jee.batching;
 
-import cz.cvut.fel.jee.beans.VideoStack;
 import cz.cvut.fel.jee.model.Video;
 
 import javax.batch.api.chunk.AbstractItemReader;
+import javax.batch.operations.JobOperator;
+import javax.batch.runtime.BatchRuntime;
+import javax.batch.runtime.context.JobContext;
+import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
+import java.util.Iterator;
+import java.util.List;
 import java.util.logging.Logger;
 
 /**
@@ -16,28 +21,33 @@ import java.util.logging.Logger;
  * Time: 19:34
  * To change this template use File | Settings | File Templates.
  */
+@Dependent
 @Named
 public class NewsItemReader extends AbstractItemReader {
 
     @Inject
-    private Logger log;
+    JobContext jobCtx;
 
     @Inject
-    private VideoStack videoStack;
+    private Logger log;
 
-    private Video video;
+    private List<Video> list;
+
+    private Iterator<Video> iterator;
 
     @Override
     public void open(Serializable checkpoint) throws Exception {
-        this.video = videoStack.pop();
+
+        JobOperator jobOperator = BatchRuntime.getJobOperator();
+        list = (List<Video>) jobOperator.getParameters(jobCtx.getExecutionId()).get("items");
+        iterator = list.iterator();
     }
 
     @Override
     public Video readItem() throws Exception {
-        if (this.video != null) {
-            Video out = this.video;
-            this.video = null;
-            return out;
+
+        if(iterator.hasNext()){
+            return iterator.next();
         }
         return null;
     }

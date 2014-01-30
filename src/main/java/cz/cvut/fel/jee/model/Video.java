@@ -24,7 +24,8 @@ public class Video extends EntityObject
     
     private String mimetype;
 
-    private Boolean published;
+    @NotNull
+    private Boolean published = false;
 
     @NotNull
     @ManyToOne

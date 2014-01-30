@@ -6,6 +6,7 @@ import cz.cvut.fel.jee.model.News;
 import cz.cvut.fel.jee.model.Video;
 
 import javax.batch.api.chunk.AbstractItemWriter;
+import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.util.LinkedList;
@@ -19,8 +20,9 @@ import java.util.logging.Logger;
  * Time: 9:54
  * To change this template use File | Settings | File Templates.
  */
+@Dependent
 @Named
-public class newsItemWriter extends AbstractItemWriter {
+public class NewsItemWriter extends AbstractItemWriter {
 
     @Inject
     private VideoService videoService;

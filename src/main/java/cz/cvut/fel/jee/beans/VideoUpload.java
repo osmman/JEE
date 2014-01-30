@@ -32,7 +32,7 @@ import java.util.logging.Logger;
 @RequestScoped
 public class VideoUpload implements Serializable {
 
-    private static final String videoMimeTypes[] = {"video/avi", "video/msvideo", "video/x-msvideo", "video/mp4", "video/mpeg", "video/x-matroska", "video/webm", "video/ogg"};
+    private static final String videoMimeTypes[] = {"video/avi", "video/msvideo", "video/x-msvideo", "video/mp4", "video/mpeg", "video/x-matroska", "video/webm", "video/ogg", "video/x-ms-wmv"};
 
     Part video;
 
