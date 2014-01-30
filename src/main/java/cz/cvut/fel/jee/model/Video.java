@@ -30,7 +30,7 @@ public class Video extends EntityObject
     @ManyToOne
     private User author;
 
-    @OneToMany
+    @OneToMany(mappedBy = "video")
     @OrderBy("datetime")
     private List<Comment> comments;
 
