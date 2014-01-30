@@ -6,20 +6,20 @@
 
 package cz.cvut.fel.jee.rest.entity;
 
-import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author saljack
  */
-public abstract class LinkXml {
-        
+@XmlRootElement
+public abstract class EntityXml {
+    
+    private static final String address = "/semsetralka/api/";
+    
     protected Long id;
-
-    @XmlElement
-    public String getPath() {
-        return getName()+"/"+getId();
-    }
+    
+    
 
     public Long getId() {
         return id;
@@ -27,6 +27,10 @@ public abstract class LinkXml {
 
     public void setId(Long id) {
         this.id = id;
+    }
+    
+    public String getPath(){
+        return address + getName();
     }
     
     protected abstract String getName();

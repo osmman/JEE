@@ -9,10 +9,8 @@ package cz.cvut.fel.jee.rest;
 import cz.cvut.fel.jee.ejb.AbstractFacade;
 import cz.cvut.fel.jee.ejb.VideoService;
 import cz.cvut.fel.jee.model.Video;
-import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.transaction.Transactional;
 import javax.ws.rs.Path;
 
 /**

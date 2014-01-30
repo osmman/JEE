@@ -28,10 +28,10 @@ public class User extends EntityObject
 
     private String password;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "author")
+    @OneToMany(mappedBy = "author")
     private Set<Video> videos;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "author")
+    @OneToMany(mappedBy = "author")
     private Set<Comment> comments;
 
     @Email
