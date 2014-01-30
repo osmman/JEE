@@ -5,6 +5,8 @@ import cz.cvut.fel.jee.utils.VideoConverter;
 import it.sauronsoftware.jave.EncoderException;
 import org.infinispan.io.GridFilesystem;
 
+import javax.batch.operations.JobOperator;
+import javax.batch.runtime.BatchRuntime;
 import javax.ejb.ActivationConfigProperty;
 import javax.ejb.MessageDriven;
 import javax.inject.Inject;
@@ -16,6 +18,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Properties;
 import java.util.logging.Logger;
 
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
@@ -84,6 +87,13 @@ public class VideoConverterConsumer implements MessageListener{
                 File input = fileSystem.getFile(inputPath);
                 input.delete();
 
+                log.info("Message done!");
+
+                log.info("Creating batching");
+
+                JobOperator jo = BatchRuntime.getJobOperator();
+                long jid = jo.start("newsJob", new Properties());
+
             }
         } catch (JMSException e) {
             log.warning("Cant convert message!");
@@ -95,7 +105,6 @@ public class VideoConverterConsumer implements MessageListener{
             log.warning("Cant manipulate with files!");
             e.printStackTrace();
         }
-        log.info("Message done!");
     }
 }
 

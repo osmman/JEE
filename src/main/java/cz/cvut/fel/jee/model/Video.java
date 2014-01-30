@@ -34,8 +34,8 @@ public class Video extends EntityObject
     @ManyToOne
     private User author;
 
+    @OneToMany(mappedBy = "video")
     @OrderBy("datetime")
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "video")
     private List<Comment> comments;
 
     @ElementCollection(fetch = FetchType.EAGER)

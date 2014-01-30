@@ -1,5 +1,6 @@
 package cz.cvut.fel.jee.ejb;
 
+import cz.cvut.fel.jee.beans.VideoStack;
 import cz.cvut.fel.jee.message.VideoMessageWraper;
 import cz.cvut.fel.jee.model.Video;
 
@@ -24,7 +25,8 @@ public class VideoConversionProducerService {
     @Inject
     private Logger log;
 
-
+    @Inject
+    private VideoStack videoStack;
 
     @Inject
     private EntityManager em;
@@ -42,8 +44,9 @@ public class VideoConversionProducerService {
         message_wrapper.setInput(input);
         message_wrapper.setOutput(output);
 
-
         context.createProducer().send(queue, message_wrapper);
+
+        videoStack.push(video);
 
         log.info("Message created");
     }

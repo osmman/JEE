@@ -55,7 +55,7 @@ public class Authenticator implements Serializable
         this.email = username;
     }
 
-    public void login()
+    public String login()
     {
         try {
         User user = userService.findByEmail(email);
@@ -81,8 +81,10 @@ public class Authenticator implements Serializable
             logger.log(Level.SEVERE, "an exception was thrown", e);
         } catch (EJBTransactionRolledbackException e) {
             logger.info(e.toString());
-            //@todo uzivatel nenalezen
+            return "";
         }
+
+        return "index";
     }
 
     @Produces
