@@ -6,6 +6,8 @@
 
 package cz.cvut.fel.jee.rest.entity;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -15,7 +17,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public abstract class EntityXml {
     
-    private static final String address = "/semsetralka/api/";
+    private static final String address = "/semestralka/api/";
     
     protected Long id;
     
@@ -30,7 +32,7 @@ public abstract class EntityXml {
     }
     
     public String getPath(){
-        return address + getName();
+        return address + getName()+"/"+getId();
     }
     
     protected abstract String getName();

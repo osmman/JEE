@@ -10,11 +10,13 @@
 package cz.cvut.fel.jee.rest.entity.links;
 
 import cz.cvut.fel.jee.rest.entity.EntityXml;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author saljack
  */
+@XmlRootElement
 public class VideoLinkXml extends EntityXml{
     
     private static final String name = "video";

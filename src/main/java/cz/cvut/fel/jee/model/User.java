@@ -1,14 +1,14 @@
 package cz.cvut.fel.jee.model;
 
-import org.hibernate.validator.constraints.Email;
-
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.persistence.UniqueConstraint;
+import cz.cvut.fel.jee.rest.adapters.UserAdapter;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Set;
-import javax.persistence.FetchType;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import org.hibernate.validator.constraints.Email;
 
 /**
  * Created by Tomáš on 10.1.14.
@@ -18,6 +18,7 @@ import javax.persistence.FetchType;
 })
 @Table(name = "users")
 @Entity
+@XmlJavaTypeAdapter(UserAdapter.class)
 public class User extends EntityObject
 {
 

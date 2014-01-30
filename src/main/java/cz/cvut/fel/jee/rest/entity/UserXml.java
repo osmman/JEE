@@ -3,26 +3,30 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package cz.cvut.fel.jee.rest.entity;
 
 import cz.cvut.fel.jee.rest.entity.links.CommentLinkXml;
 import cz.cvut.fel.jee.rest.entity.links.UserLinkXml;
 import cz.cvut.fel.jee.rest.entity.links.VideoLinkXml;
+import java.util.List;
 import java.util.Set;
+import javax.xml.bind.annotation.XmlElement;
 
 /**
  *
  * @author saljack
  */
-public class UserXml extends UserLinkXml{
+public class UserXml extends UserLinkXml {
+
     private String email;
 
     private String password;
 
-    private Set<VideoLinkXml> videos;
-    
-    private Set<CommentLinkXml> comments;
+    @XmlElement
+    private List<VideoLinkXml> videos;
+
+    @XmlElement
+    private List<CommentLinkXml> comments;
 
     public String getEmail() {
         return email;
@@ -40,21 +44,20 @@ public class UserXml extends UserLinkXml{
         this.password = password;
     }
 
-    public Set<VideoLinkXml> getVideos() {
+    public List<VideoLinkXml> getVideos() {
         return videos;
     }
 
-    public void setVideos(Set<VideoLinkXml> videos) {
+    public void setVideos(List<VideoLinkXml> videos) {
         this.videos = videos;
     }
 
-    public Set<CommentLinkXml> getComments() {
+    public List<CommentLinkXml> getComments() {
         return comments;
     }
 
-    public void setComments(Set<CommentLinkXml> comments) {
+    public void setComments(List<CommentLinkXml> comments) {
         this.comments = comments;
     }
-    
-    
+
 }

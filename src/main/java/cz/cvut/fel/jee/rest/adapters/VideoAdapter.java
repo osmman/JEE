@@ -12,14 +12,16 @@ package cz.cvut.fel.jee.rest.adapters;
 
 import cz.cvut.fel.jee.model.Video;
 import cz.cvut.fel.jee.rest.entity.VideoXml;
-import cz.cvut.fel.jee.rest.entity.links.VideoLinkXml;
-import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 /**
  *
  * @author saljack
  */
-public class VideoAdapter extends XmlAdapter<VideoXml, Video>{
+public class VideoAdapter extends LinkAdapter<VideoXml, Video>{
+
+    public VideoAdapter() {
+        super(VideoXml.class);
+    }
 
     @Override
     public Video unmarshal(VideoXml v) throws Exception {

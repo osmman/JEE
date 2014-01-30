@@ -1,10 +1,12 @@
 package cz.cvut.fel.jee.model;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import cz.cvut.fel.jee.rest.adapters.VideoAdapter;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 /**
  * Created by Tomáš on 21.1.14.
@@ -14,6 +16,7 @@ import java.util.Set;
         @NamedQuery(name="Video.count", query="SELECT COUNT(v) from Video v")  
 })
 @Entity
+@XmlJavaTypeAdapter(VideoAdapter.class)
 public class Video extends EntityObject
 {
 
