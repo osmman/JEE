@@ -88,7 +88,7 @@ public class VideoService extends AbstractFacade<Video> {
     public void create(Video entity, InputStream is, String mimetype) {
         super.create(entity);
         try {
-            entity.setPath(BASE_PATH + entity.getId() + getExtension(entity.getName()));
+            entity.setPath(BASE_PATH + "/" + entity.getId() + "." + getExtension(entity.getName()));
             entity.setMimetype(mimetype);
             OutputStream os = fileSystem.getOutput(entity.getPath());
             byte[] buffer = new byte[20480];

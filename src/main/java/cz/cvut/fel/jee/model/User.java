@@ -8,15 +8,11 @@ import javax.persistence.NamedQueries;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import javax.persistence.UniqueConstraint;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.XmlValue;
-
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Set;
+import javax.persistence.FetchType;
 
 /**
  * Created by Tomáš on 10.1.14.
@@ -27,7 +23,6 @@ import java.util.Set;
 @Table(name = "users", uniqueConstraints = {
         @UniqueConstraint(columnNames = "email") })
 @Entity
-@XmlRootElement
 public class User extends EntityObject
 {
 
@@ -37,10 +32,10 @@ public class User extends EntityObject
 
     private String password;
 
-    @OneToMany(mappedBy = "author")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "author")
     private Set<Video> videos;
 
-    @OneToMany(mappedBy = "author")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "author")
     private Set<Comment> comments;
 
     @Email
@@ -75,4 +70,22 @@ public class User extends EntityObject
         newPassword = sb.toString();
         this.password = newPassword;
     }
+
+    public Set<Video> getVideos() {
+        return videos;
+    }
+
+    public void setVideos(Set<Video> videos) {
+        this.videos = videos;
+    }
+
+    public Set<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(Set<Comment> comments) {
+        this.comments = comments;
+    }
+    
+    
 }

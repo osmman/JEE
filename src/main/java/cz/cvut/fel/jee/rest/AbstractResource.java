@@ -4,7 +4,6 @@ import cz.cvut.fel.jee.ejb.AbstractFacade;
 import cz.cvut.fel.jee.model.EntityObject;
 
 import javax.ws.rs.*;
-import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;

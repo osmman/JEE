@@ -1,10 +1,14 @@
 package cz.cvut.fel.jee.model;
 
+import cz.cvut.fel.jee.rest.adapters.CommentAdapter;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 /**
  * Created by Tomáš on 21.1.14.
@@ -30,14 +34,14 @@ public class Video extends EntityObject
     @ManyToOne
     private User author;
 
-    @OneToMany
     @OrderBy("datetime")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "video")
     private List<Comment> comments;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     private List<String> thumbs;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private Set<Tag> tags;
 
     @NotNull
