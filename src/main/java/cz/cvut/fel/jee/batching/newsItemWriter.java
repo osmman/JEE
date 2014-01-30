@@ -8,6 +8,7 @@ import cz.cvut.fel.jee.model.Video;
 import javax.batch.api.chunk.AbstractItemWriter;
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -34,6 +35,7 @@ public class newsItemWriter extends AbstractItemWriter {
     public void writeItems(List<Object> objects) throws Exception {
         log.info("Saving batch!");
         News news = new News();
+        news.setNews(new LinkedList<Video>());
         for (Object entity : objects) {
             log.info("Storing video change!");
             videoService.edit((Video) entity);
