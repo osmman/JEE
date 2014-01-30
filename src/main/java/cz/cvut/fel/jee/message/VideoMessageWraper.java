@@ -38,5 +38,4 @@ public class VideoMessageWraper implements Serializable {
     public void setOutput(String output) {
         this.output = output;
     }
-
 }

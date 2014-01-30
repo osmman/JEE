@@ -15,6 +15,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -56,6 +57,7 @@ public class VideoService extends AbstractFacade<Video> {
         super.create(entity);
         try {
             log.warning("Video submited name: " + video.getSubmittedFileName());
+            entity.setThumbs(new LinkedList<String>());
             entity.setPath(BASE_PATH + "/" + entity.getId() + "_" + video.getSubmittedFileName());
             entity.setMimetype("video/ogv");
             log.warning(entity.getMimetype());

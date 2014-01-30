@@ -24,6 +24,13 @@
         <infinispan.version>6.0.0.Final</infinispan.version>
     </properties>
 
+    <repositories>
+        <repository>
+            <id>xuggle repo</id>
+            <url>http://xuggle.googlecode.com/svn/trunk/repo/share/java/</url>
+        </repository>
+    </repositories>
+
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -97,6 +104,11 @@
             <scope>system</scope>
             <version>1.0.2</version>
             <systemPath>${basedir}/src/main/webapp/WEB-INF/lib/jave-1.0.2.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>xuggle</groupId>
+            <artifactId>xuggle-xuggler</artifactId>
+            <version>5.4</version>
         </dependency>
         <!--Indfinispan-->
         <dependency>
