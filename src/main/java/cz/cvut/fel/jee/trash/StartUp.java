@@ -78,6 +78,7 @@ public class StartUp {
             InputStream resourceAsStream = this.getClass().getClassLoader().getResourceAsStream("video/video.mp4");
             Video video = new Video();
             video.setName("video.mp4");
+            video.setPublished(true);
             User user = userService.find(4L);
             video.setAuthor(user);
             videoService.create(video, resourceAsStream, "video/mp4");

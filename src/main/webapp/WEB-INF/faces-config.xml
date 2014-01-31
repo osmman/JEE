@@ -16,4 +16,32 @@
             </contract-mapping>
         </resource-library-contracts>
     </application>
+
+    <navigation-rule>
+        <from-view-id>*</from-view-id>
+        <navigation-case>
+            <from-outcome>index</from-outcome>
+            <to-view-id>/index.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>login</from-outcome>
+            <to-view-id>/login.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>myvideos</from-outcome>
+            <to-view-id>/myvideos.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>registration</from-outcome>
+            <to-view-id>/registration.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>video</from-outcome>
+            <to-view-id>/video.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>videoupload</from-outcome>
+            <to-view-id>/videoupload.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
 </faces-config>

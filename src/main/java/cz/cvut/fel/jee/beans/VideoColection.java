@@ -24,14 +24,16 @@ public class VideoColection {
     @Inject
     private VideoService videoService;
 
-    @Named("myVideoList")
     public List<Video> getMy(){
         return videoService.findByAuthor(user);
     }
 
-    @Named("allVideo")
     public List<Video> getAll(){
         return videoService.findAll();
+    }
+
+    public List<Video> getAllPublished(){
+        return videoService.findAllPublished();
     }
 
     public void delete(Video video){

@@ -11,7 +11,8 @@ import java.util.Set;
  */
 @NamedQueries({
         @NamedQuery(name = "Video.findByAuthor", query = "SELECT v FROM Video v WHERE v.author = :author"),
-        @NamedQuery(name="Video.count", query="SELECT COUNT(v) from Video v")  
+        @NamedQuery(name="Video.count", query="SELECT COUNT(v) from Video v"),
+        @NamedQuery(name= "Video.findAllPublished",query = "SELECT v FROM Video v WHERE v.published = true")
 })
 @Entity
 public class Video extends EntityObject

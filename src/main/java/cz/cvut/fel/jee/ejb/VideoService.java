@@ -62,7 +62,7 @@ public class VideoService extends AbstractFacade<Video> {
             entity.setThumbs(new LinkedList<String>());
 
             String uploaded = UPLOADED_PATH + "/" + entity.getId() + "_" + video.getSubmittedFileName();
-            String output = PUBLISHED_PATH + "/"+ entity.getId() + entity.getName()+".ogv ";
+            String output = PUBLISHED_PATH + "/"+ entity.getId() +".ogv ";
 
 
             InputStream is = video.getInputStream();
@@ -144,6 +144,10 @@ public class VideoService extends AbstractFacade<Video> {
 
     public List<Video> findByAuthor(User author) {
         return em.createNamedQuery("Video.findByAuthor").setParameter("author", author).getResultList();
+    }
+
+    public List<Video> findAllPublished(){
+        return em.createNamedQuery("Video.findAllPublished").getResultList();
     }
     
     public int numberOfVideos() {
