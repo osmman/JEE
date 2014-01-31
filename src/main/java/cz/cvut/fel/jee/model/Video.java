@@ -24,13 +24,14 @@ public class Video extends EntityObject
     
     private String mimetype;
 
-    private Boolean published;
+    @NotNull
+    private Boolean published = false;
 
     @NotNull
     @ManyToOne
     private User author;
 
-    @OneToMany
+    @OneToMany(mappedBy = "video")
     @OrderBy("datetime")
     private List<Comment> comments;
 

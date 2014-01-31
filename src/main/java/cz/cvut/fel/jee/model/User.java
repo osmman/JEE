@@ -10,13 +10,9 @@ import javax.persistence.NamedQueries;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-import javax.persistence.UniqueConstraint;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.XmlValue;
-
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
@@ -26,18 +22,17 @@ import java.util.Set;
  * Created by Tomáš on 10.1.14.
  */
 @NamedQueries({
-    @NamedQuery(name = "User.findByEmail", query = "SELECT s FROM User s WHERE s.email like :email")
-     })
-@Table(name = "users", uniqueConstraints = {
-        @UniqueConstraint(columnNames = "email") })
+        @NamedQuery(name = "User.findByEmail", query = "SELECT s FROM User s WHERE s.email like :email")
+})
+@Table(name = "users")
 @Entity
 @XmlRootElement
-public class User extends EntityObject
-{
+public class User extends EntityObject {
 
-	private static final long serialVersionUID = 7434469730098060563L;
+    private static final long serialVersionUID = 7434469730098060563L;
 
-	private String email;
+    @Column(unique = true)
+    private String email;
 
     private String password;
 
@@ -52,19 +47,16 @@ public class User extends EntityObject
 
 	@Email
     @NotNull
-    public String getEmail()
-    {
+    public String getEmail() {
         return email;
     }
 
-    public void setEmail(String email)
-    {
+    public void setEmail(String email) {
         this.email = email;
     }
 
     @NotNull
-    public String getPassword()
-    {
+    public String getPassword() {
         return password;
     }
 

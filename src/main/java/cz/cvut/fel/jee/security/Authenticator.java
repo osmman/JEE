@@ -30,7 +30,6 @@ public class Authenticator implements Serializable {
 	@Inject
 	private transient UserService userService;
 	
-	private transient SimpleS s;
 
 	private String password;
 

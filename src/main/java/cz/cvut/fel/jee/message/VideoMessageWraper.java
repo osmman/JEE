@@ -11,6 +11,8 @@ import java.io.Serializable;
  */
 public class VideoMessageWraper implements Serializable {
 
+    private Long videoId;
+
     private String input;
 
     private String output;
@@ -18,7 +20,8 @@ public class VideoMessageWraper implements Serializable {
     public VideoMessageWraper() {
     }
 
-    public VideoMessageWraper(String input, String output) {
+    public VideoMessageWraper(Long videoId, String input, String output) {
+        this.videoId = videoId;
         this.input = input;
         this.output = output;
     }
@@ -39,4 +42,11 @@ public class VideoMessageWraper implements Serializable {
         this.output = output;
     }
 
+    public Long getVideoId() {
+        return videoId;
+    }
+
+    public void setVideoId(Long videoId) {
+        this.videoId = videoId;
+    }
 }

@@ -4,6 +4,7 @@ import cz.cvut.fel.jee.message.VideoMessageWraper;
 import cz.cvut.fel.jee.model.Video;
 
 import javax.annotation.Resource;
+import javax.ejb.Stateful;
 import javax.faces.bean.RequestScoped;
 import javax.inject.Inject;
 import javax.jms.JMSContext;
@@ -18,13 +19,12 @@ import java.util.logging.Logger;
  * Time: 13:04
  * To change this template use File | Settings | File Templates.
  */
+@Stateful
 @RequestScoped
 public class VideoConversionProducerService {
 
     @Inject
     private Logger log;
-
-
 
     @Inject
     private EntityManager em;
@@ -41,10 +41,9 @@ public class VideoConversionProducerService {
 
         message_wrapper.setInput(input);
         message_wrapper.setOutput(output);
-
+        message_wrapper.setVideoId(video.getId());
 
         context.createProducer().send(queue, message_wrapper);
-
         log.info("Message created");
     }
 }
