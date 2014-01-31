@@ -44,10 +44,6 @@ Do <subsystem xmlns="urn:jboss:domain:security:1.2">
                             <module-option name="rolesQuery" value="SELECT NAME, 'Roles' FROM USERS INNER JOIN USERS_ROLES ON (USERS.ID = USERS_ID) LEFT JOIN ROLES ON (ROLES_ID = ROLES.ID) WHERE EMAIL=?"/>
                         </login-module>
                     </authentication>
-                    <authorization>
-                        <policy-module code="DenyAll" flag="required"/>
-                    </authorization>
-                </security-domain>
                 </security-domain>
 ```
 do standalone-full-ha.xml ($JBOSS_HOME/standalone/configuration) zmenit
