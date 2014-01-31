@@ -38,7 +38,7 @@ public abstract class AbstractResource<T extends EntityObject>
 
     @POST
     @Path("/")
-    public Response registration(T item)
+    public Response create(T item)
     {
         getFacade().create(item);
         return Response.status(Response.Status.CREATED).build();
@@ -57,7 +57,9 @@ public abstract class AbstractResource<T extends EntityObject>
     public Response delete(@PathParam("id") Long id)
     {
         T item = getFacade().find(id);
-        getFacade().remove(item);
+        if(item != null){
+            getFacade().remove(item);
+        }
         return Response.status(Response.Status.NO_CONTENT).build();
     }
 }

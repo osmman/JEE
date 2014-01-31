@@ -9,20 +9,25 @@ package cz.cvut.fel.jee.rest.entity;
 import cz.cvut.fel.jee.rest.entity.links.UserLinkXml;
 import cz.cvut.fel.jee.rest.entity.links.VideoLinkXml;
 import java.util.Date;
+import javax.xml.bind.annotation.XmlElement;
 
 /**
  *
  * @author saljack
  */
 public class VideoXml extends VideoLinkXml{
+    @XmlElement(required = true)
     private String name;
 
+    @XmlElement(required = true)
     private String path;
     
+    @XmlElement(required = true)
     private String mimetype;
 
     private Boolean published;
 
+    @XmlElement(required = true)
     private UserLinkXml author;
 
     private Date createdAt;

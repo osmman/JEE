@@ -9,6 +9,7 @@ import cz.cvut.fel.jee.rest.entity.links.CommentLinkXml;
 import cz.cvut.fel.jee.rest.entity.links.VideoLinkXml;
 import cz.cvut.fel.jee.rest.entity.links.UserLinkXml;
 import java.util.Date;
+import javax.xml.bind.annotation.XmlElement;
 
 /**
  *
@@ -17,10 +18,13 @@ import java.util.Date;
 
 public class CommentXml extends CommentLinkXml{
 
+    @XmlElement(required = true)
     private String text;
 
+    @XmlElement(required = true)
     private UserLinkXml author;
     
+    @XmlElement(required = true)
     private VideoLinkXml video;
 
     private Date datetime;

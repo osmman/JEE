@@ -16,6 +16,7 @@ import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.core.Response;
 
 /**
  *
@@ -40,4 +41,15 @@ public class VideoResource extends AbstractResource<Video> {
         return allComments;
     }
 
+    @Override
+    public Response create(Video item) {
+        return Response.status(Response.Status.FORBIDDEN).build();
+    }
+
+    @Override
+    public Response edit(Long id, Video item) {
+        Video edit = facade.find(id);
+        edit.setName(item.getName());
+        return super.edit(id, edit);
+    }
 }

@@ -6,6 +6,7 @@
 package cz.cvut.fel.jee.rest.entity;
 
 import cz.cvut.fel.jee.rest.entity.links.UserLinkXml;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -14,6 +15,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 public class UserXml extends UserLinkXml {
 
+    @XmlElement(required = true)
     private String email;
 
     private String password;

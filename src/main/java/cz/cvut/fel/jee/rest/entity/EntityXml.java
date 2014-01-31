@@ -6,6 +6,7 @@
 
 package cz.cvut.fel.jee.rest.entity;
 
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -17,6 +18,7 @@ public abstract class EntityXml {
     
     private static final String address = "/semestralka/api/";
     
+    @XmlElement(required = true)
     protected Long id;
 
     public EntityXml() {

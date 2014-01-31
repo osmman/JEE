@@ -29,6 +29,12 @@ public class CommentAdapter extends LinkAdapter<CommentXml, Comment> {
         Comment comment = super.unmarshal(v);
         comment.setDatetime(v.getDatetime());
         comment.setText(v.getText());
+        if(v.getAuthor() != null){
+            comment.setAuthor(new UserLinkAdapter().unmarshal(v.getAuthor()));
+        }
+        if(v.getVideo() != null){
+            comment.setVideo(new VideoLinkAdapter().unmarshal(v.getVideo()));
+        }
         return comment;
     }
 
@@ -41,6 +47,5 @@ public class CommentAdapter extends LinkAdapter<CommentXml, Comment> {
         comment.setAuthor(new UserLinkXml(v.getAuthor().getId()));
         return comment;
     }
-
 
 }
