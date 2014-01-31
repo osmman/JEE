@@ -6,8 +6,6 @@
 
 package cz.cvut.fel.jee.rest.entity;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -20,8 +18,13 @@ public abstract class EntityXml {
     private static final String address = "/semestralka/api/";
     
     protected Long id;
+
+    public EntityXml() {
+    }
     
-    
+    public EntityXml(Long id) {
+        this.id = id;
+    }   
 
     public Long getId() {
         return id;

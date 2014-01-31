@@ -16,7 +16,7 @@ import cz.cvut.fel.jee.rest.entity.links.VideoLinkXml;
 public class VideoLinkAdapter extends LinkAdapter<VideoLinkXml, Video>{
 
     public VideoLinkAdapter() {
-        super(VideoLinkXml.class);
+        super(VideoLinkXml.class, Video.class);
     }
     
 }

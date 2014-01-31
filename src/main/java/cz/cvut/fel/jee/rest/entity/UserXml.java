@@ -5,12 +5,8 @@
  */
 package cz.cvut.fel.jee.rest.entity;
 
-import cz.cvut.fel.jee.rest.entity.links.CommentLinkXml;
 import cz.cvut.fel.jee.rest.entity.links.UserLinkXml;
-import cz.cvut.fel.jee.rest.entity.links.VideoLinkXml;
-import java.util.List;
-import java.util.Set;
-import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
@@ -21,12 +17,9 @@ public class UserXml extends UserLinkXml {
     private String email;
 
     private String password;
-
-    @XmlElement
-    private List<VideoLinkXml> videos;
-
-    @XmlElement
-    private List<CommentLinkXml> comments;
+    
+    private static final String videos = "videos";
+    private static final String comments = "comments";
 
     public String getEmail() {
         return email;
@@ -44,20 +37,11 @@ public class UserXml extends UserLinkXml {
         this.password = password;
     }
 
-    public List<VideoLinkXml> getVideos() {
-        return videos;
+    public String getVideos() {
+        return getPath()+"/"+videos;
     }
 
-    public void setVideos(List<VideoLinkXml> videos) {
-        this.videos = videos;
+    public String getComments() {
+        return getPath()+"/"+comments;
     }
-
-    public List<CommentLinkXml> getComments() {
-        return comments;
-    }
-
-    public void setComments(List<CommentLinkXml> comments) {
-        this.comments = comments;
-    }
-
 }

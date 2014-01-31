@@ -11,6 +11,8 @@ package cz.cvut.fel.jee.rest.adapters;
 
 import cz.cvut.fel.jee.model.Comment;
 import cz.cvut.fel.jee.rest.entity.CommentXml;
+import cz.cvut.fel.jee.rest.entity.links.UserLinkXml;
+import cz.cvut.fel.jee.rest.entity.links.VideoLinkXml;
 
 /**
  *
@@ -19,17 +21,25 @@ import cz.cvut.fel.jee.rest.entity.CommentXml;
 public class CommentAdapter extends LinkAdapter<CommentXml, Comment> {
 
     public CommentAdapter() {
-        super(CommentXml.class);
+        super(CommentXml.class, Comment.class);
     }
 
     @Override
     public Comment unmarshal(CommentXml v) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Comment comment = super.unmarshal(v);
+        comment.setDatetime(v.getDatetime());
+        comment.setText(v.getText());
+        return comment;
     }
 
     @Override
     public CommentXml marshal(Comment v) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        CommentXml comment = super.marshal(v);
+        comment.setDatetime(v.getDatetime());
+        comment.setText(v.getText());
+        comment.setVideo(new VideoLinkXml(v.getVideo().getId()));
+        comment.setAuthor(new UserLinkXml(v.getAuthor().getId()));
+        return comment;
     }
 
 

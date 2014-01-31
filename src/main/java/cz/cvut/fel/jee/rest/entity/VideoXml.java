@@ -6,11 +6,9 @@
 
 package cz.cvut.fel.jee.rest.entity;
 
-import cz.cvut.fel.jee.rest.entity.links.CommentLinkXml;
 import cz.cvut.fel.jee.rest.entity.links.UserLinkXml;
 import cz.cvut.fel.jee.rest.entity.links.VideoLinkXml;
 import java.util.Date;
-import java.util.List;
 
 /**
  *
@@ -27,9 +25,9 @@ public class VideoXml extends VideoLinkXml{
 
     private UserLinkXml author;
 
-    private List<CommentLinkXml> comments;
-
     private Date createdAt;
+    
+    private static final String comments = "comments";
 
     public String getMimetype() {
         return mimetype;
@@ -55,12 +53,8 @@ public class VideoXml extends VideoLinkXml{
         this.author = author;
     }
 
-    public List<CommentLinkXml> getComments() {
-        return comments;
-    }
-
-    public void setComments(List<CommentLinkXml> comments) {
-        this.comments = comments;
+    public String getComments() {
+        return getPath()+"/"+comments;
     }
 
     public Date getCreatedAt() {

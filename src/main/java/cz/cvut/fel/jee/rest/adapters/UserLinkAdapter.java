@@ -16,7 +16,7 @@ import cz.cvut.fel.jee.rest.entity.links.UserLinkXml;
 public class UserLinkAdapter extends LinkAdapter<UserLinkXml, User>{
 
     public UserLinkAdapter() {
-        super(UserLinkXml.class);
+        super(UserLinkXml.class, User.class);
     }
     
 }

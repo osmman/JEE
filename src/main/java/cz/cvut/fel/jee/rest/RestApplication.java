@@ -9,4 +9,8 @@ import javax.ws.rs.core.Application;
 @ApplicationPath("/api")
 public class RestApplication extends Application
 {
+    public static final String COMMENTS = "comments";
+    public static final String VIDEOS = "videos";
+    
+    
 }

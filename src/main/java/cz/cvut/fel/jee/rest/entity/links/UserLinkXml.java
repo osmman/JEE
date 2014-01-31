@@ -14,6 +14,13 @@ import cz.cvut.fel.jee.rest.entity.EntityXml;
  */
 public class UserLinkXml extends EntityXml{
     private static final String name = "user";
+
+    public UserLinkXml() {
+    }
+    
+    public UserLinkXml(Long id){
+        super(id);
+    }
     
     @Override
     protected String getName() {

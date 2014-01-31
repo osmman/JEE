@@ -16,7 +16,7 @@ import cz.cvut.fel.jee.rest.entity.links.CommentLinkXml;
 public class CommentLinkAdapter extends LinkAdapter<CommentLinkXml, Comment>{
 
     public CommentLinkAdapter() {
-        super(CommentLinkXml.class);
+        super(CommentLinkXml.class, Comment.class);
     }
     
 }

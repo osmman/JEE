@@ -16,10 +16,16 @@ import javax.xml.bind.annotation.XmlRootElement;
  *
  * @author saljack
  */
-@XmlRootElement
 public class VideoLinkXml extends EntityXml{
     
     private static final String name = "video";
+
+    public VideoLinkXml() {
+    }
+
+    public VideoLinkXml(Long id) {
+        super(id);
+    }
     
     @Override
     protected String getName() {

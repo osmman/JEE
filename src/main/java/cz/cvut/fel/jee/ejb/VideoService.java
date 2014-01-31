@@ -1,16 +1,9 @@
 package cz.cvut.fel.jee.ejb;
 
 import cz.cvut.fel.jee.annotations.VideoFilesystem;
+import cz.cvut.fel.jee.model.Comment;
 import cz.cvut.fel.jee.model.User;
 import cz.cvut.fel.jee.model.Video;
-import org.infinispan.io.GridFilesystem;
-
-import javax.annotation.PostConstruct;
-import javax.ejb.EJBException;
-import javax.ejb.Stateless;
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
-import javax.servlet.http.Part;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,6 +11,13 @@ import java.io.OutputStream;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Logger;
+import javax.annotation.PostConstruct;
+import javax.ejb.EJBException;
+import javax.ejb.Stateless;
+import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.servlet.http.Part;
+import org.infinispan.io.GridFilesystem;
 
 /**
  * Created by Tomáš on 25.1.14.
@@ -141,5 +141,13 @@ public class VideoService extends AbstractFacade<Video> {
     
     public int numberOfVideos() {
         return ((Number) em.createNamedQuery("Video.count").getSingleResult()).intValue();
+    }
+    
+    public List<Comment> getAllComments(Long id){
+        Video video = find(id);
+        List<Comment> comments = video.getComments();
+        //Hack to load comments
+        comments.size();
+        return comments;
     }
 }

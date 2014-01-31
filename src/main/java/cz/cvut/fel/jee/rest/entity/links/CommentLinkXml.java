@@ -16,10 +16,16 @@ import javax.xml.bind.annotation.XmlRootElement;
  *
  * @author saljack
  */
-@XmlRootElement
 public class CommentLinkXml extends EntityXml {
 
     private static final String name = "comment";
+
+    public CommentLinkXml() {
+    }
+    
+    public CommentLinkXml(Long id){
+        super(id);
+    }
 
     @Override
     protected String getName() {
