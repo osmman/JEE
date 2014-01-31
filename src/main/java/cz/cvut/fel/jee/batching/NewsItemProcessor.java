@@ -6,6 +6,7 @@ import cz.cvut.fel.jee.utils.VideoImageGrabber;
 import org.infinispan.io.GridFilesystem;
 
 import javax.batch.api.chunk.ItemProcessor;
+import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.File;
@@ -13,6 +14,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -25,6 +27,7 @@ import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
  * Time: 19:39
  * To change this template use File | Settings | File Templates.
  */
+@Dependent
 @Named
 public class NewsItemProcessor implements ItemProcessor {
 
@@ -35,7 +38,7 @@ public class NewsItemProcessor implements ItemProcessor {
     @VideoFilesystem
     private GridFilesystem fileSystem;
 
-    private static final String BASE_PATH = "/video/uploaded/";
+    private static final String BASE_PATH = "/video/thumbs/";
 
     private static final int IMAGE_COUNT = 5;
 
@@ -59,7 +62,7 @@ public class NewsItemProcessor implements ItemProcessor {
 
         log.info("Start grabing images.");
         VideoImageGrabber vg = new VideoImageGrabber(working_video.getPath(), outputImagePrefix, IMAGE_COUNT);
-        List<File> images = vg.gramImages();
+        List<File> images = new LinkedList<>();//vg.gramImages();
         log.info("Grabing images done!");
 
 
@@ -69,7 +72,7 @@ public class NewsItemProcessor implements ItemProcessor {
         String image_path;
         int i = 0;
         for (File file : images) {
-            String imagePath = BASE_PATH + video.getName() + "_" + i + ".png";
+            String imagePath = BASE_PATH + video.getId() + "_" + i + ".png";
             outputStream = fileSystem.getOutput(imagePath);
             Files.copy(Paths.get(file.getPath()), outputStream);
             video.getThumbs().add(imagePath);
@@ -79,4 +82,6 @@ public class NewsItemProcessor implements ItemProcessor {
 
         return video;
     }
+
+
 }

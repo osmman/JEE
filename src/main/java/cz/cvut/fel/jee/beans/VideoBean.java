@@ -11,15 +11,19 @@ import cz.cvut.fel.jee.ejb.VideoService;
 import cz.cvut.fel.jee.exceptions.NotFoundException;
 import cz.cvut.fel.jee.model.Comment;
 import cz.cvut.fel.jee.model.Video;
+
 import java.io.File;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
+
 import javax.annotation.PostConstruct;
+import javax.annotation.security.RolesAllowed;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
+
 import org.infinispan.io.GridFilesystem;
 
 /**
@@ -101,6 +105,7 @@ public class VideoBean {
         this.videoid = videoid;
     }
 
+    @RolesAllowed("admin")
     public String getVideoName() {
         return videoName;
     }

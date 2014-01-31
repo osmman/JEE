@@ -1,6 +1,8 @@
 package cz.cvut.fel.jee.message;
 
 import cz.cvut.fel.jee.annotations.VideoFilesystem;
+import cz.cvut.fel.jee.ejb.VideoService;
+import cz.cvut.fel.jee.model.Video;
 import cz.cvut.fel.jee.utils.VideoConverter;
 import it.sauronsoftware.jave.EncoderException;
 import org.infinispan.io.GridFilesystem;
@@ -18,6 +20,8 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Properties;
 import java.util.logging.Logger;
 
@@ -44,6 +48,9 @@ public class VideoConverterConsumer implements MessageListener{
     @VideoFilesystem
     private GridFilesystem fileSystem;
 
+    @Inject
+    private VideoService videoService;
+
     @Override
     public void onMessage(Message message) {
         log.info("Message received.");
@@ -54,6 +61,7 @@ public class VideoConverterConsumer implements MessageListener{
 
                 String inputPath = object.getInput();
                 String outputPath = object.getOutput();
+                Video entity = videoService.find(object.getVideoId());
 
 
                 File working_input = null;
@@ -83,6 +91,11 @@ public class VideoConverterConsumer implements MessageListener{
                 working_input.deleteOnExit();
                 working_output.deleteOnExit();
 
+                log.info("Persist video entity.");
+                entity.setMimetype("video/ogv");
+                entity.setPublished(true);
+                videoService.edit(entity);
+
                 log.info("Deleting input files.");
                 File input = fileSystem.getFile(inputPath);
                 input.delete();
@@ -92,7 +105,12 @@ public class VideoConverterConsumer implements MessageListener{
                 log.info("Creating batching");
 
                 JobOperator jo = BatchRuntime.getJobOperator();
-                long jid = jo.start("newsJob", new Properties());
+                Properties properties = new Properties();
+                List<Video> list = new LinkedList<>();
+                list.add(entity);
+                properties.put("items",list);
+                properties.setProperty("aaa","bbb");
+                long jid = jo.start("newsJob", properties);
 
             }
         } catch (JMSException e) {
