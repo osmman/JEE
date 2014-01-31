@@ -4,32 +4,27 @@ import cz.cvut.fel.jee.annotations.CurrentLoggedUser;
 import cz.cvut.fel.jee.ejb.UserService;
 import cz.cvut.fel.jee.model.User;
 
-import javax.ejb.EJBTransactionRolledbackException;
 import javax.ejb.Stateful;
 import javax.enterprise.context.SessionScoped;
 import javax.enterprise.inject.Produces;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.resource.spi.AuthenticationMechanism;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
 
 import java.io.Serializable;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 @Named(value = "authenticator")
 @Stateful
 @SessionScoped
 public class Authenticator implements Serializable {
 
-	@Inject
-	private transient Logger logger;
+	private static final long serialVersionUID = 2072170216118113636L;
 
 	@SuppressWarnings("CdiUnproxyableBeanTypesInspection")
 	@Inject
 	private transient UserService userService;
-	
 
 	private String password;
 
@@ -53,14 +48,19 @@ public class Authenticator implements Serializable {
 		this.email = username;
 	}
 
-	public void login() {
-		User user = userService.findByEmail(email);
-		if (user.getPassword().equals(password)) {
+	public void login(){
+		FacesContext context = FacesContext.getCurrentInstance();
+		HttpServletRequest request = (HttpServletRequest) context
+		    .getExternalContext().getRequest();
+		try {
+			request.login(email, password);
+			User user = userService.findByEmail(email);
 			currentUser = user;
 			password = null;
 			email = null;
-		} else {
-			// @todo vyjimka, messages
+		} catch (ServletException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 
 	}

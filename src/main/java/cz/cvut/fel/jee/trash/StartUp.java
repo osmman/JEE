@@ -5,10 +5,13 @@
  */
 package cz.cvut.fel.jee.trash;
 
+import cz.cvut.fel.jee.ejb.RoleService;
 import cz.cvut.fel.jee.ejb.UserService;
 import cz.cvut.fel.jee.ejb.VideoService;
+import cz.cvut.fel.jee.model.Role;
 import cz.cvut.fel.jee.model.User;
 import cz.cvut.fel.jee.model.Video;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -16,8 +19,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.NoSuchAlgorithmException;
+import java.util.HashSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
@@ -39,6 +44,8 @@ public class StartUp {
 
     @Inject
     private VideoService videoService;
+    
+    @Inject RoleService roleService;
 
     @Inject
     private ServletContext ctx;
@@ -56,8 +63,14 @@ public class StartUp {
 
     public void populate() throws NoSuchAlgorithmException {
         User user = new User();
+        Role r = new Role();
+        r.setName("admin");
+        roleService.create(r);
         user.setEmail("trnkamich@gmail.com");
         user.setPassword("heslo1");
+        HashSet<Role> roles = new HashSet<Role>();
+        roles.add(r);
+        user.setRoles(roles);
         userService.create(user);
         user = new User();
         user.setEmail("turek@gmail.com");

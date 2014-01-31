@@ -6,7 +6,9 @@ import cz.cvut.fel.jee.model.User;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+
 
 /**
  * Created by Tomáš on 25.1.14.
