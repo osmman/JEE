@@ -25,12 +25,13 @@
                                        rendered="#{not empty currentUser}"/></li>
                     <li>
                         <a href="#" p:rendered="#{not empty currentUser}">#{currentUser.email}</a>
-                        <h:outputText id="loggedUserID" rendered="#{not empty currentUser}" style="display: none"
-                                      value="#{currentUser.id}"/>
                     </li>
 
                 </ul>
             </div>
         </h:form>
+        <!-- Little hack to websocket -->
+        <h:outputText id="loggedUserID" rendered="#{not empty currentUser}" style="display: none"
+                                      value="#{currentUser.id}"/>
     </nav>
 </ui:composition>
