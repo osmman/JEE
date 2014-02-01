@@ -7,7 +7,6 @@ import org.infinispan.io.GridFilesystem;
 
 import javax.annotation.Resource;
 import javax.enterprise.inject.Produces;
-import java.io.File;
 
 /**
  * Created by Tomáš on 26.1.14.

@@ -13,7 +13,8 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  */
 @NamedQueries({
         @NamedQuery(name = "Video.findByAuthor", query = "SELECT v FROM Video v WHERE v.author = :author"),
-        @NamedQuery(name="Video.count", query="SELECT COUNT(v) from Video v")  
+        @NamedQuery(name="Video.count", query="SELECT COUNT(v) from Video v"),
+        @NamedQuery(name= "Video.findAllPublished",query = "SELECT v FROM Video v WHERE v.published = true")
 })
 @Entity
 @XmlJavaTypeAdapter(VideoAdapter.class)

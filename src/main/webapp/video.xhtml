@@ -10,52 +10,46 @@
     <ui:composition template="/template.xhtml">
         <ui:define name="content">
             <script src="resources/js/chatwebsocket.js" type="application/javascript"></script>
-            <c:choose>
-                <c:when test="#{videoBean.existsVideo}">
-                    <h:outputText value="Video name: #{videoBean.videoName}"/>
-                    <br/>
-                    <h:outputText value="Author: #{videoBean.autohorName}"/>
-                    <br/>
-                    <video id="myVideo" controls="controls">
-                        <source src="video?videoid=#{param['videoid']}" type="video/mp4"/>
-                    </video>
-                </c:when>
-                <c:otherwise>
-                    <h:outputText value="Video not found"/>
-                </c:otherwise>
-            </c:choose>
-            <br/>
-            <h:link value="First video " outcome="video">
-                <f:param name="videoid" value="1"/>
-            </h:link>
-            <h:link value="Previous video " outcome="video">
-                <f:param name="videoid" value="#{ param['videoid'] - 1}"/>
-            </h:link>
-            <h:link value="Next video " outcome="video">
-                <f:param name="videoid" value="#{ param['videoid'] + 1}"/>
-            </h:link>
+            <div class="row">
+                <div class="col-md-8">
+                    <c:choose>
+                        <c:when test="#{videoBean.existsVideo}">
+                            <h:outputText value="Video name: #{videoBean.videoName}"/>
+                            <br/>
+                            <h:outputText value="Author: #{videoBean.autohorName}"/>
+                            <br/>
+                            <video id="myVideo" controls="controls">
+                                <source src="video?videoid=#{param['videoid']}" type="video/mp4"/>
+                            </video>
+                        </c:when>
+                        <c:otherwise>
+                            <h:outputText value="Video not found"/>
+                        </c:otherwise>
+                    </c:choose>
+                </div>
 
-            <div class="panel panel-default">
-                <div class="panel-heading">Comments</div>
-                <h:panelGroup id="chat">
-                    <h:form id="formmessage" styleClass="form-horizontal"
-                            rendered="#{not empty authenticator.currentUser}">
-                        <h:inputTextarea id="message" rows="4" styleClass="form-control"/>
-                        <h:commandButton styleClass="btn btn-primary" value="Send" onclick="send()">
-                            <f:ajax render="formmessage"/>
-                        </h:commandButton>
-                    </h:form>
-                </h:panelGroup>
+                <div class="col-md-4 panel panel-default">
+                    <div class="panel-heading">Comments</div>
+                    <h:panelGroup id="chat">
+                        <h:form id="formmessage" styleClass="form-horizontal"
+                                rendered="#{not empty authenticator.currentUser}">
+                            <h:inputTextarea id="message" rows="4" styleClass="form-control"/>
+                            <h:commandButton styleClass="btn btn-primary" value="Send" onclick="send()">
+                                <f:ajax render="formmessage"/>
+                            </h:commandButton>
+                        </h:form>
+                    </h:panelGroup>
 
-                <div class="panel-body" id="chat-body">
-                    <c:forEach items="#{videoBean.comments}" var="comment">
-                        <div class="media">
-                            <div class="media-body">
-                                <h4 class="media-heading">#{comment.author.email} #{comment.datetime}</h4>
-                                #{comment.text}
+                    <div class="panel-body" id="chat-body">
+                        <c:forEach items="#{videoBean.comments}" var="comment">
+                            <div class="media">
+                                <div class="media-body">
+                                    <h4 class="media-heading">#{comment.author.email} #{comment.datetime}</h4>
+                                    #{comment.text}
+                                </div>
                             </div>
-                        </div>
-                    </c:forEach>
+                        </c:forEach>
+                    </div>
                 </div>
             </div>
 

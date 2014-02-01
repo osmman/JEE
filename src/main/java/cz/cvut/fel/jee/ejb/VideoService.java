@@ -35,6 +35,8 @@ public interface VideoService extends AbstractFacade<Video>{
 
     File getVideoFile(Long id);
 
+    List<Video> findAllPublished();
+
     int numberOfVideos();
     
 }

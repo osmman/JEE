@@ -5,18 +5,13 @@
  */
 package cz.cvut.fel.jee.endpoints.websocket;
 
-import cz.cvut.fel.jee.annotations.CurrentLoggedUser;
 import cz.cvut.fel.jee.ejb.CommentService;
 import cz.cvut.fel.jee.ejb.VideoService;
 import cz.cvut.fel.jee.model.Comment;
-import cz.cvut.fel.jee.model.User;
-import cz.cvut.fel.jee.model.Video;
-import cz.cvut.fel.jee.security.Authenticator;
+
 import java.io.IOException;
-import java.util.List;
 import java.util.logging.Logger;
 import javax.inject.Inject;
-import javax.websocket.DecodeException;
 import javax.websocket.EncodeException;
 import javax.websocket.OnError;
 import javax.websocket.OnMessage;
