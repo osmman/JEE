@@ -17,6 +17,7 @@ import javax.inject.Inject;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Response;
 
 /**
@@ -60,7 +61,7 @@ public class CommentResource extends AbstractResource<Comment> {
     @PUT
     @Path("/{id}")
     @Override
-    public Response edit(Long id, Comment item) {
+    public Response edit(@PathParam("id") Long id, Comment item) {
         if (item.getText() == null) {
             return Response.status(Response.Status.BAD_REQUEST).entity("Validation error").build();
         }

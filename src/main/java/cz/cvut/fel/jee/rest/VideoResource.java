@@ -53,7 +53,7 @@ public class VideoResource extends AbstractResource<Video> {
     @PUT
     @Path("/{id}")
     @Override
-    public Response edit(Long id, Video item) {
+    public Response edit(@PathParam("id") Long id, Video item) {
         Video edit = facade.find(id);
         edit.setName(item.getName());
         return super.edit(id, edit);

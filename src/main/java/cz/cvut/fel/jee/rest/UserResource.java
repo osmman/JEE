@@ -8,6 +8,7 @@ import javax.inject.Inject;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
@@ -29,7 +30,7 @@ public class UserResource extends AbstractResource<User> {
     @PUT
     @Path("/{id}")
     @Override
-    public Response edit(Long id, User item) {
+    public Response edit(@PathParam("id") Long id, User item) {
         User edit = facade.find(id);
         if (edit == null) {
             return Response.status(Response.Status.NO_CONTENT).build();
