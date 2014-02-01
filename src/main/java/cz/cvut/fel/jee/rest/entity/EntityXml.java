@@ -19,7 +19,7 @@ public abstract class EntityXml {
     private static final String address = "/semestralka/api/";
     
     
-    protected long id;
+    protected Long id;
 
     public EntityXml() {
     }
@@ -32,7 +32,7 @@ public abstract class EntityXml {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
     

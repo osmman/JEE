@@ -47,7 +47,6 @@ public class UserResource extends AbstractResource<User> {
         if (item.getEmail() == null || item.getPassword() == null) {
             return Response.status(Status.BAD_REQUEST).entity("Validation error").build();
         }
-        item.setId(null);
         return super.create(item); //To change body of generated methods, choose Tools | Templates.
     }
 

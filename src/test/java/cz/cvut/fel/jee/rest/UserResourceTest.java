@@ -74,6 +74,7 @@ public class UserResourceTest {
                         )
                 .addClass(VideoServiceMock.class)
                 .addPackages(true, UserResource.class.getPackage())
+                .addPackages(true, UserAdapter.class.getPackage())
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
                 .addAsWebInfResource(new File(WEBAPP_SRC, "WEB-INF/ejb-jar.xml"), "ejb-jar.xml")
                 .addAsResource("test-persistence.xml", "META-INF/persistence.xml")
@@ -98,7 +99,7 @@ public class UserResourceTest {
 //        UserXml marshal = new UserAdapter().marshal(user);
 //        Response response = target.request()
 //                .post(Entity.json(marshal));
-////        
+//        
         Response response = target.request()
                 .post(EntityJSON(user));
         Assert.assertEquals(Response.Status.CREATED.getStatusCode(), response.getStatus());
@@ -110,12 +111,15 @@ public class UserResourceTest {
         user.setId(1L);
         user.setEmail("test3@email.cz");
         user.setPassword("654321");
-        Response response = target.path("{id}")
-                .resolveTemplate("id", "1")
+        WebTarget resolveTemplate = target.path("{id}")
+                .resolveTemplate("id", "1");
+        System.out.println(resolveTemplate.getUri().toString());
+        Response response = resolveTemplate
                 .request()
                 .put(EntityJSON(user));
+        
 
-        Assert.assertEquals(Response.Status.NO_CONTENT.getStatusCode(), response.getStatus());
+        Assert.assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), response.getStatus());
 
     }
 
@@ -198,6 +202,7 @@ public class UserResourceTest {
             sb.append("\"");
         }
         sb.append("}");
+        System.out.println(sb.toString());
         return Entity.entity(sb.toString(), MediaType.APPLICATION_JSON);
     }
 }

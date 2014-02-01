@@ -56,7 +56,7 @@ public abstract class AbstractResource<T extends EntityObject>
             getFacade().edit(item);
             return Response.status(Response.Status.NO_CONTENT).build();
         }catch(EJBTransactionRolledbackException ex){
-            return Response.status(Response.Status.BAD_REQUEST).entity(ex.getMessage()).build();
+            return Response.status(Response.Status.NOT_FOUND).entity(ex.getMessage()).build();
         }
     }
 
