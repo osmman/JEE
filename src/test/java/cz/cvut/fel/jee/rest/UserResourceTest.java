@@ -1,12 +1,16 @@
 package cz.cvut.fel.jee.rest;
 
 import cz.cvut.fel.jee.ejb.AbstractFacade;
+import cz.cvut.fel.jee.ejb.AbstractFacadeImpl;
 import cz.cvut.fel.jee.ejb.CommentService;
+import cz.cvut.fel.jee.ejb.CommentServiceImpl;
 import cz.cvut.fel.jee.ejb.UserService;
-import cz.cvut.fel.jee.ejb.VideoConversionProducerService;
+import cz.cvut.fel.jee.ejb.UserServiceImpl;
 import cz.cvut.fel.jee.ejb.VideoService;
+import cz.cvut.fel.jee.ejb.VideoServiceImpl;
 import cz.cvut.fel.jee.endpoints.websocket.CommentMessage;
 import cz.cvut.fel.jee.model.User;
+import cz.cvut.fel.jee.rest.mock.VideoServiceMock;
 import cz.cvut.fel.jee.utils.Resources;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -33,14 +37,16 @@ import java.net.URI;
 import java.net.URL;
 import java.security.NoSuchAlgorithmException;
 import org.infinispan.io.GridFilesystem;
+import org.jboss.shrinkwrap.api.Filter;
+import org.jboss.shrinkwrap.api.Filters;
 
 /**
  * Created by Tomáš on 25.1.14.
  */
 @RunWith(Arquillian.class)
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class UserResourceTest
-{
+public class UserResourceTest {
+
     public static final String WEBAPP_SRC = "src/main/webapp";
 
     private WebTarget target;
@@ -49,14 +55,13 @@ public class UserResourceTest
     URL base;
 
     @Deployment(testable = false)
-    public static WebArchive createDeployment()
-    {
+    public static WebArchive createDeployment() {
         WebArchive webArchive = ShrinkWrap.create(WebArchive.class)
                 .addPackage(Resources.class.getPackage())
                 .addPackage(User.class.getPackage())
-                .addClasses(UserService.class, AbstractFacade.class, VideoService.class, VideoConversionProducerService.class, CommentService.class, CommentMessage.class)
+                .addClasses(CommentMessage.class)
+                .addPackages(true, Filters.exclude(VideoServiceImpl.class), UserService.class.getPackage())
                 .addPackages(true, UserResource.class.getPackage())
-//                .addClasses(CommentMessage.class, VideoConversionProducerService.class, VideoCon)
                 .addPackage(GridFilesystem.class.getPackage())
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
                 .addAsWebInfResource(new File(WEBAPP_SRC, "WEB-INF/ejb-jar.xml"), "ejb-jar.xml")
@@ -67,15 +72,13 @@ public class UserResourceTest
     }
 
     @Before
-    public void setupClass() throws MalformedURLException
-    {
+    public void setupClass() throws MalformedURLException {
         Client client = ClientBuilder.newClient();
         target = client.target(URI.create(new URL(base, "api/user").toExternalForm()));
     }
 
     @Test
-    public void test1Post() throws NoSuchAlgorithmException
-    {
+    public void test1Post() throws NoSuchAlgorithmException {
         User user = new User();
         user.setEmail("test3@email.cz");
         user.setPassword("123456");
@@ -85,10 +88,8 @@ public class UserResourceTest
         Assert.assertEquals(Response.Status.CREATED.getStatusCode(), response.getStatus());
     }
 
-
     @Test
-    public void test2Put() throws NoSuchAlgorithmException
-    {
+    public void test2Put() throws NoSuchAlgorithmException {
         User user = new User();
         user.setId(1L);
         user.setEmail("test3@email.cz");
@@ -103,8 +104,7 @@ public class UserResourceTest
     }
 
     @Test
-    public void test3Get()
-    {
+    public void test3Get() {
         User user = target.path("{id}")
                 .resolveTemplate("id", "1")
                 .request()
@@ -115,8 +115,7 @@ public class UserResourceTest
     }
 
     @Test
-    public void test4GetAll()
-    {
+    public void test4GetAll() {
         User[] list = target.request()
                 .accept(MediaType.APPLICATION_XML)
                 .get(User[].class);
@@ -124,8 +123,7 @@ public class UserResourceTest
     }
 
     @Test
-    public void test5Delete()
-    {
+    public void test5Delete() {
         Response response = target.path("{id}")
                 .resolveTemplate("id", "1")
                 .request()
@@ -140,8 +138,7 @@ public class UserResourceTest
     }
 
     @Test
-    public void test6Invalid()
-    {
+    public void test6Invalid() {
         User user = new User();
         user.setEmail("test");
 

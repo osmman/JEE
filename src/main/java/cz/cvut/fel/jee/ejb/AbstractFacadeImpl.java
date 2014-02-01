@@ -6,6 +6,7 @@ import cz.cvut.fel.jee.utils.QueryBuilder;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import java.util.List;
+import javax.ejb.Stateless;
 
 /**
  * Created by Tomáš on 24.1.14.
