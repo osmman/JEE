@@ -3,14 +3,10 @@ package cz.cvut.fel.jee.ejb;
 import cz.cvut.fel.jee.model.EntityObject;
 import cz.cvut.fel.jee.utils.QueryBuilder;
 
-import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
-import javax.persistence.criteria.Selection;
 import java.util.List;
+import javax.ejb.Stateless;
 
 /**
  * Created by Tomáš on 24.1.14.
