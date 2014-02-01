@@ -34,6 +34,10 @@ public class VideoColection {
         return videoService.findAll();
     }
 
+    public List<Video> getAllPublished(){
+        return videoService.findAllPublished();
+    }
+
     public void delete(Video video){
         videoService.remove(video);
     }

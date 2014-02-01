@@ -29,7 +29,9 @@ public class VideoServiceImpl extends AbstractFacadeImpl<Video> implements Video
     @VideoFilesystem
     private GridFilesystem fileSystem;
 
-    private static final String BASE_PATH = "/video/uploaded";
+    private static final String UPLOADED_PATH = "/video/uploaded";
+
+    public static final String PUBLISHED_PATH = "/video/published";
 
     @Inject
     private Logger log;
@@ -60,12 +62,13 @@ public class VideoServiceImpl extends AbstractFacadeImpl<Video> implements Video
         try {
             log.warning("Video submited name: " + video.getSubmittedFileName());
             entity.setThumbs(new LinkedList<String>());
-            entity.setPath(BASE_PATH + "/" + entity.getId() + "_" + video.getSubmittedFileName());
-            entity.setMimetype("video/ogv");
-            log.warning(entity.getMimetype());
+
+            String uploaded = UPLOADED_PATH + "/" + entity.getId() + "_" + video.getSubmittedFileName();
+            String output = PUBLISHED_PATH + "/"+ entity.getId() +".ogv ";
+
 
             InputStream is = video.getInputStream();
-            OutputStream os = fileSystem.getOutput(entity.getPath());
+            OutputStream os = fileSystem.getOutput(uploaded);
             byte[] buffer = new byte[20480];
             int len;
             while ((len = is.read(buffer, 0, buffer.length)) != -1) {
@@ -75,12 +78,12 @@ public class VideoServiceImpl extends AbstractFacadeImpl<Video> implements Video
             os.close();
             log.info("File id:" + entity.getId() + " name: " + entity.getName() + " is writed!");
 
-            String output = BASE_PATH + "/" + entity.getId() + entity.getName() + ".ogv ";
 
-            vcs.sendMessage(entity, entity.getPath(), output);
+            vcs.sendMessage(entity, uploaded, output);
             entity.setPath(output);
 
             super.edit(entity);
+
 
         } catch (IOException e) {
             log.warning(e.toString());
@@ -88,11 +91,10 @@ public class VideoServiceImpl extends AbstractFacadeImpl<Video> implements Video
         }
     }
 
-    @Override
     public void create(Video entity, InputStream is, String mimetype) {
         super.create(entity);
         try {
-            entity.setPath(BASE_PATH + "/" + entity.getId() + "." + getExtension(entity.getName()));
+            entity.setPath(UPLOADED_PATH + entity.getId() + getExtension(entity.getName()));
             entity.setMimetype(mimetype);
             OutputStream os = fileSystem.getOutput(entity.getPath());
             byte[] buffer = new byte[20480];
@@ -119,7 +121,11 @@ public class VideoServiceImpl extends AbstractFacadeImpl<Video> implements Video
     }
 
     private void createDirectory() {
-        File dir = fileSystem.getFile(BASE_PATH);
+        File dir = fileSystem.getFile(UPLOADED_PATH);
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
+        dir = fileSystem.getFile(PUBLISHED_PATH);
         if (!dir.exists()) {
             dir.mkdirs();
         }
@@ -141,6 +147,10 @@ public class VideoServiceImpl extends AbstractFacadeImpl<Video> implements Video
     @Override
     public List<Video> findByAuthor(User author) {
         return em.createNamedQuery("Video.findByAuthor").setParameter("author", author).getResultList();
+    }
+
+    public List<Video> findAllPublished(){
+        return em.createNamedQuery("Video.findAllPublished").getResultList();
     }
 
     @Override

@@ -12,11 +12,6 @@ import cz.cvut.fel.jee.model.Role;
 import cz.cvut.fel.jee.model.User;
 import cz.cvut.fel.jee.model.Video;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashSet;
@@ -45,7 +40,8 @@ public class StartUp {
     @Inject
     private VideoService videoService;
     
-    @Inject RoleService roleService;
+    @Inject
+    private RoleService roleService;
 
     @Inject
     private ServletContext ctx;
@@ -62,27 +58,45 @@ public class StartUp {
     }
 
     public void populate() throws NoSuchAlgorithmException {
+        Role adminRole = new Role();
+        adminRole.setName("admin");
+        roleService.create(adminRole);
+
+        Role userRole = new Role();
+        userRole.setName("user");
+        roleService.create(userRole);
+
         User user = new User();
-        Role r = new Role();
-        r.setName("admin");
-        roleService.create(r);
         user.setEmail("trnkamich@gmail.com");
         user.setPassword("heslo1");
         HashSet<Role> roles = new HashSet<Role>();
-        roles.add(r);
+        roles.add(userRole);
+        roles.add(adminRole);
         user.setRoles(roles);
         userService.create(user);
+
         user = new User();
         user.setEmail("turek@gmail.com");
         user.setPassword("heslo2");
+        roles = new HashSet<Role>();
+        roles.add(userRole);
+        user.setRoles(roles);
         userService.create(user);
+
         user = new User();
         user.setEmail("vlasta@gmail.com");
         user.setPassword("heslo3");
+        roles = new HashSet<Role>();
+        roles.add(userRole);
+        user.setRoles(roles);
         userService.create(user);
+
         user = new User();
         user.setEmail("tompol@gmail.com");
         user.setPassword("heslo4");
+        roles = new HashSet<Role>();
+        roles.add(userRole);
+        user.setRoles(roles);
         userService.create(user);
     }
 
@@ -91,6 +105,7 @@ public class StartUp {
             InputStream resourceAsStream = this.getClass().getClassLoader().getResourceAsStream("video/video.mp4");
             Video video = new Video();
             video.setName("video.mp4");
+            video.setPublished(true);
             User user = userService.find(4L);
             video.setAuthor(user);
             videoService.create(video, resourceAsStream, "video/mp4");
