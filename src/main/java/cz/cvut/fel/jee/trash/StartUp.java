@@ -58,27 +58,45 @@ public class StartUp {
     }
 
     public void populate() throws NoSuchAlgorithmException {
+        Role adminRole = new Role();
+        adminRole.setName("admin");
+        roleService.create(adminRole);
+
+        Role userRole = new Role();
+        userRole.setName("user");
+        roleService.create(userRole);
+
         User user = new User();
-        Role r = new Role();
-        r.setName("admin");
-        roleService.create(r);
         user.setEmail("trnkamich@gmail.com");
         user.setPassword("heslo1");
         HashSet<Role> roles = new HashSet<Role>();
-        roles.add(r);
+        roles.add(userRole);
+        roles.add(adminRole);
         user.setRoles(roles);
         userService.create(user);
+
         user = new User();
         user.setEmail("turek@gmail.com");
         user.setPassword("heslo2");
+        roles = new HashSet<Role>();
+        roles.add(userRole);
+        user.setRoles(roles);
         userService.create(user);
+
         user = new User();
         user.setEmail("vlasta@gmail.com");
         user.setPassword("heslo3");
+        roles = new HashSet<Role>();
+        roles.add(userRole);
+        user.setRoles(roles);
         userService.create(user);
+
         user = new User();
         user.setEmail("tompol@gmail.com");
         user.setPassword("heslo4");
+        roles = new HashSet<Role>();
+        roles.add(userRole);
+        user.setRoles(roles);
         userService.create(user);
     }
 
