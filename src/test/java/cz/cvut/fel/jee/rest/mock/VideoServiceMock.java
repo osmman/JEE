@@ -6,8 +6,6 @@
 
 package cz.cvut.fel.jee.rest.mock;
 
-import cz.cvut.fel.jee.ejb.VideoService;
-
 /**
  *
  * @author saljack
