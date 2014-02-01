@@ -37,6 +37,7 @@ import java.net.URI;
 import java.net.URL;
 import java.security.NoSuchAlgorithmException;
 import org.infinispan.io.GridFilesystem;
+import org.jboss.msc.service.AbstractService;
 import org.jboss.shrinkwrap.api.Filter;
 import org.jboss.shrinkwrap.api.Filters;
 
@@ -59,8 +60,16 @@ public class UserResourceTest {
         WebArchive webArchive = ShrinkWrap.create(WebArchive.class)
                 .addPackage(Resources.class.getPackage())
                 .addPackage(User.class.getPackage())
-                .addClasses(CommentMessage.class)
-                .addPackages(true, Filters.exclude(VideoServiceImpl.class), UserService.class.getPackage())
+                .addClasses(CommentMessage.class,
+                        AbstractFacade.class,
+                        AbstractFacadeImpl.class,
+                        UserService.class,
+                        UserServiceImpl.class,
+                        CommentService.class,
+                        CommentServiceImpl.class,
+                        VideoService.class
+                        )
+                .addClass(VideoServiceMock.class)
                 .addPackages(true, UserResource.class.getPackage())
                 .addPackage(GridFilesystem.class.getPackage())
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
@@ -84,7 +93,7 @@ public class UserResourceTest {
         user.setPassword("123456");
 
         Response response = target.request()
-                .post(Entity.xml(user));
+                .post(Entity.json(user));
         Assert.assertEquals(Response.Status.CREATED.getStatusCode(), response.getStatus());
     }
 
