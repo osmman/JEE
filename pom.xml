@@ -215,26 +215,6 @@
                     <version>3.0.5.Final</version>
                     <scope>test</scope>
                 </dependency>
-                <dependency>
-                    <groupId>org.jboss.resteasy</groupId>
-                    <artifactId>resteasy-json-p-provider</artifactId>
-                    <version>3.0.5.Final</version>
-                    <scope>test</scope>
-                </dependency>
-                <!--Indfinispan-->
-                <dependency>
-                    <groupId>org.infinispan</groupId>
-                    <artifactId>infinispan-core</artifactId>
-                    <version>${infinispan.version}</version>
-                    <scope>provided</scope>
-                </dependency>
-
-                <dependency>
-                    <groupId>org.infinispan</groupId>
-                    <artifactId>infinispan-commons</artifactId>
-                    <version>${infinispan.version}</version>
-                    <scope>provided</scope>
-                </dependency>
             </dependencies>
             <build>
                 <testResources>

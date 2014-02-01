@@ -18,13 +18,13 @@ public abstract class EntityXml {
     
     private static final String address = "/semestralka/api/";
     
-    @XmlElement(required = true)
-    protected Long id;
+    
+    protected long id;
 
     public EntityXml() {
     }
     
-    public EntityXml(Long id) {
+    public EntityXml(long id) {
         this.id = id;
     }   
 
@@ -32,7 +32,7 @@ public abstract class EntityXml {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
     
