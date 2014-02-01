@@ -1,7 +1,11 @@
 package cz.cvut.fel.jee.rest;
 
 import cz.cvut.fel.jee.ejb.AbstractFacade;
+import cz.cvut.fel.jee.ejb.CommentService;
 import cz.cvut.fel.jee.ejb.UserService;
+import cz.cvut.fel.jee.ejb.VideoConversionProducerService;
+import cz.cvut.fel.jee.ejb.VideoService;
+import cz.cvut.fel.jee.endpoints.websocket.CommentMessage;
 import cz.cvut.fel.jee.model.User;
 import cz.cvut.fel.jee.utils.Resources;
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -28,6 +32,7 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.security.NoSuchAlgorithmException;
+import org.infinispan.io.GridFilesystem;
 
 /**
  * Created by Tomáš on 25.1.14.
@@ -49,8 +54,10 @@ public class UserResourceTest
         WebArchive webArchive = ShrinkWrap.create(WebArchive.class)
                 .addPackage(Resources.class.getPackage())
                 .addPackage(User.class.getPackage())
-                .addClasses(UserService.class, AbstractFacade.class)
+                .addClasses(UserService.class, AbstractFacade.class, VideoService.class, VideoConversionProducerService.class, CommentService.class, CommentMessage.class)
                 .addPackages(true, UserResource.class.getPackage())
+//                .addClasses(CommentMessage.class, VideoConversionProducerService.class, VideoCon)
+                .addPackage(GridFilesystem.class.getPackage())
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
                 .addAsWebInfResource(new File(WEBAPP_SRC, "WEB-INF/ejb-jar.xml"), "ejb-jar.xml")
                 .addAsResource("test-persistence.xml", "META-INF/persistence.xml")

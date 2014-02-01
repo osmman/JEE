@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
-import javax.faces.bean.ManagedProperty;
+import javax.annotation.security.RolesAllowed;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
@@ -106,6 +106,7 @@ public class VideoBean {
         this.videoid = videoid;
     }
 
+    @RolesAllowed("admin")
     public String getVideoName() {
         return videoName;
     }

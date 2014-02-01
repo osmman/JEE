@@ -1,8 +1,10 @@
 package cz.cvut.fel.jee.model;
 
+import cz.cvut.fel.jee.rest.adapters.CommentAdapter;
+import java.util.Date;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.Date;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.hibernate.validator.constraints.NotEmpty;
 
 /**
@@ -12,6 +14,7 @@ import org.hibernate.validator.constraints.NotEmpty;
         @NamedQuery(name = "Comment.findByVideo", query = "SELECT c FROM Comment c WHERE c.video = :video")
 })
 @Entity
+@XmlJavaTypeAdapter(CommentAdapter.class)
 public class Comment extends EntityObject {
     @NotNull
     @NotEmpty
