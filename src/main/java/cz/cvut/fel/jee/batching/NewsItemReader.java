@@ -1,10 +1,9 @@
 package cz.cvut.fel.jee.batching;
 
+import cz.cvut.fel.jee.beans.NewsGeneratorTimer;
 import cz.cvut.fel.jee.model.Video;
 
 import javax.batch.api.chunk.AbstractItemReader;
-import javax.batch.operations.JobOperator;
-import javax.batch.runtime.BatchRuntime;
 import javax.batch.runtime.context.JobContext;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
@@ -31,15 +30,16 @@ public class NewsItemReader extends AbstractItemReader {
     @Inject
     private Logger log;
 
+    @Inject
+    private NewsGeneratorTimer newsGeneratorTimer;
+
     private List<Video> list;
 
     private Iterator<Video> iterator;
 
     @Override
     public void open(Serializable checkpoint) throws Exception {
-
-        JobOperator jobOperator = BatchRuntime.getJobOperator();
-        list = (List<Video>) jobOperator.getParameters(jobCtx.getExecutionId()).get("items");
+        list = newsGeneratorTimer.getAll();
         iterator = list.iterator();
     }
 

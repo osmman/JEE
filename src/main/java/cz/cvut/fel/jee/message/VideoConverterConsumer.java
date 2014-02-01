@@ -1,14 +1,13 @@
 package cz.cvut.fel.jee.message;
 
 import cz.cvut.fel.jee.annotations.VideoFilesystem;
+import cz.cvut.fel.jee.beans.NewsGeneratorTimer;
 import cz.cvut.fel.jee.ejb.VideoService;
 import cz.cvut.fel.jee.model.Video;
 import cz.cvut.fel.jee.utils.VideoConverter;
 import it.sauronsoftware.jave.EncoderException;
 import org.infinispan.io.GridFilesystem;
 
-import javax.batch.operations.JobOperator;
-import javax.batch.runtime.BatchRuntime;
 import javax.ejb.ActivationConfigProperty;
 import javax.ejb.MessageDriven;
 import javax.inject.Inject;
@@ -20,9 +19,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Properties;
 import java.util.logging.Logger;
 
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
@@ -50,6 +46,9 @@ public class VideoConverterConsumer implements MessageListener{
 
     @Inject
     private VideoService videoService;
+
+    @Inject
+    private NewsGeneratorTimer newsGeneratorTimer;
 
     @Override
     public void onMessage(Message message) {
@@ -104,13 +103,7 @@ public class VideoConverterConsumer implements MessageListener{
 
                 log.info("Creating batching");
 
-                JobOperator jo = BatchRuntime.getJobOperator();
-                Properties properties = new Properties();
-                List<Video> list = new LinkedList<>();
-                list.add(entity);
-                properties.put("items",list);
-                properties.setProperty("aaa","bbb");
-                long jid = jo.start("newsJob", properties);
+                newsGeneratorTimer.add(entity);
 
             }
         } catch (JMSException e) {

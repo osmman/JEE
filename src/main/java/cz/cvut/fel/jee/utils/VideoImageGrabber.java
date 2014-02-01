@@ -69,7 +69,7 @@ public class VideoImageGrabber {
 
         private double SECONDS_BETWEEN_FRAME;
 
-        private long mLastPtsWrite = -1;
+        private long mLastPtsWrite = Global.NO_PTS;
 
         private int mVideoStreamIndex = -1;
 
@@ -99,9 +99,6 @@ public class VideoImageGrabber {
                 // indicate file written
                 double seconds = ((double) event.getTimeStamp()) /
                 Global.DEFAULT_PTS_PER_SECOND;
-                System.out.printf(
-                        "at elapsed time of %6.3f seconds wrote: %s\n",
-                        seconds, outputFilename);
 
                 // update last write time
                 mLastPtsWrite += MICRO_SECONDS_BETWEEN_FRAMES;

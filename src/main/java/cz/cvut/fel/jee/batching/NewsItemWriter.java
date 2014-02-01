@@ -44,6 +44,8 @@ public class NewsItemWriter extends AbstractItemWriter {
             news.getNews().add((Video) entity);
         }
 
+        log.info("News created!");
+        newsService.create(news);
         log.info("Batch saved!");
     }
 }

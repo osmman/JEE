@@ -48,8 +48,9 @@ public class NewsItemProcessor implements ItemProcessor {
 
         File working_video = null;
 
+        log.info(String.format("Processing video: %s", video.getName()));
         try {
-            log.info("Creating temp files.");
+            log.info("Creating temp file.");
             working_video = File.createTempFile("input", ".tmp");
         } catch (IOException e) {
             e.printStackTrace();
@@ -60,19 +61,22 @@ public class NewsItemProcessor implements ItemProcessor {
 
         String outputImagePrefix = video.getName();
 
-        log.info("Start grabing images.");
+        log.info(String.format("Start grabing images from video: %s.", video.getName()));
         VideoImageGrabber vg = new VideoImageGrabber(working_video.getPath(), outputImagePrefix, IMAGE_COUNT);
-        List<File> images = new LinkedList<>();//vg.gramImages();
+        List<File> images = vg.gramImages();
         log.info("Grabing images done!");
 
-
         log.info("Saving images.");
+        createFolder();
+
         File working_output;
         OutputStream outputStream;
         String image_path;
         int i = 0;
+        video.setThumbs(new LinkedList<String>());
         for (File file : images) {
-            String imagePath = BASE_PATH + video.getId() + "_" + i + ".png";
+            String imagePath = BASE_PATH + video.getId() + "_"  + video.getName() + "_" + i + ".png";
+            log.info(String.format("Processing saving image: %s", video.getId() + "_"  + video.getName() + "_" + i + ".png"));
             outputStream = fileSystem.getOutput(imagePath);
             Files.copy(Paths.get(file.getPath()), outputStream);
             video.getThumbs().add(imagePath);
@@ -81,6 +85,13 @@ public class NewsItemProcessor implements ItemProcessor {
         log.info("Saving images done!");
 
         return video;
+    }
+
+    private void createFolder() {
+        File dir = fileSystem.getFile(BASE_PATH);
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
     }
 
 
