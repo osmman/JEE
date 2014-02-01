@@ -32,7 +32,7 @@ do standalone-full-ha.xml ($JBOSS_HOME/standalone/configuration) nebo v budoucnu
 ```
 
 do standalone-full-ha.xml ($JBOSS_HOME/standalone/configuration)
-Do <subsystem xmlns="urn:jboss:domain:security:1.2">
+Do ```<subsystem xmlns="urn:jboss:domain:security:1.2">```
             <security-domains>
             pridate:
 ```
