@@ -2,11 +2,11 @@ package cz.cvut.fel.jee.rest;
 
 import cz.cvut.fel.jee.ejb.AbstractFacade;
 import cz.cvut.fel.jee.model.EntityObject;
-
+import java.util.List;
+import javax.ejb.EJBTransactionRolledbackException;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.List;
 
 /**
  * Created by Tomáš on 25.1.14.
@@ -40,16 +40,24 @@ public abstract class AbstractResource<T extends EntityObject>
     @Path("/")
     public Response create(T item)
     {
-        getFacade().create(item);
-        return Response.status(Response.Status.CREATED).build();
+        try{
+            getFacade().create(item);
+            return Response.status(Response.Status.CREATED).build();
+        }catch(EJBTransactionRolledbackException ex){
+            return Response.status(Response.Status.BAD_REQUEST).entity(ex.getMessage()).build();
+        }
     }
 
     @PUT
     @Path("/{id}")
     public Response edit(@PathParam("id") Long id, T item)
     {
-        getFacade().edit(item);
-        return Response.status(Response.Status.NO_CONTENT).build();
+        try{
+            getFacade().edit(item);
+            return Response.status(Response.Status.NO_CONTENT).build();
+        }catch(EJBTransactionRolledbackException ex){
+            return Response.status(Response.Status.BAD_REQUEST).entity(ex.getMessage()).build();
+        }
     }
 
     @DELETE
