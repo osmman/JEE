@@ -8,15 +8,15 @@ import java.util.List;
 /**
  * Created by Tomáš on 29.1.14.
  */
+@Table(name = "news")
 @Entity
 public class News extends EntityObject {
 
     @NotNull
     private Date createdAt;
 
-    @OrderBy("createdAt")
-    @ManyToMany
-    private List<Video> news;
+    @ManyToMany(fetch = FetchType.EAGER)
+    private List<Video> videos;
 
     public Date getCreatedAt() {
         return createdAt;
@@ -26,12 +26,12 @@ public class News extends EntityObject {
         this.createdAt = createdAt;
     }
 
-    public List<Video> getNews() {
-        return news;
+    public List<Video> getVideos() {
+        return videos;
     }
 
-    public void setNews(List<Video> news) {
-        this.news = news;
+    public void setVideos(List<Video> videos) {
+        this.videos = videos;
     }
 
     @PrePersist
