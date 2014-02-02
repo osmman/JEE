@@ -7,6 +7,7 @@ import cz.cvut.fel.jee.model.Role;
  * @author saljack
  */
 public interface RoleService extends AbstractFacade<Role>{
-    
+
+    Role findByName(String name);
 }
 

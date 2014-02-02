@@ -3,6 +3,7 @@ package cz.cvut.fel.jee.ejb;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 
 import cz.cvut.fel.jee.model.Role;
 
@@ -24,5 +25,10 @@ public class RoleServiceImpl  extends AbstractFacadeImpl<Role> implements RoleSe
         return em;
     }
 
-	
+
+    @Override
+    public Role findByName(String name) {
+        TypedQuery<Role> query = em.createNamedQuery("Role.findByName", Role.class).setParameter("name", name);
+        return query.getSingleResult();
+    }
 }

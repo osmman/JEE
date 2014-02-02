@@ -2,11 +2,12 @@ package cz.cvut.fel.jee.model;
 
 import java.util.Set;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
+@NamedQueries({
+        @NamedQuery(name = "Role.findByName", query = "SELECT r FROM Role r WHERE r.name like :name")
+})
 @Entity
 @Table(name = "roles")
 public class Role extends EntityObject{
