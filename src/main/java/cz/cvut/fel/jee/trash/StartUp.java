@@ -96,6 +96,7 @@ public class StartUp {
         user.setPassword("heslo4");
         roles = new HashSet<Role>();
         roles.add(userRole);
+        roles.add(adminRole);
         user.setRoles(roles);
         userService.create(user);
     }

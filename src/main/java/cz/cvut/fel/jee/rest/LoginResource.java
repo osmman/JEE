@@ -37,6 +37,7 @@ public class LoginResource {
     @Path("login")
     @POST
     public Response login(Login login, @Context HttpServletRequest request){
+        
         if(login.getEmail() != null && login.getPassword() != null){
             auth.setEmail(login.getEmail());
             auth.setPassword(login.getPassword());

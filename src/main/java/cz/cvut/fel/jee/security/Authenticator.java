@@ -55,6 +55,7 @@ public class Authenticator implements Serializable {
             currentUser = user;
             password = null;
             email = null;
+            request.getSession().setAttribute("userID", currentUser.getId());
         } catch (ServletException e) {
             return false;
         }
@@ -65,6 +66,7 @@ public class Authenticator implements Serializable {
         try {
             request.logout();
             currentUser = null;
+            request.getSession().removeAttribute("userID");
         } catch (ServletException e) {
         }
         return true;
