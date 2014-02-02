@@ -76,7 +76,7 @@ public class NewsItemProcessor implements ItemProcessor {
         video.setThumbs(new LinkedList<String>());
         for (File file : images) {
             String imagePath = BASE_PATH + video.getId() + "_"  + video.getName() + "_" + i + ".png";
-            log.info(String.format("Processing saving image: %s", video.getId() + "_"  + video.getName() + "_" + i + ".png"));
+            log.info(String.format("Processing saving image: %s", video.getId() + "_"  + video.getName() + "_" + i++ + ".png"));
             outputStream = fileSystem.getOutput(imagePath);
             Files.copy(Paths.get(file.getPath()), outputStream);
             video.getThumbs().add(imagePath);

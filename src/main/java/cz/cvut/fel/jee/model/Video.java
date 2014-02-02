@@ -38,7 +38,7 @@ public class Video extends EntityObject
     @OrderBy("datetime")
     private List<Comment> comments;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     private List<String> thumbs;
 
     @NotNull

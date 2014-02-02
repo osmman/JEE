@@ -16,6 +16,7 @@
         <h:form>
             <div class="navbar-collapse collapse" id="navbar-collapse-1">
                 <ul class="nav navbar-nav">
+                    <li><h:link value="News" outcome="newslist" rendered="#{not empty currentUser}"/></li>
                     <li><h:link value="My video" outcome="myvideos" rendered="#{not empty currentUser}"/></li>
                     <li><h:link value="Upload" outcome="videoupload" rendered="#{not empty currentUser}"/></li>
                 </ul>

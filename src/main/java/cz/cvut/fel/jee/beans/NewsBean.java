@@ -62,12 +62,12 @@ public class NewsBean {
             Map<String, String> parameterMap = (Map<String, String>) facesContext.getExternalContext().getRequestParameterMap();
             if (parameterMap.containsKey("newsid")) {
                 newsid = Long.valueOf(parameterMap.get("newsid"));
-                log.info("Nasel jsem ID more: " + newsid);
             }
 
             if (newsid != null) {
                 entity = newsService.find(newsid);
                 if (entity != null) {
+                    log.info("Count of loaded videos: " + entity.getVideos().size());
                     createdAt = entity.getCreatedAt();
                     videoList = entity.getVideos();
                 } else {
@@ -105,6 +105,7 @@ public class NewsBean {
     }
 
     public List<Video> getVideoList() {
+        log.info("Videos count: " + videoList.size());
         return videoList;
     }
 

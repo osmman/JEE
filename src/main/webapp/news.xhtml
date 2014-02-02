@@ -11,19 +11,24 @@
         <ui:define name="content">
             <div class="row">
                 <div class="col-md-12">
-                    <h:outputText value="News from: #{newsBean.createdAt}" />
+                    <h1><h:outputText value="News from: #{newsBean.createdAt}" /></h1>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-12">
                     <ui:repeat value="#{newsBean.videoList}" var="video">
-                        <h:link value="#{video.name}" outcome="video">
-                            <f:param name="videoid" value="#{video.id}"/>
-                        </h:link>
-                        <ui:repeat value="#{video.thumbs}" var="thumb">
-
-                            <img src="thumb?path=#{thumb}" />
-                        </ui:repeat>
+                        <div class="row">
+                            <h2>
+                                <h:link value="#{video.name}" outcome="video">
+                                    <f:param name="videoid" value="#{video.id}"/>
+                                </h:link>
+                            </h2>
+                        </div>
+                        <div class="row">
+                            <ui:repeat value="#{video.thumbs}" var="thumb">
+                                <img src="thumb?path=#{thumb}" width="19%" />
+                            </ui:repeat>
+                        </div>
                     </ui:repeat>
                 </div>
             </div>

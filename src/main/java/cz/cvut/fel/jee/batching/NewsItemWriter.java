@@ -43,6 +43,7 @@ public class NewsItemWriter extends AbstractItemWriter {
             videoService.edit((Video) entity);
             news.getVideos().add((Video) entity);
         }
+        log.info("Add " + news.getVideos().size() + " videos to news.");
 
         log.info("News created!");
         newsService.create(news);
