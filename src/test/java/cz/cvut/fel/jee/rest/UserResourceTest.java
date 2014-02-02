@@ -7,12 +7,31 @@ import cz.cvut.fel.jee.ejb.CommentServiceImpl;
 import cz.cvut.fel.jee.ejb.UserService;
 import cz.cvut.fel.jee.ejb.UserServiceImpl;
 import cz.cvut.fel.jee.ejb.VideoService;
-import cz.cvut.fel.jee.ejb.VideoServiceImpl;
 import cz.cvut.fel.jee.endpoints.websocket.CommentMessage;
 import cz.cvut.fel.jee.model.User;
+import cz.cvut.fel.jee.rest.adapters.UserAdapter;
+import cz.cvut.fel.jee.rest.entity.EntityXml;
+import cz.cvut.fel.jee.rest.entity.UserXml;
+import cz.cvut.fel.jee.rest.entity.links.UserLinkXml;
 import cz.cvut.fel.jee.rest.mock.VideoServiceMock;
 import cz.cvut.fel.jee.utils.Resources;
+import java.io.File;
+import java.io.StringWriter;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URL;
+import java.security.NoSuchAlgorithmException;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Marshaller;
+import org.infinispan.io.GridFilesystem;
 import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.arquillian.container.test.api.RunAsClient;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -24,21 +43,6 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
-
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URL;
-import java.security.NoSuchAlgorithmException;
-import org.infinispan.io.GridFilesystem;
-import org.jboss.shrinkwrap.api.Filter;
-import org.jboss.shrinkwrap.api.Filters;
 
 /**
  * Created by Tomáš on 25.1.14.
@@ -59,10 +63,18 @@ public class UserResourceTest {
         WebArchive webArchive = ShrinkWrap.create(WebArchive.class)
                 .addPackage(Resources.class.getPackage())
                 .addPackage(User.class.getPackage())
-                .addClasses(CommentMessage.class)
-                .addPackages(true, Filters.exclude(VideoServiceImpl.class), UserService.class.getPackage())
+                .addClasses(CommentMessage.class,
+                        AbstractFacade.class,
+                        AbstractFacadeImpl.class,
+                        UserService.class,
+                        UserServiceImpl.class,
+                        CommentService.class,
+                        CommentServiceImpl.class,
+                        VideoService.class
+                        )
+                .addClass(VideoServiceMock.class)
                 .addPackages(true, UserResource.class.getPackage())
-                .addPackage(GridFilesystem.class.getPackage())
+                .addPackages(true, UserAdapter.class.getPackage())
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
                 .addAsWebInfResource(new File(WEBAPP_SRC, "WEB-INF/ejb-jar.xml"), "ejb-jar.xml")
                 .addAsResource("test-persistence.xml", "META-INF/persistence.xml")
@@ -73,18 +85,23 @@ public class UserResourceTest {
 
     @Before
     public void setupClass() throws MalformedURLException {
+        
         Client client = ClientBuilder.newClient();
         target = client.target(URI.create(new URL(base, "api/user").toExternalForm()));
+        System.out.println(target.getUri().toString());
     }
 
     @Test
-    public void test1Post() throws NoSuchAlgorithmException {
+    public void test1Post() throws Exception {
         User user = new User();
         user.setEmail("test3@email.cz");
         user.setPassword("123456");
-
+//        UserXml marshal = new UserAdapter().marshal(user);
+//        Response response = target.request()
+//                .post(Entity.json(marshal));
+//        
         Response response = target.request()
-                .post(Entity.xml(user));
+                .post(EntityJSON(user));
         Assert.assertEquals(Response.Status.CREATED.getStatusCode(), response.getStatus());
     }
 
@@ -94,12 +111,15 @@ public class UserResourceTest {
         user.setId(1L);
         user.setEmail("test3@email.cz");
         user.setPassword("654321");
-        Response response = target.path("{id}")
-                .resolveTemplate("id", "1")
+        WebTarget resolveTemplate = target.path("{id}")
+                .resolveTemplate("id", "1");
+        System.out.println(resolveTemplate.getUri().toString());
+        Response response = resolveTemplate
                 .request()
-                .put(Entity.xml(user));
+                .put(EntityJSON(user));
+        
 
-        Assert.assertEquals(Response.Status.NO_CONTENT.getStatusCode(), response.getStatus());
+        Assert.assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), response.getStatus());
 
     }
 
@@ -108,7 +128,7 @@ public class UserResourceTest {
         User user = target.path("{id}")
                 .resolveTemplate("id", "1")
                 .request()
-                .accept(MediaType.APPLICATION_XML)
+                .accept(MediaType.APPLICATION_JSON)
                 .get(User.class);
         Assert.assertNotNull(user);
         Assert.assertEquals("test3@email.cz", user.getEmail());
@@ -117,7 +137,7 @@ public class UserResourceTest {
     @Test
     public void test4GetAll() {
         User[] list = target.request()
-                .accept(MediaType.APPLICATION_XML)
+                .accept(MediaType.APPLICATION_JSON)
                 .get(User[].class);
         Assert.assertEquals(1, list.length);
     }
@@ -132,7 +152,7 @@ public class UserResourceTest {
         Assert.assertEquals(Response.Status.NO_CONTENT.getStatusCode(), response.getStatus());
 
         User[] list = target.request()
-                .accept(MediaType.APPLICATION_XML)
+                .accept(MediaType.APPLICATION_JSON)
                 .get(User[].class);
         Assert.assertEquals(0, list.length);
     }
@@ -143,14 +163,46 @@ public class UserResourceTest {
         user.setEmail("test");
 
         Response response = target.request()
-                .accept(MediaType.APPLICATION_XML)
-                .post(Entity.xml(user));
+                .accept(MediaType.APPLICATION_JSON)
+                .post(Entity.json(user));
         Assert.assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), response.getStatus());
         response.close();
 
         User[] list = target.request()
-                .accept(MediaType.APPLICATION_XML)
+                .accept(MediaType.APPLICATION_JSON)
                 .get(User[].class);
         Assert.assertEquals(0, list.length);
+    }
+    
+    
+    static Entity<String> EntityJSON(User u){
+        StringBuilder sb = new StringBuilder("{");
+ 
+        if(u.getId() != null){
+            sb.append("\"id\":");
+            sb.append(u.getId().toString());
+            sb.append("");
+        }
+        
+        if(u.getEmail() != null){
+            if(sb.length() > 1){
+                sb.append(", ");
+            }
+            sb.append("\"email\":\"");
+            sb.append(u.getEmail());
+            sb.append("\"");
+        }
+        
+        if(u.getPassword() != null){
+            if(sb.length() > 1){
+                sb.append(", ");
+            }
+            sb.append("\"password\":\"");
+            sb.append(u.getPassword());
+            sb.append("\"");
+        }
+        sb.append("}");
+        System.out.println(sb.toString());
+        return Entity.entity(sb.toString(), MediaType.APPLICATION_JSON);
     }
 }

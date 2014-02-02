@@ -1,8 +1,7 @@
 package cz.cvut.fel.jee.model;
 
 import cz.cvut.fel.jee.rest.adapters.UserAdapter;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+
 import java.util.Set;
 
 import javax.persistence.*;

@@ -6,11 +6,9 @@
 package cz.cvut.fel.jee.beans;
 
 import cz.cvut.fel.jee.annotations.CurrentLoggedUser;
-import cz.cvut.fel.jee.annotations.VideoFilesystem;
 import cz.cvut.fel.jee.ejb.VideoService;
 import cz.cvut.fel.jee.model.User;
 import cz.cvut.fel.jee.model.Video;
-import org.infinispan.io.GridFilesystem;
 
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;

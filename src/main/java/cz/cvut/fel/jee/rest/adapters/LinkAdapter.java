@@ -48,7 +48,9 @@ public class LinkAdapter<T extends EntityXml, W extends EntityObject> extends Xm
     @Override
     public T marshal(W v) throws Exception {
         T t = typeXml.newInstance();
-        t.setId(v.getId());
+        if(v.getId() != null) {
+            t.setId(v.getId());
+        }
         return t;
     }
     

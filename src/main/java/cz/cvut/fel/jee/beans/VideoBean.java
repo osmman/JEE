@@ -9,21 +9,19 @@ import cz.cvut.fel.jee.annotations.VideoFilesystem;
 import cz.cvut.fel.jee.ejb.CommentService;
 import cz.cvut.fel.jee.ejb.VideoService;
 import cz.cvut.fel.jee.exceptions.NotFoundException;
+import cz.cvut.fel.jee.exceptions.UnpublishedException;
 import cz.cvut.fel.jee.model.Comment;
 import cz.cvut.fel.jee.model.Video;
-
 import java.io.File;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
-
 import javax.annotation.PostConstruct;
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
-
 import org.infinispan.io.GridFilesystem;
 
 /**
@@ -73,6 +71,9 @@ public class VideoBean {
                     autohorName = entity.getAuthor().getEmail();
                 } else {
                     throw new NotFoundException();
+                }
+                if(!entity.getPublished()){
+                    throw new UnpublishedException();
                 }
             }else{
                 videoName = "";

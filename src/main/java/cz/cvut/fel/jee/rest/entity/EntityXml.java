@@ -18,13 +18,13 @@ public abstract class EntityXml {
     
     private static final String address = "/semestralka/api/";
     
-    @XmlElement(required = true)
+    
     protected Long id;
 
     public EntityXml() {
     }
     
-    public EntityXml(Long id) {
+    public EntityXml(long id) {
         this.id = id;
     }   
 

@@ -7,12 +7,12 @@ import cz.cvut.fel.jee.model.User;
 import javax.ejb.Stateful;
 import javax.enterprise.context.SessionScoped;
 import javax.enterprise.inject.Produces;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-
 import java.io.Serializable;
 
 @Named(value = "authenticator")
@@ -20,56 +20,70 @@ import java.io.Serializable;
 @SessionScoped
 public class Authenticator implements Serializable {
 
-	private static final long serialVersionUID = 2072170216118113636L;
+    private static final long serialVersionUID = 2072170216118113636L;
 
-	@SuppressWarnings("CdiUnproxyableBeanTypesInspection")
-	@Inject
-	private transient UserService userService;
+    @SuppressWarnings("CdiUnproxyableBeanTypesInspection")
+    @Inject
+    private transient UserService userService;
 
-	private String password;
+    @Inject
+    private FacesContext facesContext;
 
-	private String email;
+    private String password;
 
-	private User currentUser;
+    private String email;
 
-	public String getPassword() {
-		return password;
-	}
+    private User currentUser;
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    public String getPassword() {
+        return password;
+    }
 
-	public String getEmail() {
-		return email;
-	}
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-	public void setEmail(String username) {
-		this.email = username;
-	}
+    public String getEmail() {
+        return email;
+    }
 
-	public void login(){
-		FacesContext context = FacesContext.getCurrentInstance();
-		HttpServletRequest request = (HttpServletRequest) context
-		    .getExternalContext().getRequest();
-		try {
-			request.login(email, password);
-			User user = userService.findByEmail(email);
-			currentUser = user;
-			password = null;
-			email = null;
-		} catch (ServletException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+    public void setEmail(String username) {
+        this.email = username;
+    }
 
-	}
+    public String login() {
+        HttpServletRequest request = (HttpServletRequest) facesContext
+                .getExternalContext().getRequest();
+        try {
+            request.login(email, password);
+            User user = userService.findByEmail(email);
+            currentUser = user;
+            password = null;
+            email = null;
+        } catch (ServletException e) {
+            facesContext.addMessage(null,new FacesMessage("Bad login."));
+            return "";
+        }
 
-	@Produces
-	@Named("currentUser")
-	@CurrentLoggedUser
-	public User getCurrentUser() {
-		return currentUser;
-	}
+        return "index";
+    }
+
+    public String logout(){
+        HttpServletRequest request = (HttpServletRequest) facesContext
+                .getExternalContext().getRequest();
+        try {
+            request.logout();
+            currentUser = null;
+        } catch (ServletException e) {
+        }
+        return "index";
+    }
+
+    @Produces
+    @Named("currentUser")
+    @CurrentLoggedUser
+    public User getCurrentUser() {
+        return currentUser;
+    }
 
 }

@@ -9,7 +9,6 @@
  */
 package cz.cvut.fel.jee.rest.adapters;
 
-import cz.cvut.fel.jee.model.User;
 import cz.cvut.fel.jee.model.Video;
 import cz.cvut.fel.jee.rest.entity.VideoXml;
 import cz.cvut.fel.jee.rest.entity.links.UserLinkXml;

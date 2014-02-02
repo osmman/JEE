@@ -509,8 +509,8 @@
                 </security-domain>
                 <security-domain name="semestralka" cache-type="default">
                     <authentication>
-                        <login-module name="Database " code="Database" flag="required">
-                            <module-option name="dsJndiName " value="java:jboss/jeelab/AppDS"/>
+                        <login-module code="org.jboss.security.auth.spi.DatabaseServerLoginModule" flag="required">
+                            <module-option name="dsJndiName" value="java:jboss/jeelab/AppDS"/>
                             <module-option name="principalsQuery" value="SELECT PASSWORD FROM USERS WHERE EMAIL=?"/>
                             <module-option name="rolesQuery" value="SELECT NAME, 'Roles' FROM USERS INNER JOIN USERS_ROLES ON (USERS.ID = USERS_ID) LEFT JOIN ROLES ON (ROLES_ID = ROLES.ID) WHERE EMAIL=?"/>
                         </login-module>

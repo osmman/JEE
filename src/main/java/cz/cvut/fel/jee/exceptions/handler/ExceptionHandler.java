@@ -2,6 +2,7 @@ package cz.cvut.fel.jee.exceptions.handler;
 
 import cz.cvut.fel.jee.exceptions.AuthenticationException;
 import cz.cvut.fel.jee.exceptions.NotFoundException;
+import cz.cvut.fel.jee.exceptions.UnpublishedException;
 
 import javax.ejb.EJBException;
 import javax.el.ELException;
@@ -11,6 +12,7 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ExceptionQueuedEvent;
 import javax.faces.event.ExceptionQueuedEventContext;
+import javax.servlet.ServletException;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.Map;
@@ -41,7 +43,7 @@ public class ExceptionHandler extends ExceptionHandlerWrapper {
             ExceptionQueuedEventContext context = (ExceptionQueuedEventContext) event.getSource();
             Throwable t = context.getException();
             FacesContext fc = context.getContext();
-            while ((t instanceof FacesException || t instanceof EJBException || t instanceof ELException)
+            while ((t instanceof FacesException || t instanceof EJBException || t instanceof ELException || t instanceof ServletException)
                     && t.getCause() != null) {
                 t = t.getCause();
             }
@@ -63,6 +65,11 @@ public class ExceptionHandler extends ExceptionHandlerWrapper {
                 return true;
             } else if (exception instanceof NotFoundException) {
                 externalContext.dispatch("/error/404.xhtml");
+                fc.responseComplete();
+                return true;
+            } else if(exception instanceof UnpublishedException){
+                System.out.println("unpublished");
+                externalContext.dispatch("/error/unpublished.xhtml");
                 fc.responseComplete();
                 return true;
             } else if (exception instanceof javax.persistence.PersistenceException) {

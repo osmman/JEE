@@ -7,7 +7,6 @@ package cz.cvut.fel.jee.rest.entity;
 
 import cz.cvut.fel.jee.rest.entity.links.UserLinkXml;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
