@@ -13,13 +13,18 @@ import cz.cvut.fel.jee.ejb.VideoService;
 import cz.cvut.fel.jee.model.Role;
 import cz.cvut.fel.jee.model.User;
 import cz.cvut.fel.jee.model.Video;
+import cz.cvut.fel.jee.security.Authenticator;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
+
 import java.io.InputStream;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashSet;
@@ -40,15 +45,14 @@ public class StartUp {
 
     @Inject
     private VideoService videoService;
-
-    @Inject
-    private NewsService newsService;
+   
     
     @Inject
     private RoleService roleService;
-
+    
     @Inject
-    private ServletContext ctx;
+    private FacesContext facesContext;
+
 
     @Inject
     private NewsGeneratorTimer newsGeneratorTimer;
@@ -110,6 +114,7 @@ public class StartUp {
 
     public void uploadVideo() {
         if (videoService.numberOfVideos() < 1) {
+        	        	
             InputStream resourceAsStream = this.getClass().getClassLoader().getResourceAsStream("video/video.mp4");
             Video video = new Video();
             video.setName("video.mp4");
@@ -118,6 +123,16 @@ public class StartUp {
             video.setAuthor(user);
             videoService.create(video, resourceAsStream, "video/mp4");
             newsGeneratorTimer.add(video);
+            
+            resourceAsStream = this.getClass().getClassLoader().getResourceAsStream("video/trpaslik.mp4");
+            video = new Video();
+            video.setName("trpaslik.mp4");
+            video.setPublished(true);
+            user = userService.find(1L);
+            video.setAuthor(user);
+            videoService.create(video, resourceAsStream, "video/mp4");
+            newsGeneratorTimer.add(video);
+            
         }
     }
 }

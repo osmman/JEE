@@ -98,7 +98,7 @@ public class VideoServiceImpl extends AbstractFacadeImpl<Video> implements Video
         }
     }
 
-    @RolesAllowed(Role.USER)
+    @PermitAll
     public void create(Video entity, InputStream is, String mimetype) {
         super.create(entity);
         try {
