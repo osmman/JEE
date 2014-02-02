@@ -117,7 +117,6 @@ public class StartUp {
             video.setAuthor(user);
             videoService.create(video, resourceAsStream, "video/mp4");
             newsGeneratorTimer.add(video);
-            newsGeneratorTimer.run();
         }
     }
 }
