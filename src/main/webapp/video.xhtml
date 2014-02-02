@@ -4,12 +4,18 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
 <f:view contracts="default">
     <ui:composition template="/template.xhtml">
         <ui:define name="content">
+            <f:metadata>
+                <f:viewAction action="#{videoBean.init()}" />
+            </f:metadata>
             <script src="resources/js/chatwebsocket.js" type="application/javascript"></script>
+            <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&amp;sensor=false"
+                    type="application/javascript"></script>
             <div class="row">
                 <div class="col-md-8">
                     <c:choose>
@@ -28,6 +34,27 @@
                     </c:choose>
                 </div>
 
+                <div class="col-md-4 panel panel-default">
+                    <div class="panel-heading">Location</div>
+                    <h:form rendered="#{videoBean.autohorName.equals(currentUser.email)}">
+                        <div class="form-group col-md-8">
+                            <h:inputText id="location" value="#{videoBean.location}"
+                                         styleClass="form-control"
+                                         p:placeholder="Location"
+                                         required="false"/>
+                            <h:message for="location" errorClass="text-danger"/>
+                        </div>
+                        <h:commandButton styleClass="btn btn-primary" id="buttonT" action="#{videoBean.editLocation()}"
+                                         value="Save">
+                            <f:param name="videoid" value="#{videoBean.videoid}"/>
+                        </h:commandButton>
+
+                    </h:form>
+                    <c:if test="#{not empty videoBean.location}">
+                        <div id="map-canvas" class="col-md-12" style="height: 15em" data-location="#{videoBean.location}"></div>
+                        <script src="resources/js/maps.js" type="application/javascript"></script>
+                    </c:if>
+                </div>
                 <div class="col-md-4 panel panel-default">
                     <div class="panel-heading">Comments</div>
                     <h:panelGroup id="chat">
@@ -51,6 +78,7 @@
                         </c:forEach>
                     </div>
                 </div>
+
             </div>
 
 

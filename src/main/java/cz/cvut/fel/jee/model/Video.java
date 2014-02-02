@@ -30,6 +30,8 @@ public class Video extends EntityObject
 
     private Boolean published;
 
+    private String location;
+
     @NotNull
     @ManyToOne
     private User author;
@@ -114,6 +116,14 @@ public class Video extends EntityObject
 
     public void setThumbs(List<String> thumbs) {
         this.thumbs = thumbs;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
     }
 
     @PrePersist
