@@ -5,18 +5,14 @@
  */
 package cz.cvut.fel.jee.trash;
 
+import cz.cvut.fel.jee.ejb.NewsService;
 import cz.cvut.fel.jee.ejb.RoleService;
 import cz.cvut.fel.jee.ejb.UserService;
 import cz.cvut.fel.jee.ejb.VideoService;
+import cz.cvut.fel.jee.model.News;
 import cz.cvut.fel.jee.model.Role;
 import cz.cvut.fel.jee.model.User;
 import cz.cvut.fel.jee.model.Video;
-
-import java.io.InputStream;
-import java.security.NoSuchAlgorithmException;
-import java.util.HashSet;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
@@ -24,6 +20,13 @@ import javax.ejb.Startup;
 import javax.inject.Inject;
 import javax.servlet.ServletContext;
 import javax.transaction.Transactional;
+import java.io.InputStream;
+import java.security.NoSuchAlgorithmException;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -39,6 +42,9 @@ public class StartUp {
 
     @Inject
     private VideoService videoService;
+
+    @Inject
+    private NewsService newsService;
     
     @Inject
     private RoleService roleService;
@@ -109,6 +115,13 @@ public class StartUp {
             User user = userService.find(4L);
             video.setAuthor(user);
             videoService.create(video, resourceAsStream, "video/mp4");
+
+            News news = new News();
+            List videoList = new LinkedList<Video>();
+            videoList.add(video);
+            news.setVideos(videoList);
+            newsService.create(news);
+
         }
     }
 }

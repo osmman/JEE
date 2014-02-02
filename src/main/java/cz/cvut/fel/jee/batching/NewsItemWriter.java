@@ -37,11 +37,11 @@ public class NewsItemWriter extends AbstractItemWriter {
     public void writeItems(List<Object> objects) throws Exception {
         log.info("Saving batch!");
         News news = new News();
-        news.setNews(new LinkedList<Video>());
+        news.setVideos(new LinkedList<Video>());
         for (Object entity : objects) {
             log.info("Storing video change!");
             videoService.edit((Video) entity);
-            news.getNews().add((Video) entity);
+            news.getVideos().add((Video) entity);
         }
 
         log.info("News created!");
