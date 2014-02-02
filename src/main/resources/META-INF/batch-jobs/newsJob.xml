@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <job id="newsJob" xmlns="http://xmlns.jcp.org/xml/ns/javaee" version="1.0">
     <step id="newsStep" >
-        <chunk item-count="2" checkpoint-policy="item" buffer-items="true">
+        <chunk buffer-items="true">
             <reader ref="newsItemReader"/>
             <processor ref="newsItemProcessor"/>
             <writer ref="newsItemWriter"/>
