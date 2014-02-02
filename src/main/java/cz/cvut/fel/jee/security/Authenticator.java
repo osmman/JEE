@@ -26,9 +26,6 @@ public class Authenticator implements Serializable {
     @Inject
     private transient UserService userService;
 
-    @Inject
-    private FacesContext facesContext;
-
     private String password;
 
     private String email;
@@ -49,16 +46,6 @@ public class Authenticator implements Serializable {
 
     public void setEmail(String username) {
         this.email = username;
-    }
-
-    public String loginFaces() {
-        HttpServletRequest request = (HttpServletRequest) facesContext
-                .getExternalContext().getRequest();
-        if(!login(request)){
-            facesContext.addMessage(null,new FacesMessage("Bad login."));
-            return "";
-        }
-        return "index";
     }
     
     public boolean login(HttpServletRequest request){
@@ -81,14 +68,6 @@ public class Authenticator implements Serializable {
         } catch (ServletException e) {
         }
         return true;
-    }
-    
-    
-    public String logoutFaces(){
-        HttpServletRequest request = (HttpServletRequest) facesContext
-                .getExternalContext().getRequest();
-        logout(request);
-        return "index";
     }
 
     @Produces
