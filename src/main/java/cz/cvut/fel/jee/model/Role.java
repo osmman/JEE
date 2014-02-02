@@ -13,6 +13,10 @@ public class Role extends EntityObject{
 
 	private static final long serialVersionUID = 6165139649037084589L;
 
+        public static final String ADMIN = "admin";
+        public static final String USER = "user";
+        
+        
 	@NotNull
     private String name;
 	

@@ -8,6 +8,7 @@ package cz.cvut.fel.jee.rest;
 
 import cz.cvut.fel.jee.rest.entity.Login;
 import cz.cvut.fel.jee.security.Authenticator;
+import javax.annotation.security.PermitAll;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -33,7 +34,7 @@ public class LoginResource {
     @Inject
     private Authenticator auth;
     
-    
+    @PermitAll
     @Path("login")
     @POST
     public Response login(Login login, @Context HttpServletRequest request){
@@ -48,6 +49,7 @@ public class LoginResource {
         return Response.status(Response.Status.UNAUTHORIZED).entity("Bad login or password").build();
     }
     
+    @PermitAll
     @Path("logout")
     @GET
     public Response logout(@Context HttpServletRequest request){

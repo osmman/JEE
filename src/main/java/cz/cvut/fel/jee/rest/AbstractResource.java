@@ -2,6 +2,7 @@ package cz.cvut.fel.jee.rest;
 
 import cz.cvut.fel.jee.ejb.AbstractFacade;
 import cz.cvut.fel.jee.model.EntityObject;
+import cz.cvut.fel.jee.model.Role;
 import java.util.List;
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
@@ -31,6 +32,7 @@ public abstract class AbstractResource<T extends EntityObject>
         return collection;
     }
 
+    @PermitAll
     @GET
     @Path("/{id}")
     public T find(@PathParam("id") Long id)
@@ -39,6 +41,7 @@ public abstract class AbstractResource<T extends EntityObject>
         return item;
     }
 
+    @PermitAll
     @POST
     @Path("/")
     public Response create(T item)
@@ -51,6 +54,7 @@ public abstract class AbstractResource<T extends EntityObject>
         }
     }
 
+    @PermitAll
     @PUT
     @Path("/{id}")
     public Response edit(@PathParam("id") Long id, T item)
@@ -63,7 +67,7 @@ public abstract class AbstractResource<T extends EntityObject>
         }
     }
 
-    @RolesAllowed("admin")
+    @RolesAllowed(Role.ADMIN)
     @DELETE
     @Path("/{id}")
     public Response delete(@PathParam("id") Long id)
