@@ -6,25 +6,19 @@
 package cz.cvut.fel.jee.trash;
 
 import cz.cvut.fel.jee.beans.NewsGeneratorTimer;
-import cz.cvut.fel.jee.ejb.NewsService;
 import cz.cvut.fel.jee.ejb.RoleService;
 import cz.cvut.fel.jee.ejb.UserService;
 import cz.cvut.fel.jee.ejb.VideoService;
 import cz.cvut.fel.jee.model.Role;
 import cz.cvut.fel.jee.model.User;
 import cz.cvut.fel.jee.model.Video;
-import cz.cvut.fel.jee.security.Authenticator;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
-
 import java.io.InputStream;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashSet;
@@ -124,13 +118,13 @@ public class StartUp {
             videoService.create(video, resourceAsStream, "video/mp4");
             newsGeneratorTimer.add(video);
             
-            resourceAsStream = this.getClass().getClassLoader().getResourceAsStream("video/trpaslik.mp4");
+            resourceAsStream = this.getClass().getClassLoader().getResourceAsStream("video/trpaslik.ogv");
             video = new Video();
-            video.setName("trpaslik.mp4");
+            video.setName("trpaslik.ogv");
             video.setPublished(true);
             user = userService.find(1L);
             video.setAuthor(user);
-            videoService.create(video, resourceAsStream, "video/mp4");
+            videoService.create(video, resourceAsStream, "video/ogv");
             newsGeneratorTimer.add(video);
             
         }
