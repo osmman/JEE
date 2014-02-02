@@ -51,31 +51,44 @@ public class Authenticator implements Serializable {
         this.email = username;
     }
 
-    public String login() {
+    public String loginFaces() {
         HttpServletRequest request = (HttpServletRequest) facesContext
                 .getExternalContext().getRequest();
+        if(!login(request)){
+            facesContext.addMessage(null,new FacesMessage("Bad login."));
+            return "";
+        }
+        return "index";
+    }
+    
+    public boolean login(HttpServletRequest request){
         try {
+            System.out.println(request.changeSessionId());
             request.login(email, password);
             User user = userService.findByEmail(email);
             currentUser = user;
             password = null;
             email = null;
         } catch (ServletException e) {
-            facesContext.addMessage(null,new FacesMessage("Bad login."));
-            return "";
+            return false;
         }
-
-        return "index";
+        return true;
     }
-
-    public String logout(){
-        HttpServletRequest request = (HttpServletRequest) facesContext
-                .getExternalContext().getRequest();
+    
+    public boolean logout(HttpServletRequest request){
         try {
             request.logout();
             currentUser = null;
         } catch (ServletException e) {
         }
+        return true;
+    }
+    
+    
+    public String logoutFaces(){
+        HttpServletRequest request = (HttpServletRequest) facesContext
+                .getExternalContext().getRequest();
+        logout(request);
         return "index";
     }
 
