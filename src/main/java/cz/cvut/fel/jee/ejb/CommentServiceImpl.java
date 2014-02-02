@@ -45,7 +45,6 @@ public class CommentServiceImpl extends AbstractFacadeImpl<Comment> implements C
     }
 
     @Override
-    @RolesAllowed(Role.USER)
     public Comment addCommentMessage(CommentMessage comment) {
         Comment entity = new Comment();
         entity.setAuthor(userService.find(comment.getAuthorId()));
