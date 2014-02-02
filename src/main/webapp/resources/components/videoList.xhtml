@@ -31,7 +31,7 @@
             </h:panelGroup>
 
             <h:form rendered="#{video.published}">
-                <h:commandButton rendered="#{currentUser.email eq video.author.email}" action="#{videoList.delete(video)}"
+                <h:commandButton rendered="#{currentUser.email eq video.author.email}" action="#{videos.delete(video)}"
                                  onclick="if(! confirm('Do you really want delete video?')) return false" value="Delete"
                                  styleClass="btn btn-primary btn-sm"/>
             </h:form>
