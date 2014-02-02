@@ -50,9 +50,9 @@ public class NewsBean {
 
     private Long newsid;
 
-    private Date createAt;
+    private Date createdAt;
 
-    private List<Video> videos;
+    private List<Video> videoList;
 
     private News entity;
 
@@ -60,21 +60,22 @@ public class NewsBean {
     protected void init() {
         try {
             Map<String, String> parameterMap = (Map<String, String>) facesContext.getExternalContext().getRequestParameterMap();
-            if (parameterMap.containsKey("videoid")) {
-                newsid = Long.valueOf(parameterMap.get("videoid"));
+            if (parameterMap.containsKey("newsid")) {
+                newsid = Long.valueOf(parameterMap.get("newsid"));
+                log.info("Nasel jsem ID more: " + newsid);
             }
 
             if (newsid != null) {
                 entity = newsService.find(newsid);
                 if (entity != null) {
-                    createAt = entity.getCreatedAt();
-                    videos = entity.getVideos();
+                    createdAt = entity.getCreatedAt();
+                    videoList = entity.getVideos();
                 } else {
                     throw new NotFoundException();
                 }
             }else{
-                createAt = new Date();
-                videos = Collections.EMPTY_LIST;
+                createdAt = new Date();
+                videoList = Collections.EMPTY_LIST;
             }
         }catch(NumberFormatException ex){
             log.warning(ex.toString());
@@ -95,19 +96,19 @@ public class NewsBean {
         this.newsid = newsid;
     }
 
-    public Date getCreateAt() {
-        return createAt;
+    public Date getCreatedAt() {
+        return createdAt;
     }
 
-    public void setCreateAt(Date createAt) {
-        this.createAt = createAt;
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
     }
 
-    public List<Video> getVideos() {
-        return videos;
+    public List<Video> getVideoList() {
+        return videoList;
     }
 
-    public void setVideos(List<Video> videos) {
-        this.videos = videos;
+    public void setVideoList(List<Video> videoList) {
+        this.videoList = videoList;
     }
 }

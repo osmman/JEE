@@ -15,7 +15,7 @@ public class News extends EntityObject {
     private Date createdAt;
 
     @OrderBy("createdAt")
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<Video> videos;
 
     public Date getCreatedAt() {
