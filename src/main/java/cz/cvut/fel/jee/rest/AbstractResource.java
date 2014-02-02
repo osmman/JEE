@@ -1,9 +1,12 @@
 package cz.cvut.fel.jee.rest;
 
+import cz.cvut.fel.jee.annotations.CurrentLoggedUser;
 import cz.cvut.fel.jee.ejb.AbstractFacade;
 import cz.cvut.fel.jee.model.EntityObject;
+import cz.cvut.fel.jee.model.User;
 import java.util.List;
 import javax.ejb.EJBTransactionRolledbackException;
+import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -17,6 +20,10 @@ public abstract class AbstractResource<T extends EntityObject>
 {
 
     protected abstract AbstractFacade<T> getFacade();
+    
+    @Inject
+    @CurrentLoggedUser
+    protected User loggedUser;
 
     @GET
     @Path("/")
