@@ -63,7 +63,6 @@ public class Authenticator implements Serializable {
     
     public boolean login(HttpServletRequest request){
         try {
-            System.out.println(request.changeSessionId());
             request.login(email, password);
             User user = userService.findByEmail(email);
             currentUser = user;
