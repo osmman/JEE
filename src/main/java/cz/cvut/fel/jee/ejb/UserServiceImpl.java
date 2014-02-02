@@ -3,7 +3,10 @@ package cz.cvut.fel.jee.ejb;
 import cz.cvut.fel.jee.model.Comment;
 import cz.cvut.fel.jee.model.User;
 import cz.cvut.fel.jee.model.Video;
+
 import java.util.Set;
+
+import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -24,11 +27,13 @@ public class UserServiceImpl extends AbstractFacadeImpl<User> implements UserSer
     }
 
     @Override
+    @PermitAll
     protected EntityManager getEntityManager() {
         return em;
     }
 
     @Override
+    @PermitAll
     public User findByEmail(String email) {
         TypedQuery<User> query = em.createNamedQuery("User.findByEmail", User.class).setParameter("email", email);
         User user = query.getSingleResult();
@@ -36,6 +41,7 @@ public class UserServiceImpl extends AbstractFacadeImpl<User> implements UserSer
     }
 
     @Override
+    @PermitAll
     public Set<Comment> getAllComments(Long id) {
         User user = find(id);
         Set<Comment> comments = user.getComments();
@@ -45,6 +51,7 @@ public class UserServiceImpl extends AbstractFacadeImpl<User> implements UserSer
     }
 
     @Override
+    @PermitAll
     public Set<Video> getAllVideos(Long id) {
         User user = find(id);
         Set<Video> videos = user.getVideos();
