@@ -2,7 +2,7 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-                xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
+                xmlns:p="http://xmlns.jcp.org/jsf/passthrough" xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <nav class="navbar navbar-static-top navbar-default" role="navigation">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-1">
@@ -11,18 +11,29 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <h:link styleClass="navbar-brand" outcome="index" value="Project name"/>
+            <h:link styleClass="navbar-brand" outcome="/index" value="Project name"/>
         </div>
         <h:form>
             <div class="navbar-collapse collapse" id="navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <li><h:link value="News" outcome="newslist"/></li>
-                    <li><h:link value="My video" outcome="myvideos" rendered="#{not empty currentUser}"/></li>
-                    <li><h:link value="Upload" outcome="videoupload" rendered="#{not empty currentUser}"/></li>
+                    <li><h:link value="News" outcome="/newslist"/></li>
+                    <c:if test="#{rolesHelper.isAdmin()}">
+                    <li>
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            Admin <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><h:link value="Users" outcome="/administration/users"/></li>
+                            <li><h:link value="Videos" outcome="/administration/video"/></li>
+                        </ul>
+                    </li>
+                    </c:if>
+                    <li><h:link value="My video" outcome="/myvideos" rendered="#{not empty currentUser}"/></li>
+                    <li><h:link value="Upload" outcome="/videoupload" rendered="#{not empty currentUser}"/></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><h:link value="Login" outcome="login" rendered="#{empty currentUser}"/></li>
-                    <li><h:link value="Registration" outcome="registration" rendered="#{empty currentUser}"/></li>
+                    <li><h:link value="Login" outcome="/login" rendered="#{empty currentUser}"/></li>
+                    <li><h:link value="Registration" outcome="/registration" rendered="#{empty currentUser}"/></li>
                     <li><h:commandLink value="Logout" action="#{loginBean.logout()}"
                                        rendered="#{not empty currentUser}"/></li>
                     <li>
