@@ -2,10 +2,15 @@ package cz.cvut.fel.jee.rest;
 
 import cz.cvut.fel.jee.ejb.AbstractFacade;
 import cz.cvut.fel.jee.ejb.UserService;
+import cz.cvut.fel.jee.model.Role;
 import cz.cvut.fel.jee.model.User;
+import java.util.List;
+import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -27,10 +32,19 @@ public class UserResource extends AbstractResource<User> {
     protected AbstractFacade<User> getFacade() {
         return facade;
     }
+    
+    @RolesAllowed(Role.ADMIN)
+    @GET
+    @Path("/")
+    @Override
+    public List<User> getAll(@HeaderParam("X-Base") Integer base,
+            @HeaderParam("X-Offset") Integer offset) {
+        return super.getAll(base, offset);
+    }
 
     @PUT
     @Path("/{id}")
-    @RolesAllowed("admin")
+    @RolesAllowed(Role.ADMIN)
     @Override
     public Response edit(@PathParam("id") Long id, User item) {
         User edit = facade.find(id);
@@ -45,7 +59,7 @@ public class UserResource extends AbstractResource<User> {
 
     @POST
     @Path("/")
-    @RolesAllowed("admin")
+    @PermitAll
     @Override
     public Response create(User item) {
         if (item.getEmail() == null || item.getPassword() == null) {

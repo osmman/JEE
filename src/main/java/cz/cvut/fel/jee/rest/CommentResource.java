@@ -10,8 +10,11 @@ import cz.cvut.fel.jee.ejb.CommentService;
 import cz.cvut.fel.jee.ejb.UserService;
 import cz.cvut.fel.jee.ejb.VideoService;
 import cz.cvut.fel.jee.model.Comment;
+import cz.cvut.fel.jee.model.Role;
 import cz.cvut.fel.jee.model.User;
 import cz.cvut.fel.jee.model.Video;
+import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.ws.rs.POST;
@@ -42,6 +45,7 @@ public class CommentResource extends AbstractResource<Comment> {
         return facade;
     }
 
+    @PermitAll
     @POST
     @Path("/")
     @Override
@@ -58,6 +62,7 @@ public class CommentResource extends AbstractResource<Comment> {
         return super.create(comment);
     }
 
+    @RolesAllowed(Role.ADMIN)
     @PUT
     @Path("/{id}")
     @Override

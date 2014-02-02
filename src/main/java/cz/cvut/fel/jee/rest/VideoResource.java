@@ -8,9 +8,13 @@ package cz.cvut.fel.jee.rest;
 import cz.cvut.fel.jee.ejb.AbstractFacade;
 import cz.cvut.fel.jee.ejb.VideoService;
 import cz.cvut.fel.jee.model.Comment;
+import cz.cvut.fel.jee.model.Role;
 import cz.cvut.fel.jee.model.Video;
 import java.util.Collection;
 import java.util.List;
+import javax.annotation.security.DenyAll;
+import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
@@ -36,6 +40,7 @@ public class VideoResource extends AbstractResource<Video> {
         return facade;
     }
 
+    @PermitAll
     @GET
     @Path("/{id}/" + RestApplication.COMMENTS)
     public Collection<Comment> getVideosComments(@PathParam("id") Long id) {
@@ -43,6 +48,7 @@ public class VideoResource extends AbstractResource<Video> {
         return allComments;
     }
 
+    @DenyAll
     @POST
     @Path("/")
     @Override
@@ -50,6 +56,7 @@ public class VideoResource extends AbstractResource<Video> {
         return Response.status(Response.Status.FORBIDDEN).build();
     }
 
+    @RolesAllowed(Role.ADMIN)
     @PUT
     @Path("/{id}")
     @Override
