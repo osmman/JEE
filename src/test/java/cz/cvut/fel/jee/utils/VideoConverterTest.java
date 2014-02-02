@@ -21,8 +21,8 @@ public class VideoConverterTest
 
     @Test
     public void testConversion() throws FileNotFoundException, EncoderException {
-        File input = new File(RESOURCES + "/video/animace.wmv");
-        File output = new File(RESOURCES + "/video/output.mp4");
+        File input = new File(RESOURCES + "/video/houi3m.avi");
+        File output = new File(RESOURCES + "/video/houi3m.mp4");
         VideoConverter converter = new VideoConverter();
         converter.convertVideo(input, output);
     }

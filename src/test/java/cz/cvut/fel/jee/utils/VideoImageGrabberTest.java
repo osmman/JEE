@@ -21,7 +21,7 @@ public class VideoImageGrabberTest {
     @Test
     public void testConversion() throws FileNotFoundException, EncoderException {
 
-        String inputPath = RESOURCES + "/video/animace.wmv";
+        String inputPath = RESOURCES + "/video/houi3m.avi";
         String outputPrefixPath = RESOURCES + "/video/animace";
 
         VideoImageGrabber vg = new VideoImageGrabber(inputPath, outputPrefixPath, 3);
