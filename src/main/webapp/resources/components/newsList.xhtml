@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:composite="http://xmlns.jcp.org/jsf/composite"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<composite:interface>
+    <composite:attribute name="value" required="true"/>
+    <composite:attribute name="rendered" default="true"/>
+</composite:interface>
+
+<composite:implementation>
+    <h:dataTable styleClass="table" value="#{cc.attrs.value}" var="newsItem" rendered="#{cc.attrs.rendered}">
+        <h:column>
+            <f:facet name="header">Date</f:facet>
+            <h:link value="#{newsItem.createdAt}" outcome="news">
+                <f:param name="newsid" value="#{newsItem.id}"/>
+            </h:link>
+        </h:column>
+        <h:column>
+            <f:facet name="header">Videos</f:facet>
+            <ui:repeat value="#{newsItem.videos}" var="video">
+                <h:link value="#{video.name}" outcome="video">
+                    <f:param name="videoid" value="#{video.id}"/>
+                </h:link>
+            </ui:repeat>
+        </h:column>
+    </h:dataTable>
+</composite:implementation>
+</html>
