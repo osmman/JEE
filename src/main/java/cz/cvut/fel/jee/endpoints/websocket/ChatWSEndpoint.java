@@ -9,26 +9,24 @@ import cz.cvut.fel.jee.ejb.CommentService;
 import cz.cvut.fel.jee.ejb.VideoService;
 import cz.cvut.fel.jee.model.Comment;
 
-import java.io.IOException;
-import java.util.logging.Logger;
+import javax.ejb.Singleton;
 import javax.inject.Inject;
-import javax.websocket.EncodeException;
-import javax.websocket.OnError;
-import javax.websocket.OnMessage;
-import javax.websocket.OnOpen;
-import javax.websocket.Session;
+import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
- *
  * @author saljack
  */
 @ServerEndpoint(value = "/chat/{videoid}", encoders = CommentEncoder.class, decoders = CommentDecoder.class)
+@Singleton
 public class ChatWSEndpoint {
 
     @Inject
-    private transient Logger log;
+    private Logger log;
 
     @Inject
     private CommentService commentService;
@@ -52,7 +50,7 @@ public class ChatWSEndpoint {
                         client.getBasicRemote().sendObject(comment);
                     }
                 } catch (IOException | EncodeException ex) {
-                    log.warning(ex.toString());
+                    log.log(Level.WARNING, ex.toString(), ex);
                 }
             }
         }
@@ -60,7 +58,7 @@ public class ChatWSEndpoint {
 
     @OnError
     public void onError(Session session, Throwable thr) {
-        log.warning(thr.getMessage());
+        log.log(Level.WARNING, thr.toString(), thr);
     }
 
 }

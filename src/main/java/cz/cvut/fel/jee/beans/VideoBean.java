@@ -6,6 +6,7 @@
 package cz.cvut.fel.jee.beans;
 
 import cz.cvut.fel.jee.annotations.VideoFilesystem;
+import cz.cvut.fel.jee.client.maps.MapsClient;
 import cz.cvut.fel.jee.ejb.CommentService;
 import cz.cvut.fel.jee.ejb.VideoService;
 import cz.cvut.fel.jee.exceptions.NotFoundException;
@@ -36,6 +37,9 @@ public class VideoBean {
     private Logger log;
 
     @Inject
+    private MapsClient mapsClient;
+
+    @Inject
     @VideoFilesystem
     private GridFilesystem fs;
 
@@ -56,8 +60,9 @@ public class VideoBean {
     
     private Video entity;
 
-    @PostConstruct
-    protected void init() {
+    private String location;
+
+    public void init() {
         try {
             Map<String, String> parameterMap = (Map<String, String>) facesContext.getExternalContext().getRequestParameterMap();
             if (parameterMap.containsKey("videoid")) {
@@ -69,15 +74,12 @@ public class VideoBean {
                 if (entity != null) {
                     videoName = entity.getName();
                     autohorName = entity.getAuthor().getEmail();
+                    if(location == null) location = entity.getLocation();
                 } else {
                     throw new NotFoundException();
                 }
-                if(!entity.getPublished()){
-                    throw new UnpublishedException();
-                }
-            }else{
-                videoName = "";
-                autohorName = "";
+            }else {
+                throw new NotFoundException();
             }
         }catch(NumberFormatException ex){
             log.warning(ex.toString());
@@ -125,6 +127,26 @@ public class VideoBean {
 
     public List<Comment> getComments(){
         return commentService.findByVideo(entity);
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public Video getEntity() {
+        return entity;
+    }
+
+    public String editLocation(){
+        init();
+        entity.setLocation(mapsClient.getLocation(location));
+        videoService.edit(entity);
+        location = null;
+        return "video.xhtml?videoid="+entity.getId()+"&faces-redirect=true";
     }
 
 }

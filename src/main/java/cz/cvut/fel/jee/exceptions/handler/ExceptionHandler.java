@@ -43,13 +43,14 @@ public class ExceptionHandler extends ExceptionHandlerWrapper {
             ExceptionQueuedEventContext context = (ExceptionQueuedEventContext) event.getSource();
             Throwable t = context.getException();
             FacesContext fc = context.getContext();
-            while ((t instanceof FacesException || t instanceof EJBException || t instanceof ELException || t instanceof ServletException)
+            System.out.println(t.toString());
+            while ((t instanceof FacesException || t instanceof EJBException || t instanceof ELException)
                     && t.getCause() != null) {
                 t = t.getCause();
+                System.out.println(t.toString());
             }
             boolean handled = handleException(t, fc);
             if (handled) i.remove();
-
         }
         getWrapped().handle();
     }

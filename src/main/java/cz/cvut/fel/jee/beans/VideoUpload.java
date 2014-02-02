@@ -6,6 +6,7 @@
 package cz.cvut.fel.jee.beans;
 
 import cz.cvut.fel.jee.annotations.CurrentLoggedUser;
+import cz.cvut.fel.jee.client.maps.MapsClient;
 import cz.cvut.fel.jee.ejb.VideoService;
 import cz.cvut.fel.jee.model.User;
 import cz.cvut.fel.jee.model.Video;
