@@ -3,6 +3,8 @@ package cz.cvut.fel.jee.rest;
 import cz.cvut.fel.jee.ejb.AbstractFacade;
 import cz.cvut.fel.jee.model.EntityObject;
 import java.util.List;
+import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJBTransactionRolledbackException;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -18,6 +20,7 @@ public abstract class AbstractResource<T extends EntityObject>
 
     protected abstract AbstractFacade<T> getFacade();
 
+    @PermitAll
     @GET
     @Path("/")
     public List<T> getAll(@HeaderParam("X-Base") Integer base,
@@ -60,6 +63,7 @@ public abstract class AbstractResource<T extends EntityObject>
         }
     }
 
+    @RolesAllowed("admin")
     @DELETE
     @Path("/{id}")
     public Response delete(@PathParam("id") Long id)
