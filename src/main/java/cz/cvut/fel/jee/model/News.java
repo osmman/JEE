@@ -1,9 +1,11 @@
 package cz.cvut.fel.jee.model;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 /**
  * Created by Tomáš on 29.1.14.
@@ -16,6 +18,7 @@ public class News extends EntityObject {
     private Date createdAt;
 
     @ManyToMany(fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SELECT)
     private List<Video> videos;
 
     public Date getCreatedAt() {
@@ -37,5 +40,6 @@ public class News extends EntityObject {
     @PrePersist
     private void prePersist(){
         createdAt = new Date();
+        System.out.println(videos.size());
     }
 }

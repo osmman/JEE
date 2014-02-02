@@ -5,7 +5,10 @@ import cz.cvut.fel.jee.utils.QueryBuilder;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+
 import java.util.List;
+
+import javax.annotation.security.PermitAll;
 import javax.ejb.Stateless;
 
 /**
@@ -24,30 +27,35 @@ public abstract class AbstractFacadeImpl<T extends EntityObject> implements Abst
     protected abstract EntityManager getEntityManager();
 
     @Override
+    @PermitAll
     public void create(T entity)
     {
         getEntityManager().persist(entity);
     }
 
     @Override
+    @PermitAll
     public void edit(T entity)
     {
         getEntityManager().merge(entity);
     }
 
     @Override
+    @PermitAll
     public void remove(T entity)
     {
         getEntityManager().remove(getEntityManager().contains(entity) ? entity : getEntityManager().merge(entity));
     }
 
     @Override
+    @PermitAll
     public T find(Object id)
     {
         return getEntityManager().find(entityClass, id);
     }
 
     @Override
+    @PermitAll
     public List<T> findAll(){
         QueryBuilder<T> builder = new QueryBuilder<T>(entityClass,
                 getEntityManager());
@@ -56,6 +64,7 @@ public abstract class AbstractFacadeImpl<T extends EntityObject> implements Abst
     }
 
     @Override
+    @PermitAll
     public List<T> findAll(Integer base, Integer offset)
     {
         QueryBuilder<T> builder = new QueryBuilder<T>(entityClass,
@@ -67,6 +76,7 @@ public abstract class AbstractFacadeImpl<T extends EntityObject> implements Abst
     }
 
     @Override
+    @PermitAll
     public boolean contains(T entity)
     {
         return this.getEntityManager().contains(entity);

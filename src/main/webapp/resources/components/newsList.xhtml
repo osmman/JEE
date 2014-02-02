@@ -25,6 +25,7 @@
                 <h:link value="#{video.name}" outcome="video">
                     <f:param name="videoid" value="#{video.id}"/>
                 </h:link>
+                <h:outputText value=", " />
             </ui:repeat>
         </h:column>
     </h:dataTable>
