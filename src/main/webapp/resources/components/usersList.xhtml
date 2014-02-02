@@ -24,8 +24,13 @@
         </h:column>
         <h:column>
             <h:form>
-                <h:commandButton action="#{usersBean.delete(user)}"
-                                 onclick="if(! confirm('Do you really want delete user?')) return false" value="Delete"
+                <h:commandButton action="#{usersBean.deactivate(user)}"
+                                 rendered="#{user.activated}"
+                                 onclick="if(! confirm('Do you really want deactivate user?')) return false" value="Deactivate"
+                                 styleClass="btn btn-primary btn-sm"/>
+                <h:commandButton action="#{usersBean.activate(user)}"
+                                 rendered="#{not user.activated}"
+                                 onclick="if(! confirm('Do you really want activate user?')) return false" value="Activate"
                                  styleClass="btn btn-primary btn-sm"/>
                 <h:commandButton action="#{usersBean.addAdminRole(user)}"
                                  rendered="#{not rolesHelper.isAdmin(user)}"
@@ -33,7 +38,7 @@
                                  styleClass="btn btn-primary btn-sm"/>
                 <h:commandButton action="#{usersBean.removeAdminRole(user)}"
                                  rendered="#{rolesHelper.isAdmin(user)}"
-                                 value="Delete admin role"
+                                 value="Remove admin role"
                                  styleClass="btn btn-primary btn-sm"/>
             </h:form>
         </h:column>
