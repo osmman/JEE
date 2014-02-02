@@ -513,6 +513,7 @@
                             <module-option name="dsJndiName" value="java:jboss/jeelab/AppDS"/>
                             <module-option name="principalsQuery" value="SELECT PASSWORD FROM USERS WHERE EMAIL=?"/>
                             <module-option name="rolesQuery" value="SELECT NAME, 'Roles' FROM USERS INNER JOIN USERS_ROLES ON (USERS.ID = USERS_ID) LEFT JOIN ROLES ON (ROLES_ID = ROLES.ID) WHERE EMAIL=?"/>
+                            <module-option name="unauthenticatedIdentity" value="guest"/>
                         </login-module>
                     </authentication>
                 </security-domain>
