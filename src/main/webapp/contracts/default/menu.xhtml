@@ -21,7 +21,7 @@
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li><h:link value="Login" outcome="login" rendered="#{empty currentUser}"/></li>
-                    <li><h:commandLink value="Logout" action="#{authenticator.logoutFaces()}"
+                    <li><h:commandLink value="Logout" action="#{loginBean.logout()}"
                                        rendered="#{not empty currentUser}"/></li>
                     <li>
                         <a href="#" p:rendered="#{not empty currentUser}">#{currentUser.email}</a>

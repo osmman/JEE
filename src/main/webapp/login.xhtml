@@ -12,18 +12,18 @@
 
             <h:form styleClass="form-signin" p:role="form">
                 <h2 class="form-signin-heading">Please sign in</h2>
-                    <h:inputText id="email" value="#{authenticator.email}"
+                <h:inputText id="email" value="#{loginBean.email}"
                                  styleClass="form-control"
                                  p:placeholder="Email"
                                  p:autofocus="autofocus"
                                  required="true"/>
-                    <h:inputSecret id="passwordInput" value="#{authenticator.password}"
+                <h:inputSecret id="passwordInput" value="#{loginBean.password}"
                                    styleClass="form-control"
                                    p:placeholder="Password"
                                    required="true"/>
                         <h:commandButton value="Sign in"
                                          styleClass="btn btn-primary btn-lg btn-block"
-                                         action="#{authenticator.loginFaces()}"/>
+                                         action="#{loginBean.login()}"/>
             </h:form>
         </ui:define>
     </ui:composition>
