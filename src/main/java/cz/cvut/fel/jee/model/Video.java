@@ -36,7 +36,7 @@ public class Video extends EntityObject
     @ManyToOne
     private User author;
 
-    @OneToMany(mappedBy = "video")
+    @OneToMany(mappedBy = "video", cascade = CascadeType.REMOVE)
     @OrderBy("datetime")
     private List<Comment> comments;
 

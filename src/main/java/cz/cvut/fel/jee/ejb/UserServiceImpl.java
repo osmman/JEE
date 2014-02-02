@@ -51,4 +51,16 @@ public class UserServiceImpl extends AbstractFacadeImpl<User> implements UserSer
         videos.size();
         return videos;
     }
+
+    @Override
+    public void activate(User user) {
+        user.setActivated(true);
+        edit(user);
+    }
+
+    @Override
+    public void deactivate(User user) {
+        user.setActivated(false);
+        edit(user);
+    }
 }

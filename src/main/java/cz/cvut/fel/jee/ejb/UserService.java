@@ -22,5 +22,8 @@ public interface UserService extends AbstractFacade<User>{
     Set<Comment> getAllComments(Long id);
 
     Set<Video> getAllVideos(Long id);
-    
+
+    void activate(User user);
+
+    void deactivate(User user);
 }

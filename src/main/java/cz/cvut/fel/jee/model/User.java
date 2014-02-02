@@ -1,19 +1,18 @@
 package cz.cvut.fel.jee.model;
 
 import cz.cvut.fel.jee.rest.adapters.UserAdapter;
-
-import java.util.Set;
+import org.hibernate.validator.constraints.Email;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import org.hibernate.validator.constraints.Email;
+import java.util.Set;
 
 /**
  * Created by Tomáš on 10.1.14.
  */
 @NamedQueries({
-    @NamedQuery(name = "User.findByEmail", query = "SELECT s FROM User s WHERE s.email like :email")
+        @NamedQuery(name = "User.findByEmail", query = "SELECT s FROM User s WHERE s.email like :email")
 })
 @Table(name = "users")
 @Entity
@@ -21,6 +20,9 @@ import org.hibernate.validator.constraints.Email;
 public class User extends EntityObject {
 
     private static final long serialVersionUID = 7434469730098060563L;
+
+    @NotNull
+    private Boolean activated = true;
 
     @Column(unique = true)
     private String email;
@@ -33,7 +35,8 @@ public class User extends EntityObject {
     @OneToMany(mappedBy = "author")
     private Set<Comment> comments;
 
-    @ManyToMany
+
+    @ManyToMany(fetch = FetchType.EAGER)
     private Set<Role> roles;
 
     @Email
@@ -79,4 +82,11 @@ public class User extends EntityObject {
         this.roles = roles;
     }
 
+    public Boolean getActivated() {
+        return activated;
+    }
+
+    public void setActivated(Boolean activated) {
+        this.activated = activated;
+    }
 }
