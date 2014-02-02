@@ -2,16 +2,21 @@ package cz.cvut.fel.jee.ejb;
 
 import cz.cvut.fel.jee.annotations.VideoFilesystem;
 import cz.cvut.fel.jee.model.Comment;
+import cz.cvut.fel.jee.model.Role;
 import cz.cvut.fel.jee.model.User;
 import cz.cvut.fel.jee.model.Video;
+
 import org.infinispan.io.GridFilesystem;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJBException;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.servlet.http.Part;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -45,6 +50,7 @@ public class VideoServiceImpl extends AbstractFacadeImpl<Video> implements Video
     }
 
     @PostConstruct
+    @PermitAll
     private void init() {
         createDirectory();
     }
@@ -58,6 +64,7 @@ public class VideoServiceImpl extends AbstractFacadeImpl<Video> implements Video
      * @param video Part for uploaded file
      */
     @Override
+    @RolesAllowed(Role.USER)
     public void create(Video entity, Part video) {
         super.create(entity);
         try {
@@ -91,6 +98,7 @@ public class VideoServiceImpl extends AbstractFacadeImpl<Video> implements Video
         }
     }
 
+    @PermitAll
     public void create(Video entity, InputStream is, String mimetype) {
         super.create(entity);
         try {
@@ -112,6 +120,7 @@ public class VideoServiceImpl extends AbstractFacadeImpl<Video> implements Video
     }
 
     @Override
+    @PermitAll
     public File getVideoFile(Long id) {
         Video video = find(id);
         if (video == null) {
@@ -120,6 +129,7 @@ public class VideoServiceImpl extends AbstractFacadeImpl<Video> implements Video
         return fileSystem.getFile(video.getPath());
     }
 
+    @PermitAll
     private void createDirectory() {
         File dir = fileSystem.getFile(UPLOADED_PATH);
         if (!dir.exists()) {
@@ -131,6 +141,7 @@ public class VideoServiceImpl extends AbstractFacadeImpl<Video> implements Video
         }
     }
 
+    @PermitAll
     private static String getExtension(String filename) {
         int dot = filename.lastIndexOf(".");
         if (dot == -1) {
@@ -140,25 +151,30 @@ public class VideoServiceImpl extends AbstractFacadeImpl<Video> implements Video
     }
 
     @Override
+    @PermitAll
     protected EntityManager getEntityManager() {
         return em;
     }
 
     @Override
+    @PermitAll
     public List<Video> findByAuthor(User author) {
         return em.createNamedQuery("Video.findByAuthor").setParameter("author", author).getResultList();
     }
 
+    @PermitAll
     public List<Video> findAllPublished(){
         return em.createNamedQuery("Video.findAllPublished").getResultList();
     }
 
     @Override
+    @PermitAll
     public int numberOfVideos() {
         return ((Number) em.createNamedQuery("Video.count").getSingleResult()).intValue();
     }
 
     @Override
+    @PermitAll
     public List<Comment> getAllComments(Long id) {
         Video video = find(id);
         List<Comment> comments = video.getComments();

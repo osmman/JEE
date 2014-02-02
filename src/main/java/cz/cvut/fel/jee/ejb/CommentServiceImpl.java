@@ -2,11 +2,15 @@ package cz.cvut.fel.jee.ejb;
 
 import cz.cvut.fel.jee.endpoints.websocket.CommentMessage;
 import cz.cvut.fel.jee.model.Comment;
+import cz.cvut.fel.jee.model.Role;
 import cz.cvut.fel.jee.model.Video;
 
+import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+
 import java.util.List;
 
 /**
@@ -29,16 +33,19 @@ public class CommentServiceImpl extends AbstractFacadeImpl<Comment> implements C
     }
 
     @Override
+    @PermitAll
     protected EntityManager getEntityManager() {
         return em;
     }
 
     @Override
+    @PermitAll
     public List<Comment> findByVideo(Video video) {
         return em.createNamedQuery("Comment.findByVideo").setParameter("video", video).getResultList();
     }
 
     @Override
+    @RolesAllowed(Role.USER)
     public Comment addCommentMessage(CommentMessage comment) {
         Comment entity = new Comment();
         entity.setAuthor(userService.find(comment.getAuthorId()));
