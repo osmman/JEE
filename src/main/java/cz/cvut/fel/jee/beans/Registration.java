@@ -29,7 +29,7 @@ public class Registration {
 
     @PostConstruct
     private void init(){
-        Role role = roleService.findByName("user");
+        Role role = roleService.findByName(Role.USER);
         newUser = new User();
         newUser.setRoles(new HashSet<Role>());
         newUser.getRoles().add(role);

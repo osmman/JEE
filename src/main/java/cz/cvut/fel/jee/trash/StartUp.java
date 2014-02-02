@@ -59,11 +59,11 @@ public class StartUp {
 
     public void populate() throws NoSuchAlgorithmException {
         Role adminRole = new Role();
-        adminRole.setName("admin");
+        adminRole.setName(Role.ADMIN);
         roleService.create(adminRole);
 
         Role userRole = new Role();
-        userRole.setName("user");
+        userRole.setName(Role.USER);
         roleService.create(userRole);
 
         User user = new User();
