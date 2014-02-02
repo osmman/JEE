@@ -120,11 +120,11 @@ public class StartUp {
             
             resourceAsStream = this.getClass().getClassLoader().getResourceAsStream("video/trpaslik.ogv");
             video = new Video();
-            video.setName("trpaslik.mp4");
+            video.setName("trpaslik.ogv");
             video.setPublished(true);
             user = userService.find(1L);
             video.setAuthor(user);
-            videoService.create(video, resourceAsStream, "video/mp4");
+            videoService.create(video, resourceAsStream, "video/ogv");
             newsGeneratorTimer.add(video);
             
         }

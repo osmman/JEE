@@ -64,7 +64,7 @@ public class NewsItemProcessor implements ItemProcessor {
         log.info(String.format("Start grabing images from video: %s.", video.getName()));
         VideoImageGrabber vg = new VideoImageGrabber(working_video.getPath(), outputImagePrefix, IMAGE_COUNT);
         List<File> images = vg.gramImages();
-        List<File> images = new LinkedList<File>();
+//        List<File> images = new LinkedList<File>();
         log.info("Grabing images done!");
 
         log.info("Saving images.");
