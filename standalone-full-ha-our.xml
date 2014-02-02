@@ -225,7 +225,7 @@
             </thread-pools>
             <iiop enable-by-default="false" use-qualified-name="false"/>
             <default-security-domain value="semestralka"/>
-            <default-missing-method-permissions-deny-access value="true"/>
+            <default-missing-method-permissions-deny-access value="false"/>
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:io:1.0">
             <worker name="default" io-threads="3"/>

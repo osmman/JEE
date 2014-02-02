@@ -4,6 +4,7 @@ import cz.cvut.fel.jee.model.Comment;
 import cz.cvut.fel.jee.model.User;
 import cz.cvut.fel.jee.model.Video;
 import java.util.Set;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -53,12 +54,14 @@ public class UserServiceImpl extends AbstractFacadeImpl<User> implements UserSer
     }
 
     @Override
+    @RolesAllowed({"admin"})
     public void activate(User user) {
         user.setActivated(true);
         edit(user);
     }
 
     @Override
+    @RolesAllowed({"admin"})
     public void deactivate(User user) {
         user.setActivated(false);
         edit(user);
