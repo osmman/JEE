@@ -11,11 +11,11 @@
 </composite:interface>
 
 <composite:implementation>
-    <h:dataTable styleClass="table" value="#{cc.attrs.value}" var="news" rendered="#{cc.attrs.rendered}">
+    <h:dataTable styleClass="table" value="#{cc.attrs.value}" var="newsItem" rendered="#{cc.attrs.rendered}">
         <h:column>
             <f:facet name="header">Date</f:facet>
-            <h:link value="#{news.createdAt}" outcome="news">
-                <f:param name="newsid" value="#{news.id}"/>
+            <h:link value="#{newsItem.createdAt}" outcome="news">
+                <f:param name="newsid" value="#{newsItem.id}"/>
             </h:link>
         </h:column>
         <!--<h:column>-->
