@@ -53,12 +53,12 @@ public class StartUp {
 
     @PostConstruct
     public void init() {
-        try {
-            populate();
-            uploadVideo();
-        } catch (NoSuchAlgorithmException ex) {
-            Logger.getLogger(StartUp.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//        try {
+//            populate();
+//            uploadVideo();
+//        } catch (NoSuchAlgorithmException ex) {
+//            Logger.getLogger(StartUp.class.getName()).log(Level.SEVERE, null, ex);
+//        }
 
     }
 
