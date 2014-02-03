@@ -1107,7 +1107,7 @@
                         </security>
                     </datasource>
                     <datasource jndi-name="java:jboss/jeelab/AppDS" pool-name="jeelab-ds" enabled="true" use-java-context="true">
-                        <connection-url>jdbc:h2:tcp://${jboss.bind.address:127.0.0.1}:99092/h2db/ejava;DB_CLOSE_DELAY=-1</connection-url>
+                        <connection-url>jdbc:h2:tcp://${jboss.bind.address:127.0.0.1}:19092/h2db/ejava;DB_CLOSE_DELAY=-1</connection-url>
                         <driver>h2</driver>
                     </datasource>
                     <drivers>
