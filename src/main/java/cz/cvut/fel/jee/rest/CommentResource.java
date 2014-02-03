@@ -5,6 +5,7 @@
  */
 package cz.cvut.fel.jee.rest;
 
+import cz.cvut.fel.jee.annotations.CurrentLoggedUser;
 import cz.cvut.fel.jee.ejb.AbstractFacade;
 import cz.cvut.fel.jee.ejb.CommentService;
 import cz.cvut.fel.jee.ejb.UserService;
@@ -39,6 +40,10 @@ public class CommentResource extends AbstractResource<Comment> {
 
     @Inject
     protected UserService userService;
+    
+    @Inject
+    @CurrentLoggedUser
+    private User loggedUser;
 
     @Override
     protected AbstractFacade<Comment> getFacade() {
@@ -50,10 +55,10 @@ public class CommentResource extends AbstractResource<Comment> {
     @Path("/")
     @Override
     public Response create(Comment item) {
-        if (item.getAuthor() == null || item.getVideo() == null) {
+        if (loggedUser == null || item.getVideo() == null || loggedUser == null) {
             return Response.status(Response.Status.BAD_REQUEST).entity("Validation error").build();
         }
-        User u = userService.find(item.getAuthor().getId());
+        User u = userService.find(loggedUser.getId());
         Video v = videoService.find(item.getVideo().getId());
         Comment comment = new Comment();
         comment.setAuthor(u);

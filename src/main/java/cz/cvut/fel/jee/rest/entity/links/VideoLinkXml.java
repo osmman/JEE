@@ -31,4 +31,8 @@ public class VideoLinkXml extends EntityXml{
         return name;
     }
     
+    public String getDownload(){
+        return "/semestralka/video?videoid="+id;
+    }
+    
 }
