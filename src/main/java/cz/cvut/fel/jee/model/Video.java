@@ -43,6 +43,9 @@ public class Video extends EntityObject
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> thumbs;
 
+    @ManyToMany(mappedBy = "videos",cascade = CascadeType.ALL)
+    private List<News> newsList;
+
     @NotNull
     private Date createdAt;
 
