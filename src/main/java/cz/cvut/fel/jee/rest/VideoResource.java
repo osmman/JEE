@@ -63,6 +63,9 @@ public class VideoResource extends AbstractResource<Video> {
     public Response edit(@PathParam("id") Long id, Video item) {
         Video edit = facade.find(id);
         edit.setName(item.getName());
+        if (item.getLocation() != null) {
+            edit.setLocation(item.getLocation());
+        }
         return super.edit(id, edit);
     }
 }
