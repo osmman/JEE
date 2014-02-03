@@ -46,6 +46,9 @@ public class StartUp {
     
     @Inject
     private FacesContext facesContext;
+    
+    @Inject
+    private transient Logger log;
 
 
     @Inject
@@ -53,12 +56,15 @@ public class StartUp {
 
     @PostConstruct
     public void init() {
-//        try {
-//            populate();
-//            uploadVideo();
-//        } catch (NoSuchAlgorithmException ex) {
-//            Logger.getLogger(StartUp.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+        try {
+            populate();
+            uploadVideo();
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(StartUp.class.getName()).log(Level.SEVERE, null, ex);
+            //ZALOZNI ODCHYCENI CHYBI PRI STARTU
+        } catch(Exception ex){
+            log.warning(ex.getMessage());
+        }
 
     }
 
