@@ -20,9 +20,8 @@ public class Authenticator implements Serializable {
 
     private static final long serialVersionUID = 2072170216118113636L;
 
-    @SuppressWarnings("CdiUnproxyableBeanTypesInspection")
     @Inject
-    private transient UserService userService;
+    private UserService userService;
 
     private String password;
 

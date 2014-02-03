@@ -1,13 +1,15 @@
 package cz.cvut.fel.jee.ejb;
 
 import cz.cvut.fel.jee.model.EntityObject;
+
+import java.io.Serializable;
 import java.util.List;
 
 /**
  *
  * @author saljack
  */
-public interface AbstractFacade<T extends EntityObject> {
+public interface AbstractFacade<T extends EntityObject> extends Serializable {
 
     boolean contains(T entity);
 
