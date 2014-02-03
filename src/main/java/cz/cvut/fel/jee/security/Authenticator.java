@@ -7,8 +7,6 @@ import cz.cvut.fel.jee.model.User;
 import javax.ejb.Stateful;
 import javax.enterprise.context.SessionScoped;
 import javax.enterprise.inject.Produces;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.ServletException;
