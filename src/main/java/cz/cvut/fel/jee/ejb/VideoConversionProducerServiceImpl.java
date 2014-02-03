@@ -5,6 +5,7 @@ import cz.cvut.fel.jee.model.Video;
 
 import javax.annotation.Resource;
 import javax.ejb.Stateful;
+import javax.ejb.Stateless;
 import javax.faces.bean.RequestScoped;
 import javax.inject.Inject;
 import javax.jms.JMSContext;
@@ -19,8 +20,7 @@ import java.util.logging.Logger;
  * Time: 13:04
  * To change this template use File | Settings | File Templates.
  */
-@Stateful
-@RequestScoped
+@Stateless
 public class VideoConversionProducerServiceImpl implements VideoConversionProducerService{
 
     @Inject

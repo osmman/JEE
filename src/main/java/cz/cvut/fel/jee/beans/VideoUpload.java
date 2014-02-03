@@ -41,7 +41,7 @@ public class VideoUpload implements Serializable {
     private transient Logger log;
 
     @Inject
-    private VideoService videoService;
+    private transient VideoService videoService;
 
     @Inject
     @CurrentLoggedUser

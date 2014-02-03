@@ -143,7 +143,7 @@ public class VideoServiceImpl extends AbstractFacadeImpl<Video> implements Video
     }
 
     @PermitAll
-    private static String getExtension(String filename) {
+    private String getExtension(String filename) {
         int dot = filename.lastIndexOf(".");
         if (dot == -1) {
             return "";
