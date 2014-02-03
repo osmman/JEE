@@ -16,8 +16,8 @@ Je to trochu slozitejsi
  1. Nainstalovat mysql
  2. Vytvorit uzivatele jee s heslem jee a databazi jee navod tady: http://stackoverflow.com/questions/6445917/connect-failed-access-denied-for-user-rootlocalhost-using-password-yes nebo si to udelejte jak chcete jde to zmenit v domain.xml na roota pokud budete chtit
  3. Vytvorit modul v $JBOSS_HOME (proste tam kde mate wildfly) dela se to podle tohohle: https://zorq.net/b/2011/07/12/adding-a-mysql-datasource-to-jboss-as-7/ staci po Create a Driver Reference dal uz nemusite je to vse udelany v domain.xml
- 4. Nakopirovat si domain.xml z root gitu do `$JBOSS_HOME/domain/configuration/`
- 5. Spustit wildfly v domene `./bin/domain.sh -c domain.xml`
+ 4. Nakopirovat si domain-our.xml z root gitu do `$JBOSS_HOME/domain/configuration/`
+ 5. Spustit wildfly v domene `./bin/domain.sh -c domain-our.xml`
  6. Zmenit v persistence.xml value="`none`" na `drop-and-create`
  7. Deploydnout aplikaci `mvn clean install wildfly:deploy` z netbeanu mi to neslo muselo jsem to delat z konzole
  8. Ted jeden server spadne kvuli db
