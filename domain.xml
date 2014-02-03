@@ -114,11 +114,26 @@
                             <password>sa</password>
                         </security>
                     </datasource>
-                    <datasource jndi-name="java:jboss/jeelab/AppDS" pool-name="jeelab-ds" enabled="true" use-java-context="true">
+<!--                    <datasource jndi-name="java:jboss/jeelab/AppDS" pool-name="jeelab-ds" enabled="true" use-java-context="true">
                         <connection-url>jdbc:h2:tcp://${jboss.bind.address:127.0.0.1}:99092/h2db/ejava;DB_CLOSE_DELAY=-1</connection-url>
                         <driver>h2</driver>
+                    </datasource>-->
+                    <datasource jndi-name="java:jboss/jeelab/AppDS" pool-name="jeelab-ds" enabled="true" jta="true" use-java-context="true" use-ccm="true">
+                        <connection-url>jdbc:mysql://localhost:3306/jee</connection-url>
+                        <driver>mysql</driver>
+                        <security>
+                            <user-name>jee</user-name>
+                            <password>jee</password>
+                        </security>
+                        <statement>
+                            <prepared-statement-cache-size>
+                                100
+                            </prepared-statement-cache-size>
+                            <share-prepared-statements/>
+                        </statement>
                     </datasource>
                     <drivers>
+                        <driver name="mysql" module="com.mysql"/>
                         <driver name="h2" module="com.h2database.h2">
                             <xa-datasource-class>org.h2.jdbcx.JdbcDataSource</xa-datasource-class>
                         </driver>
@@ -987,15 +1002,15 @@
                         </authorization>
                     </security-domain>
                     <security-domain name="semestralka" cache-type="default">
-                    <authentication>
-                        <login-module code="org.jboss.security.auth.spi.DatabaseServerLoginModule" flag="required">
-                            <module-option name="dsJndiName" value="java:jboss/jeelab/AppDS"/>
-                            <module-option name="principalsQuery" value="SELECT PASSWORD FROM USERS WHERE EMAIL=? AND ACTIVATED=true"/>
-                            <module-option name="rolesQuery" value="SELECT NAME, 'Roles' FROM USERS INNER JOIN USERS_ROLES ON (USERS.ID = USERS_ID) LEFT JOIN ROLES ON (ROLES_ID = ROLES.ID) WHERE EMAIL=?"/>
-                            <module-option name="unauthenticatedIdentity" value="guest"/>
-                        </login-module>
-                    </authentication>
-                </security-domain>
+                        <authentication>
+                            <login-module code="org.jboss.security.auth.spi.DatabaseServerLoginModule" flag="required">
+                                <module-option name="dsJndiName" value="java:jboss/jeelab/AppDS"/>
+                                <module-option name="principalsQuery" value="SELECT PASSWORD FROM USERS WHERE EMAIL=? AND ACTIVATED=true"/>
+                                <module-option name="rolesQuery" value="SELECT NAME, 'Roles' FROM USERS INNER JOIN USERS_ROLES ON (USERS.ID = USERS_ID) LEFT JOIN ROLES ON (ROLES_ID = ROLES.ID) WHERE EMAIL=?"/>
+                                <module-option name="unauthenticatedIdentity" value="guest"/>
+                            </login-module>
+                        </authentication>
+                    </security-domain>
                 </security-domains>
             </subsystem>
             <subsystem xmlns="urn:jboss:domain:threads:1.1"/>
@@ -1106,11 +1121,22 @@
                             <password>sa</password>
                         </security>
                     </datasource>
-                    <datasource jndi-name="java:jboss/jeelab/AppDS" pool-name="jeelab-ds" enabled="true" use-java-context="true">
-                        <connection-url>jdbc:h2:tcp://${jboss.bind.address:127.0.0.1}:19092/h2db/ejava;DB_CLOSE_DELAY=-1</connection-url>
-                        <driver>h2</driver>
+                    <datasource jndi-name="java:jboss/jeelab/AppDS" pool-name="jeelab-ds" enabled="true" jta="true" use-java-context="true" use-ccm="true">
+                        <connection-url>jdbc:mysql://localhost:3306/jee</connection-url>
+                        <driver>mysql</driver>
+                        <security>
+                            <user-name>jee</user-name>
+                            <password>jee</password>
+                        </security>
+                        <statement>
+                            <prepared-statement-cache-size>
+                                100
+                            </prepared-statement-cache-size>
+                            <share-prepared-statements/>
+                        </statement>
                     </datasource>
                     <drivers>
+                        <driver name="mysql" module="com.mysql"/>
                         <driver name="h2" module="com.h2database.h2">
                             <xa-datasource-class>org.h2.jdbcx.JdbcDataSource</xa-datasource-class>
                         </driver>
@@ -1450,6 +1476,16 @@
                         <authorization>
                             <policy-module code="Delegating" flag="required"/>
                         </authorization>
+                    </security-domain>
+                    <security-domain name="semestralka" cache-type="default">
+                        <authentication>
+                            <login-module code="org.jboss.security.auth.spi.DatabaseServerLoginModule" flag="required">
+                                <module-option name="dsJndiName" value="java:jboss/jeelab/AppDS"/>
+                                <module-option name="principalsQuery" value="SELECT PASSWORD FROM USERS WHERE EMAIL=? AND ACTIVATED=true"/>
+                                <module-option name="rolesQuery" value="SELECT NAME, 'Roles' FROM USERS INNER JOIN USERS_ROLES ON (USERS.ID = USERS_ID) LEFT JOIN ROLES ON (ROLES_ID = ROLES.ID) WHERE EMAIL=?"/>
+                                <module-option name="unauthenticatedIdentity" value="guest"/>
+                            </login-module>
+                        </authentication>
                     </security-domain>
                 </security-domains>
             </subsystem>
