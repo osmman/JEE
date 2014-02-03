@@ -2,8 +2,11 @@ package cz.cvut.fel.jee.model;
 
 import java.util.Date;
 import java.util.List;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -11,10 +14,18 @@ import org.hibernate.annotations.FetchMode;
  * Created by Tomáš on 29.1.14.
  */
 @Table(name = "news")
+@NamedQueries({
+    @NamedQuery(name = "News.findByVideo", query = "SELECT n FROM News n WHERE :video MEMBER OF n.videos")
+})
 @Entity
 public class News extends EntityObject {
 
-    @NotNull
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -4154257403095256492L;
+
+	@NotNull
     private Date createdAt;
 
     @ManyToMany(fetch = FetchType.EAGER)
