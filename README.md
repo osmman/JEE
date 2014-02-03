@@ -75,5 +75,4 @@ na
 ```
 <default-security-domain value="semestralka"/>
 <default-missing-method-permissions-deny-access value="false"/>
-
 ```
