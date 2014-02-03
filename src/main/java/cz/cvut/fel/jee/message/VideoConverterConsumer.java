@@ -108,13 +108,10 @@ public class VideoConverterConsumer implements MessageListener{
             }
         } catch (JMSException e) {
             log.warning("Cant convert message!");
-            e.printStackTrace();
         } catch (EncoderException e) {
             log.warning("Encoder problems!");
-            e.printStackTrace();
         } catch (IOException e) {
             log.warning("Cant manipulate with files!");
-            e.printStackTrace();
         }
     }
 }
