@@ -29,6 +29,9 @@ public class VideoAdapter extends LinkAdapter<VideoXml, Video> {
         video.setMimetype(v.getMimetype());
         video.setCreatedAt(v.getCreatedAt());
         video.setPublished(v.isPublished());
+        video.setName(v.getVideoname());
+        video.setPath(v.getGridpath());
+        video.setLocation(v.getLocation());
         return video;
     }
 
@@ -38,7 +41,10 @@ public class VideoAdapter extends LinkAdapter<VideoXml, Video> {
         video.setMimetype(v.getMimetype());
         video.setCreatedAt(v.getCreatedAt());
         video.setPublished(v.getPublished());
+        video.setGridpath(v.getPath());
+        video.setVideoname(v.getName());
         video.setAuthor(new UserLinkXml(v.getAuthor().getId()));
+        video.setLocation(v.getLocation());
         return video;
 
     }

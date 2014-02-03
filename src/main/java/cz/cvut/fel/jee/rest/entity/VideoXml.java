@@ -16,21 +16,20 @@ import javax.xml.bind.annotation.XmlElement;
  * @author saljack
  */
 public class VideoXml extends VideoLinkXml{
-    @XmlElement(required = true)
-    private String name;
 
-    @XmlElement(required = true)
-    private String path;
+    private String videoname;
+
+    private String gridpath;
     
-    @XmlElement(required = true)
     private String mimetype;
 
     private Boolean published;
 
-    @XmlElement(required = true)
-    private UserLinkXml author;
+    private String location;
 
     private Date createdAt;
+    
+    private UserLinkXml author;
     
     private static final String comments = "comments";
 
@@ -68,6 +67,30 @@ public class VideoXml extends VideoLinkXml{
 
     public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public String getVideoname() {
+        return videoname;
+    }
+
+    public void setVideoname(String videoname) {
+        this.videoname = videoname;
+    }
+
+    public String getGridpath() {
+        return gridpath;
+    }
+
+    public void setGridpath(String gridpath) {
+        this.gridpath = gridpath;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
     }
     
 }
