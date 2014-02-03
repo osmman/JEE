@@ -54,7 +54,7 @@ Do ```<subsystem xmlns="urn:jboss:domain:security:1.2">```
             <security-domains>
             pridate:
 ```
-				<security-domain name="semestralka" cache-type="default">
+		<security-domain name="semestralka" cache-type="default">
                     <authentication>
                         <login-module code="org.jboss.security.auth.spi.DatabaseServerLoginModule" flag="required">
                             <module-option name="dsJndiName" value="java:jboss/jeelab/AppDS"/>
@@ -70,7 +70,9 @@ zmenit v standalone-full-ha.xml
 ```
 <default-security-domain value="other"/> 
 <default-missing-method-permissions-deny-access value="true"/>
+```
 na 
+```
 <default-security-domain value="semestralka"/>
 <default-missing-method-permissions-deny-access value="false"/>
 
