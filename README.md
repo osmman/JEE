@@ -18,8 +18,12 @@ Je to trochu slozitejsi
  3. Vytvorit modul v $JBOSS_HOME (proste tam kde mate wildfly) dela se to podle tohohle: https://zorq.net/b/2011/07/12/adding-a-mysql-datasource-to-jboss-as-7/ staci po Create a Driver Reference dal uz nemusite je to vse udelany v domain.xml
  4. Nakopirovat si domain.xml z root gitu do `$JBOSS_HOME/domain/configuration/`
  5. Spustit wildfly v domene `./bin/domain.sh -c domain.xml`
- 6. Deploydnout aplikaci `mvn clean install wildfly:deploy` z netbeanu mi to neslo muselo jsem to delat z konzole
- 7. Good luck 
+ 6. Zmenit v persistence.xml value="`none`" na `drop-and-create`
+ 7. Deploydnout aplikaci `mvn clean install wildfly:deploy` z netbeanu mi to neslo muselo jsem to delat z konzole
+ 8. Ted jeden server spadne kvuli db
+ 9. Zmenit v persistence.xml value="`drop-and-create`" na `none` 
+ 10. Deploy `mvn clean install wildfly:deploy`
+ 11. Uz by vse melo jet
 
 Pozn.: z domain se pouziva pouze profil full-ha takze mente veci jenom v nem v ostatnich to nema smysl
 
