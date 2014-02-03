@@ -68,5 +68,10 @@ do standalone-full-ha.xml ($JBOSS_HOME/standalone/configuration) zmenit
 
 zmenit v standalone-full-ha.xml
 ```
-<default-security-domain value="other"/> na <default-security-domain value="semestralka"/>
+<default-security-domain value="other"/> 
+<default-missing-method-permissions-deny-access value="true"/>
+na 
+<default-security-domain value="semestralka"/>
+<default-missing-method-permissions-deny-access value="false"/>
+
 ```
