@@ -2,6 +2,7 @@ package cz.cvut.fel.jee.ejb;
 
 import cz.cvut.fel.jee.annotations.VideoFilesystem;
 import cz.cvut.fel.jee.model.Comment;
+import cz.cvut.fel.jee.model.News;
 import cz.cvut.fel.jee.model.Role;
 import cz.cvut.fel.jee.model.User;
 import cz.cvut.fel.jee.model.Video;
@@ -181,5 +182,22 @@ public class VideoServiceImpl extends AbstractFacadeImpl<Video> implements Video
         //Hack to load comments
         comments.size();
         return comments;
+    }
+    
+    @Override
+    @PermitAll
+    public void remove(Video entity)
+    {
+    	entity = getEntityManager().contains(entity) ? entity : getEntityManager().merge(entity);
+    	List<News> newsList = em.createNamedQuery("News.findByVideo").setParameter("video",entity).getResultList();
+    	for(News n : newsList){
+    		if(n.getVideos().size()>1){
+    			n.getVideos().remove(entity);
+    			em.merge(n);
+    		}else{
+    			em.remove(n);
+    		}
+    	}
+        em.remove(entity);
     }
 }
