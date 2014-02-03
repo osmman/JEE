@@ -482,8 +482,8 @@
                         <authentication>
                             <login-module code="org.jboss.security.auth.spi.DatabaseServerLoginModule" flag="required">
                                 <module-option name="dsJndiName" value="java:jboss/jeelab/AppDS"/>
-                                <module-option name="principalsQuery" value="SELECT PASSWORD FROM USERS WHERE EMAIL=? AND ACTIVATED=true"/>
-                                <module-option name="rolesQuery" value="SELECT NAME, 'Roles' FROM USERS INNER JOIN USERS_ROLES ON (USERS.ID = USERS_ID) LEFT JOIN ROLES ON (ROLES_ID = ROLES.ID) WHERE EMAIL=?"/>
+                                <module-option name="principalsQuery" value="SELECT password FROM users WHERE EMAIL=? AND ACTIVATED=true"/>
+                                <module-option name="rolesQuery" value="SELECT NAME, 'Roles' FROM users INNER JOIN users_roles ON (users.ID = USERS_ID) LEFT JOIN roles ON (ROLES_ID = roles.ID) WHERE EMAIL=?"/>
                                 <module-option name="unauthenticatedIdentity" value="guest"/>
                             </login-module>
                         </authentication>
